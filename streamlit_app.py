@@ -77,18 +77,21 @@ with st.sidebar:
 
     st.header("3. Notes Composites (Indices)")
     st.caption("Intervalle de confiance 95%")
-    icv = st.number_input("ICV (Verbal)", 40, 160, 0)
-    ivs = st.number_input("IVS (Visuospatial)", 40, 160, 0)
-    irf = st.number_input("IRF (Fluide)", 40, 160, 0)
-    imt = st.number_input("IMT (Mém. Travail)", 40, 160, 0)
-    ivt = st.number_input("IVT (Vitesse)", 40, 160, 0)
-    qit = st.number_input("QIT (Total)", 40, 160, 0)
+    st.header("3. Notes Composites (Indices)")
+    st.caption("Intervalle de confiance 95%")
+    # CORRECTION ICI : On met le minimum à 0 au lieu de 40 pour éviter le crash
+    icv = st.number_input("ICV (Verbal)", 0, 160, 0)
+    ivs = st.number_input("IVS (Visuospatial)", 0, 160, 0)
+    irf = st.number_input("IRF (Fluide)", 0, 160, 0)
+    imt = st.number_input("IMT (Mém. Travail)", 0, 160, 0)
+    ivt = st.number_input("IVT (Vitesse)", 0, 160, 0)
+    qit = st.number_input("QIT (Total)", 0, 160, 0)
     
     st.markdown("---")
     st.subheader("Indices Optionnels")
-    iag = st.number_input("IAG (Aptitude Gle)", 40, 160, 0)
-    icc = st.number_input("ICC (Comp. Cognitive)", 40, 160, 0)
-    inv = st.number_input("INV (Non Verbal)", 40, 160, 0)
+    iag = st.number_input("IAG (Aptitude Gle)", 0, 160, 0)
+    icc = st.number_input("ICC (Comp. Cognitive)", 0, 160, 0)
+    inv = st.number_input("INV (Non Verbal)", 0, 160, 0)
 
 # --- TRAITEMENT ET ANALYSE ---
 
