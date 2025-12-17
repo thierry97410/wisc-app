@@ -162,7 +162,7 @@ if st.button("✨ Analyser le profil", type="primary"):
         subtests_str = "Aucun subtest saisi."
 
     with st.spinner("Analyse experte en cours..."):
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-1.5-flash-latest')
         
         prompt = f"""
         Rôle : Psychologue expert WISC-V.
