@@ -5,7 +5,7 @@ from io import StringIO
 from pypdf import PdfReader
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="WISC-V Pro (15 Subtests)", page_icon="🧠", layout="wide")
+st.set_page_config(page_title="WISC-V Pro (Flexible)", page_icon="🧠", layout="wide")
 st.title("🧠 Assistant WISC-V : Expert & Documenté")
 
 try:
@@ -63,25 +63,25 @@ with st.sidebar:
         st.success("Documents ajoutés !")
 
 # --- INTERFACE ---
-st.info("💡 Note : Laissez la valeur à **0** si le subtest n'a pas été administré. (Notes Standard de 1 à 19)")
+st.info("💡 **Consigne :** Laissez la valeur à **0** pour tout Indice ou Subtest **non calculé** ou **non administré**.")
 
 col1, col2 = st.columns([1, 1])
 
 with col1:
     st.subheader("1. Indices (Notes Composites)")
-    # Indices
+    # J'ai mis min_value à 0 partout pour permettre de ne pas remplir
     c_i1, c_i2 = st.columns(2)
     with c_i1:
-        qit = st.number_input("QIT Total", 40, 160, 100)
-        icv = st.number_input("ICV (Verbal)", 40, 160, 100)
-        ivs = st.number_input("IVS (Visuospatial)", 40, 160, 100)
+        qit = st.number_input("QIT Total", 0, 160, 0) # Valeur par défaut 0
+        icv = st.number_input("ICV (Verbal)", 0, 160, 0)
+        ivs = st.number_input("IVS (Visuospatial)", 0, 160, 0)
     with c_i2:
-        irf = st.number_input("IRF (Fluide)", 40, 160, 100)
-        imt = st.number_input("IMT (Mémoire)", 40, 160, 100)
-        ivt = st.number_input("IVT (Vitesse)", 40, 160, 100)
+        irf = st.number_input("IRF (Fluide)", 0, 160, 0)
+        imt = st.number_input("IMT (Mémoire)", 0, 160, 0)
+        ivt = st.number_input("IVT (Vitesse)", 0, 160, 0)
 
     st.markdown("---")
-    st.subheader("2. Les 15 Subtests (Notes Standard)")
+    st.subheader("2. Les Subtests (Notes Standard)")
     
     with st.expander("🗣️ Compréhension Verbale", expanded=True):
         sc1, sc2 = st.columns(2)
@@ -129,9 +129,22 @@ with col2:
     observations = st.text_area("Observations pendant le test", height=200)
 
 # --- LOGIQUE DE GENERATION ---
-if st.button("✨ Analyser le profil complet", type="primary"):
+if st.button("✨ Analyser le profil", type="primary"):
     
-    # Construction de la liste des subtests administrés uniquement
+    # 1. Construction dynamique des INDICES (on garde que ceux > 0)
+    indices_str = ""
+    indices_map = {
+        "QIT": qit, "ICV": icv, "IVS": ivs, 
+        "IRF": irf, "IMT": imt, "IVT": ivt
+    }
+    for name, score in indices_map.items():
+        if score > 0:
+            indices_str += f"- {name}: {score} (M=100, ET=15)\n"
+    
+    if indices_str == "":
+        indices_str = "Aucun indice global calculé."
+
+    # 2. Construction dynamique des SUBTESTS (on garde que ceux > 0)
     subtests_str = ""
     scores_map = {
         "Similitudes": sim, "Vocabulaire": voc, "Information": info, "Compréhension": comp,
@@ -142,8 +155,8 @@ if st.button("✨ Analyser le profil complet", type="primary"):
     }
     
     for name, score in scores_map.items():
-        if score > 0: # On ne garde que ce qui a été passé
-            subtests_str += f"- {name}: {score}\n"
+        if score > 0:
+            subtests_str += f"- {name}: {score} (M=10, ET=3)\n"
     
     if subtests_str == "":
         subtests_str = "Aucun subtest saisi."
@@ -153,27 +166,29 @@ if st.button("✨ Analyser le profil complet", type="primary"):
         
         prompt = f"""
         Rôle : Psychologue expert WISC-V.
-        Tâche : Rédiger la section "Évaluation Psychométrique" détaillée.
+        Tâche : Rédiger la section "Évaluation Psychométrique".
         
-        BIBLIOTHÈQUE DE RÉFÉRENCE (Documents fournis) :
+        BIBLIOTHÈQUE DE RÉFÉRENCE :
         {knowledge_base}
         
         DONNÉES DU PATIENT :
         - Contexte : {anamnese}
         - Observations : {observations}
         
-        SCORES INDICES (M=100, ET=15) :
-        - QIT={qit}, ICV={icv}, IVS={ivs}, IRF={irf}, IMT={imt}, IVT={ivt}
+        SCORES VALIDES (Ceux à 0 sont non administrés/non calculés) :
         
-        SCORES SUBTESTS ADMINISTRÉS (M=10, ET=3) :
+        ### INDICES :
+        {indices_str}
+        
+        ### SUBTESTS :
         {subtests_str}
         
-        CONSIGNES DE RÉDACTION :
-        1. Utilise tes connaissances ET les documents fournis pour interpréter les scores.
-        2. Situe chaque indice et subtest significatif en termes d'Écarts-Types par rapport à la moyenne.
-        3. Analyse les points forts et les points faibles (Forces/Faiblesses).
-        4. Croise impérativement les résultats chiffrés avec les observations cliniques (ex: lien anxiété/vitesse, attention/mémoire).
-        5. Sois vigilant sur l'homogénéité du QIT.
+        CONSIGNES :
+        1. N'analyse QUE les scores fournis ci-dessus. N'invente pas les scores manquants.
+        2. Si le QIT est absent, précise que l'analyse se base sur les indices disponibles (profil partiel).
+        3. Utilise les documents fournis pour l'interprétation théorique.
+        4. Croise les résultats avec l'anamnèse et les observations.
+        5. Mentionne les écarts-types pour les scores présents.
         """
         
         try:
