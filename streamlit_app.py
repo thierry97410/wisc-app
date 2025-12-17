@@ -5,7 +5,7 @@ from io import StringIO
 from pypdf import PdfReader
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="WISC-V Pro (Flexible)", page_icon="🧠", layout="wide")
+st.set_page_config(page_title="WISC-V Pro (Version Stable)", page_icon="🧠", layout="wide")
 st.title("🧠 Assistant WISC-V : Expert & Documenté")
 
 try:
@@ -69,10 +69,9 @@ col1, col2 = st.columns([1, 1])
 
 with col1:
     st.subheader("1. Indices (Notes Composites)")
-    # J'ai mis min_value à 0 partout pour permettre de ne pas remplir
     c_i1, c_i2 = st.columns(2)
     with c_i1:
-        qit = st.number_input("QIT Total", 0, 160, 0) # Valeur par défaut 0
+        qit = st.number_input("QIT Total", 0, 160, 0)
         icv = st.number_input("ICV (Verbal)", 0, 160, 0)
         ivs = st.number_input("IVS (Visuospatial)", 0, 160, 0)
     with c_i2:
@@ -131,7 +130,7 @@ with col2:
 # --- LOGIQUE DE GENERATION ---
 if st.button("✨ Analyser le profil", type="primary"):
     
-    # 1. Construction dynamique des INDICES (on garde que ceux > 0)
+    # 1. Construction dynamique des INDICES
     indices_str = ""
     indices_map = {
         "QIT": qit, "ICV": icv, "IVS": ivs, 
@@ -140,11 +139,9 @@ if st.button("✨ Analyser le profil", type="primary"):
     for name, score in indices_map.items():
         if score > 0:
             indices_str += f"- {name}: {score} (M=100, ET=15)\n"
-    
-    if indices_str == "":
-        indices_str = "Aucun indice global calculé."
+    if indices_str == "": indices_str = "Aucun indice global calculé."
 
-    # 2. Construction dynamique des SUBTESTS (on garde que ceux > 0)
+    # 2. Construction dynamique des SUBTESTS
     subtests_str = ""
     scores_map = {
         "Similitudes": sim, "Vocabulaire": voc, "Information": info, "Compréhension": comp,
@@ -153,46 +150,44 @@ if st.button("✨ Analyser le profil", type="primary"):
         "Mém. Chiffres": mem_c, "Mém. Images": mem_i, "Séquence L-C": seq,
         "Code": cod, "Symboles": sym, "Barrage": bar
     }
-    
     for name, score in scores_map.items():
         if score > 0:
             subtests_str += f"- {name}: {score} (M=10, ET=3)\n"
-    
-    if subtests_str == "":
-        subtests_str = "Aucun subtest saisi."
+    if subtests_str == "": subtests_str = "Aucun subtest saisi."
 
     with st.spinner("Analyse experte en cours..."):
-        model = genai.GenerativeModel('gemini-1.5-flash-latest')
-        
-        prompt = f"""
-        Rôle : Psychologue expert WISC-V.
-        Tâche : Rédiger la section "Évaluation Psychométrique".
-        
-        BIBLIOTHÈQUE DE RÉFÉRENCE :
-        {knowledge_base}
-        
-        DONNÉES DU PATIENT :
-        - Contexte : {anamnese}
-        - Observations : {observations}
-        
-        SCORES VALIDES (Ceux à 0 sont non administrés/non calculés) :
-        
-        ### INDICES :
-        {indices_str}
-        
-        ### SUBTESTS :
-        {subtests_str}
-        
-        CONSIGNES :
-        1. N'analyse QUE les scores fournis ci-dessus. N'invente pas les scores manquants.
-        2. Si le QIT est absent, précise que l'analyse se base sur les indices disponibles (profil partiel).
-        3. Utilise les documents fournis pour l'interprétation théorique.
-        4. Croise les résultats avec l'anamnèse et les observations.
-        5. Mentionne les écarts-types pour les scores présents.
-        """
-        
+        # C'EST ICI QUE NOUS AVONS CHANGÉ LE NOM DU MODÈLE POUR LA VERSION PRO
         try:
+            model = genai.GenerativeModel('gemini-1.5-pro')
+            
+            prompt = f"""
+            Rôle : Psychologue expert WISC-V.
+            Tâche : Rédiger la section "Évaluation Psychométrique".
+            
+            BIBLIOTHÈQUE DE RÉFÉRENCE (Analyse théorique obligatoire) :
+            {knowledge_base}
+            
+            DONNÉES DU PATIENT :
+            - Contexte : {anamnese}
+            - Observations : {observations}
+            
+            SCORES DISPONIBLES :
+            
+            ### INDICES :
+            {indices_str}
+            
+            ### SUBTESTS :
+            {subtests_str}
+            
+            CONSIGNES :
+            1. Analyse UNIQUEMENT les scores > 0 ci-dessus.
+            2. Utilise les PDF fournis pour justifier l'interprétation (hétérogénéité, implications cliniques).
+            3. Situe les scores en Ecarts-Types.
+            4. Synthétise les forces et faiblesses.
+            """
+            
             res = model.generate_content(prompt)
             st.markdown(res.text)
+            
         except Exception as e:
-            st.error(f"Erreur : {e}")
+            st.error(f"Erreur technique : {e}")
