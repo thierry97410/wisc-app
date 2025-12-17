@@ -1,0 +1,2643 @@
+Petit     Guide
+de Psychométrie Clinique
+à l’Usage des Praticiens
+
+
+         Mathilde Muneaux
+ Psychologue spécialisée en neuropsychologie
+          Docteur en Psychologie
+      Pour toute information sur notre fonds, consultez notre site web :
+                       www.deboecksuperieur.com
+
+
+
+
+     © De Boeck Supérieur s.a., 2018
+     Rue du Bosquet 7, B-1348 Louvain-la-Neuve
+
+     Tous droits réservés pour la traduction et l’adaptation en langue française.
+     Il est interdit, sauf accord préalable et écrit de l’éditeur, de reproduire (notamment par photocopie)
+     partiellement ou totalement le présent ouvrage, de le stocker dans une banque de données ou de le
+     communiquer au public, sous quelque forme et de quelque manière que ce soit.
+
+
+
+2                                       © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+  Sommaire
+
+
+Préface                                                                                            5
+
+Introduction                                                                                       9
+
+            1) La variabilité du format de données psychométriques
+            fournies par les manuels.                                                             10
+            2) La qualité des explications psychométriques fournies
+            par les manuels de tests                                                              11
+            3) Le caractère incomplet de la formation initiale                                    11
+
+
+
+                                    QU’EST-CE QU’UN TEST ?
+La notion de mesure                                                                               16
+
+            L’idée de classement                                                                  17
+            L’importance de la standardisation                                                    19
+
+
+
+                   COMMENT CLASSER LA PERFORMANCE
+                       D’UN PATIENT À UN TEST ?
+Les rangs percentiles                                                                             25
+
+            Comment est calculé un rang percentile ?                                              25
+            Avantages et Inconvénients de l’utilisation
+            des rangs percentiles                                                                 28
+
+Qu’est-ce que la loi normale ?                                                                    31
+
+            Loi normale : Une distribution utopique des scores                                    31
+            Distribution normale et tests : la confrontation avec la réalité                      34
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle    3
+Comment interpréter les notes étalonnées issues de la loi normale ?                                                38
+
+      Notes standard                                                                                               38
+      Notes composites                                                                                             43
+      Notes T                                                                                                      46
+
+Comment estimer la performance du patient ?                                                                        50
+
+      Des procédures d’interprétation différentes selon le type
+      de notes                                                                                                     50
+      Tous les scores étalonnés sont-ils équivalents ?                                                             51
+      Comment estimer la fréquence d’une performance ?
+      Valeurs « clés »                                                                                             52
+      Et les scores seuils ?                                                                                       55
+      Et les âges de développement ?                                                                               56
+
+
+
+                        MISE EN GARDE
+      Utiliser systématiquement le score z, est-ce bien « normal » ?                                               61
+      Connaît-on suffisamment l’échantillon de référence ?                                                         66
+
+
+Conclusion                                                                                                         73
+
+Références                                                                                                         75
+
+
+
+
+4                         © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+  Préface
+
+
+C’est avec beaucoup de plaisir que vous découvrirez le « Petit Guide de
+Psychométrie Clinique à l’Usage des Praticiens » de Mathilde Muneaux.
+Ce guide a été écrit par quelqu’un qui arpente les allées de la pratique cli­
+nique depuis plusieurs années et qui a construit sa réflexion en réponse aux
+mille et une questions qu’elle s’est posées au cœur de ses activités et aux­
+quelles elle n’avait pas trouvé de réponses satisfaisantes dans les manuels
+de psychométrie existants ou dans les souvenirs de sa formation universi­
+taire.
+Par ses engagements dans la vie associative des neuropsychologues clini­
+ciens, Mathilde Muneaux s’est en outre rendue compte qu’un grand nombre
+de ses collègues se posaient les mêmes questions. L’idée lui est alors venue
+de partager les réponses qu’elle a patiemment recherchées et construites
+au cours de sa pratique professionnelle, et c’est ce qui nous permet aujour­
+d’hui de profiter de ce remarquable condensé de psychométrie à usage des
+cliniciens.
+D’entrée de jeu, l’auteure est claire sur la portée et les limites de son projet.
+Ce guide n’a pas été écrit pour remplacer les cours de statistiques ou pour
+se substituer aux manuels universitaires existants. Le texte qui nous est
+proposé occupe un espace intermédiaire entre les informations qu’il est
+possible de consulter à propos des tests que nous utilisons et l’usage qu’il
+est légitime d’en faire. C’est un texte-lien qui établit un pont entre les don­
+nées couchées dans les manuels et les questions qui surgissent au cœur de
+l’activité clinique. Comment interpréter et comparer entre eux des indica­
+teurs différents ? Comment décider de l’existence d’un déficit ? Comment en
+évaluer l’amplitude ? Ces questions récurrentes sont critiques et se propo­
+ser d’y répondre reste un objectif prioritaire car la rigueur de nos démarches
+constitue un des éléments essentiels à la reconnaissance de notre profes­
+sion.
+Le guide de Mathilde Muneaux répond à cette exigence de rigueur. Elle y
+présente avec intelligence et clarté les particularités des mesures que nous
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   5
+utilisons. Elle s’arrête avec justesse sur les erreurs d’interprétation les plus
+courantes et détecte les biais les plus couramment rencontrés. Les réponses
+et les mises en garde qu’elle nous propose sont fondées sur le plan théorique ;
+elles sont en outre parfaitement illustrées et restent proches du terrain.
+Personnellement, j’ai beaucoup apprécié la section du guide consacrée aux
+transformations des notes brutes en notes standard, notes composites et
+scores T. J’ai aussi été sensible au rappel que la valeur numérique des
+scores normalisés n’a guère de sens si elle n’est pas rapportée à la Table de
+la loi normale. Dans la partie consacrée aux pièges à éviter, l’auteure rend
+aussi les cliniciens particulièrement attentifs à la distribution des scores
+dans l’échantillon de référence ; et lorsque cet échantillon s’éloigne de la
+distribution normale, elle souligne les risques qu’il y a à utiliser les scores z.
+J’ai aussi trouvé importantes les remarques de l’auteure sur les caractéris­
+tiques des échantillons de référence. Tout clinicien doit en permanence avoir
+à l’esprit cette question essentielle : dans quelle mesure le patient dont il
+analyse les résultats est-il bien représenté dans l’échantillon de référence ?
+En neuropsychologie de l’adulte, cette question est particulièrement critique
+pour les populations de sujets âgés où le milieu de vie (maison privée versus
+maison de repos), le niveau et la qualité des activités sont des paramètres
+particulièrement importants pour l’évaluation et le devenir du fonctionne­
+ment cognitif. Les caractéristiques des échantillons de référence est une
+question que l’on se pose aussi souvent en Belgique lorsque nous utilisons
+des tests uniquement normés en France ; et la question de la représentati­
+vité se posera avec de plus en plus d’acuité dans nos sociétés multicultu­
+relles.
+Ainsi, la question de la représentativité peut s’avérer particulièrement impor­
+tante lorsque le sujet obtient des résultats situés aux frontières des normes,
+au voisinage d’un cut-off ou lorsqu’ils sont un peu supérieurs à la limite infé­
+rieure des normes. Dans ces cas, l’examen minutieux de l’échantillon de réfé­
+rence peut être capital car les concepteurs des tests en procédant à leurs
+échantillonnages n’ont le plus souvent considéré qu’un nombre limité de
+caractéristiques ce qui ouvre un espace d’interprétation au clinicien. Comme
+le dit très bien l’auteure « un nombre en soi n’a aucune signification clinique ».
+Si lorsqu’il interprète un résultat, le clinicien doit se poser des questions sur
+la distribution des scores de l’échantillon de référence, il doit aussi se deman­
+der si le patient singulier qu’il examine présente par son histoire personnelle,
+son expérience professionnelle, sa situation sociale et culturelle des caracté­
+ristiques particulières susceptibles d’influencer son fonctionnement cognitif.
+Dans la traumatologie légère à modérée, on se trouve fréquemment confronté
+
+
+6                            © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+à des scores qui restent dans les normes attendues, mais à propos desquels
+il est légitime de se demander si l’accident cérébral n’a pas malgré tout
+entraîné une baisse du niveau antérieur présumé ; et inversement des scores
+peuvent être sous les normes sans que la condition neuropsychologique à
+l’origine de l’investigation n’en soit la cause.
+L’auteure a par ailleurs raison de souligner que malgré les importants pro­
+grès accomplis au cours de ces 20 dernières années par la psychométrie
+francophone, nous manquons encore singulièrement d’instruments solide­
+ment construits et normés. Dès que l’on doit procéder à des bilans répétés
+chez le même sujet, on se trouve obligé d’utiliser des séries parallèles dont
+on découvre qu’elles n’ont le plus souvent fait l’objet que d’une très brève
+comparaison avec la forme de base. L’auteure a raison également de nous
+rendre sensible aux effets possibles des cohortes. Ces effets sont tout à fait
+considérables lorsque les tests utilisés sont anciens et ont été normés il y a
+parfois plus de 40 ans !
+Enfin, si l’auteure a parfaitement raison de rappeler que l’application d’un
+test exige de suivre à la lettre les consignes afin d’être sûr de recueillir le
+comportement du patient dans les mêmes conditions que l’échantillon de
+référence ; il convient aussi de rappeler que la rigueur des opérations de
+diagnostic et d’évaluation des troubles ne doit pas s’opposer à la mise en
+place à côté des tests de démarches d’analyse visant à comprendre la
+nature des troubles. Les cliniciens ne doivent pas se priver – s’ils désirent
+comprendre les processus déficitaires – de construire – et le plus souvent
+compte tenu du temps dont ils disposent – de « bricoler » sur le côté des
+tâches plus analytiques en vue d’essayer de mieux identifier les facteurs en
+cause. Les résultats déficitaires à un test sont en effet rarement suffisants
+pour comprendre les raisons pour lesquelles un patient présente un déficit à
+une épreuve et la comparaison de plusieurs tests ne clarifie pas nécessaire­
+ment la situation. On rencontre encore trop souvent dans les interprétations
+neuropsychologiques l’usage de concepts généraux dont la valeur explica­
+tive n’est pas garantie. Il est ainsi important de rappeler qu’il ne suffit pas
+qu’un patient soit en difficulté à la partie du test de STROOP qui exige de
+produire le mot plutôt que la couleur du mot, pour ranger ensuite sous le label
+unique de « déficit d’inhibition » les performances précipitées qu’il produira
+ensuite par exemple à la Tour de Londres. Le concept d’inhibition est com­
+plexe, son unité fait question et la plupart des tests neuropsychologiques sont
+multidéterminés (comme la très justement montré Miyake pour les fonctions
+exécutives). Lorsqu’une performance est déficitaire, il reste à se demander
+quels sont les processus en cause et la réponse à cette question peut exiger
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   7
+de construire des tâches plus sélectives en tâchant de mieux isoler le pro­
+cessus que l’on imagine responsable. Cette démarche plus analytique ne doit
+pas toujours être entreprise si la mission consiste juste à établir un diagnostic
+ou à établir qu’une performance est sous la norme attendue ; mais elle s’avère
+indispensable dès que l’on désire comprendre et ensuite revalider.
+Je félicite encore Mathilde Muneaux pour ce remarquable travail. Et comme
+dans une préface il est permis de rêver, je souhaite que ce guide constitue le
+premier-né d’une série de publications à venir à destination des cliniciens.
+On manque en effet en neuropsychologie clinique d’ouvrages bien construits
+présentant en détail les dimensions concrètes de nos pratiques et ceci tout
+particulièrement dans le domaine de la revalidation. À quand la parution de
+courts manuels présentant par exemple la technique du face-name, la méthode
+des lieux en revalidation de la mémoire ou la technique d’implémentation d’in­
+tentions en mémoire prospective ? Ou encore pour les apprentissages une
+présentation des méthodes du vanishing cue ou de l’apprentissage sans
+erreurs ? Il existe parmi les neuropsychologues francophones des cliniciens
+qui maîtrisent parfaitement ces outils et qui pourraient, comme vient de le
+faire Mathilde Muneaux, partager dans un court texte les programmes et les
+exercices qu’ils utilisent. Ce partage d’expertises pourrait être animé et
+encadré par les sociétés qui représentent notre profession.
+
+
+Bonne lecture à toutes et tous
+
+                                                                                               Xavier SERON
+
+
+
+
+8                            © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+  Introduction
+
+
+Ce guide représente l’aboutissement de réflexions personnelles issues d’une
+douzaine d’années de pratique en tant que psychologue spécialisée en neuro­
+psychologie. J’espère qu’il pourra apporter au lecteur autant qu’il m’a apporté
+en l’écrivant.
+Depuis une douzaine d’années, j’ai eu l’opportunité de réaliser des centaines
+de bilans auprès d’enfants et d’adolescents issus de tous milieux, présentant
+tout type de plaintes : troubles déficitaires de l’attention avec ou sans hyper­
+activité, épilepsies, déficiences intellectuelles, troubles spécifiques du langage
+oral et écrit, hauts potentiels intellectuels, troubles du spectre de l’autisme,
+plaintes mnésiques, troubles du comportement, traumatismes crâniens…
+Pour réaliser ces bilans, j’essaie toujours de rester au plus proche des
+besoins du patient et de son entourage, de suivre les préceptes acquis dans
+ma formation initiale, de mettre à jour mes connaissances et d’écouter les
+conseils de mes pairs afin de proposer des réponses ciblées, ajustées pour
+chaque patient.
+Porter attention aux éléments anamnestiques et aux observations cliniques
+est toujours nécessairement présent dans ma pratique. Cependant, même si
+ces informations sont indispensables, elles restent insuffisantes, notamment
+en raison de leur caractère subjectif. Le recours à la passation de tests est
+nécessaire pour compléter cette analyse partiale en évaluant si le comporte­
+ment de mon patient est fréquent ou non, selon son âge, son niveau scolaire,
+sa catégorie socio-professionnelle… L’utilisation des tests est un moyen rigou­
+reux pour obtenir des informations plus objectives. Encore faut-il savoir
+décrypter les résultats pour répondre à l’objectif premier du bilan : aider mon
+patient à être mieux avec ce qu’il est, avec ses points forts et ses points
+d’effort.
+J’ai été ainsi amenée à me poser de nombreuses questions. Comment sont
+construits les tests ? Est-ce que ce test est adapté pour mon patient ? À par­
+tir de quel score dois-je m’alerter ? Pourquoi cet auteur mentionne 2 écarts-
+types et cet autre –1,65 écarts-types ? Qu’elle est la différence entre les
+rangs percentiles et les pourcentages cumulés ? Pourquoi transformer des
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   9
+notes brutes en notes standard ? À quoi sert le tableau de la loi normale ?
+Comment les personnes de l’échantillon de référence sont-elles choisies ?
+Comment utiliser un score z ? Pourquoi, sur le tableau de conversion du
+manuel de ce test, certaines notes brutes n’ont pas de correspondances en
+notes standard ? Pourquoi ce score ne « colle » pas avec mon analyse cli­
+nique ?
+En quête de réponses, par mes lectures, par mes rencontres, j’ai pris
+conscience que de nombreux professionnels se posaient les mêmes ques­
+tions. Toujours plus de questions, peu de réponses. Au cours des formations
+que je dispense et de mes années de pratique, j’ai souvent eu l’occasion de
+constater les « imbroglios » qui émergeaient des échanges avec les collè­
+gues sur l’exploitation des données psychométriques issues des tests. Une
+enquête d’ampleur nationale a d’ailleurs fait ce même constat récemment
+(Leclef, Chancenotte, Marey, & Muneaux, 2018). La présence de ces ques-
+tions sans réponse pourrait être liée à trois raisons majeures :
+
+
+
+1) LA VARIABILITÉ DU FORMAT DE DONNÉES PSYCHOMÉTRIQUES
+    FOURNIES PAR LES MANUELS.
+Ces dernières années ont vu l’explosion d’édition de tests visant l’évaluation
+objective du comportement en partie liée à l’augmentation des évaluations à
+visée diagnostique. L’utilisation des tests varie en fonction de la population
+(e.g., enfants, adultes, personnes âgées, pathologies spécifiques), des pro­
+cessus cognitifs ciblés (e.g., mémoire, attention, planification) et de la patholo­
+gie concernée (e.g., trouble du déficit de l’attention avec ou sans hyperactivité,
+troubles du spectre de l’autisme, démence de type Alzheimer). La manière
+dont les scores bruts sont transformés en notes étalonnées, exploitables par
+le praticien, différencie également les tests entre eux (rangs percentiles et
+pourcentages cumulés, notes composites, notes standard, notes T). Cette
+variété de formats est a fortiori propice à compliquer l’analyse des données
+psychométriques. D’ailleurs, certains auteurs ont constaté une variabilité
+intra- et inter-individuelle des professionnels dans l’interprétation de ces
+données en fonction du type de notes utilisées (Bowman, 2002 ; Guilmette,
+Hagan, & Giuliano, 2008 ; Leclef et al., 2018).
+
+
+
+
+10                           © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+2) LA QUALITÉ DES EXPLICATIONS PSYCHOMÉTRIQUES FOURNIES
+    PAR LES MANUELS DE TESTS
+Nombre de manuels fournissent des informations incomplètes, peu lisibles
+voire erronées sur l’interprétation psychométrique. Jean Luc Roulin le men­
+tionne d’ailleurs dans ses notes de cours de psychométrie à l’Université de
+Savoie1 :
+
+     “ En pratique, il faut savoir que certains manuels de tests
+      ne comportent pas toutes les données psychométriques
+     utiles pour s’assurer de leurs qualités. Il ne faut pas faire
+    confiance aux auteurs des tests ou penser qu’un test vendu
+       est forcément fiable. Parfois, les informations y sont
+       mais il est facile de voir que celles-ci sont erronées ou
+        fausses (même pour des tests édités par des maisons
+                        d’éditions connues) .                                                     ”
+
+3) LE CARACTÈRE INCOMPLET DE LA FORMATION INITIALE
+En comparaison avec la qualité de la formation sur les statistiques inféren­
+tielles intergroupes (comme les analyses de variance ou de corrélation), les
+statistiques du cas unique sont encore trop peu abordées dans les différents
+masters universitaires. En 2014, Jacques Grégoire le souligne d’ailleurs
+lors d’un colloque organisé par l’APPEA « Actualités de l’examen psycholo­
+gique de l’enfant : l’apport de la neuropsychologie »2 :
+
+   “ Si les manuels sont devenus professionnels, la formation
+                        n’a pas suivi”.
+
+Dans ce contexte, il n’est donc pas surprenant que l’utilisation des données
+psychométriques par les professionnels soit compliquée. D’ailleurs, la remise
+en question de la pratique des tests en psychologie est dorénavant un sujet
+d’actualité (Colombo, Amieva, Lecerf, & Verdon, 2016 ; Lévy & Missler,
+
+1. http://psychometrie.jlroulin.fr/cours/aide_quizz.html
+2. https://www.youtube.com/watch?v=6Rw7SilGrqg
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle       11
+2010 ; Vrignaud, Castro, & Mogenet, 20003). Il existe déjà des articles ou
+ouvrages traitant ce thème (Flanagan & Kaufman, 2004 ; Grégoire, 2009 ;
+Jonin, 2013 ; Kaufman, Lichtenberger, Fletcher-Janzen, & Kaufman, 2005 ;
+Laveault & Grégoire, 2002 ; Strauss et al., 2006 ; Weschler, 2016), cepen­
+dant, ces ouvrages ne fournissent pas au praticien des outils de compréhen­
+sion pratiques et cliniques afin d’exploiter le plus justement possible les
+données fournies dans les manuels.
+
+      “ Le psychologue présente ses conclusions de façon claire
+                 et compréhensible aux intéressés”.
+                                         Article n° 16 du code de déontologie des psychologues4
+
+
+Ce guide m’a permis d’apporter toutes les réponses aux questions que je me
+posais sur le décryptage des données psychométriques de mon patient en
+comparaison à son groupe de référence (analyse inter-individuelle). J’espère
+qu’il en sera de même pour le lecteur. Cet ouvrage s’adresse à tout profes­
+sionnel ayant recours aux tests : psychologues, médecins, orthophonistes,
+psychomotriciens, ergothérapeutes, orthoptistes… qu’ils soient étudiants,
+débutants ou riches de nombreuses années d’expérience. Des notions telles
+que l’échantillon de référence, la loi normale, les notes étalonnées (score z,
+rangs percentiles, notes standard, notes composites, notes T) sont explici­
+tées. Des méthodes fiables d’interprétation des performances aux tests sont
+décrites pas à pas et illustrées tout en alertant le lecteur sur les limites des
+tests et des données psychométriques.
+En espérant que grâce à ces clés de compréhension, vous serez mieux outil-
+lés pour ouvrir ces portes fermées de questions, pour aider votre patient,
+pour sortir des « imbroglios »…
+
+
+
+
+3. http://sfpsy.org/IMG/pdf/recomm1.pdf
+4. www.codededeontologiedespsychologues.fr
+
+
+
+12                               © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+                    Qu’est-ce qu’un test ?
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   13
+Il n’était pas concevable de traiter de l’interprétation des données psycho­
+métriques d’un test sans commencer par définir ce qu’est un test. C’est donc
+l’objet de ce chapitre en lien avec la pratique clinique.
+Dans l’ensemble de la littérature, les définitions ci-dessous apparaissent de
+manière récurrente :
+
+       “ On appelle test mental   une situation expérimentale
+                                                  5
+
+       standardisée servant de stimulus à un comportement.
+          Ce comportement est évalué par une comparaison
+        statistique avec celui d’autres individus placés dans
+       la même situation, permettant ainsi de classer le sujet
+      examiné, soit quantitativement, soit typologiquement .                                                          ”
+                                                                                                       Pichot, 1968, p. 5.
+
+
+
+            “ Les tests sont des instruments d’observation :
+  ils définissent avec précision les conditions dans lesquelles
+      sont observés successivement ou simultanément des
+  individus différents ; ils fournissent les moyens d’exprimer
+    ces observations sous une forme telle que soient possibles
+  la comparaison de ces individus entre eux et la comparaison
+  de chacun avec les « normes » (descriptives) de la population
+       à laquelle ils appartiennent. Des procédés très variés
+      d’enregistrement et de partition des observations sont
+              employés dans la méthode des tests .                                              ”
+                                                                                                 Reuchlin, 1969, p. 22.
+
+5. De nos jours, on ne parle plus de tests mentaux, expression utilisée par le psychologue James McKeen
+Cattell (1860-1944) dans un article publié à la fin du XIXe siècle (Cattell, 1890).
+
+
+
+14                                   © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+          “ Un test est un dispositif d’observation des individus
+    qui présente quatre propriétés : il est standardisé ; il permet
+     de situer la conduite de chaque sujet dans un groupe de
+     référence ; le degré de précision des mesures qu’il permet
+   est évalué (fidélité) et la signification théorique ou pratique
+               de ces mesures est précisée (validité) .                                                    ”
+                                                                                                  Huteau & Lautrey, 1997, p. 19.
+
+
+À la lecture de ces définitions, trois points majeurs se dégagent de manière
+saillante :
+1) la notion de mesure,
+2) l’idée de classement et
+3) l’importance de la standardisation.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle                              15
+ La notion de mesure
+
+
+Un des principes communs des définitions proposées est que le test mesure
+un comportement, la réaction d’une personne mise dans une situation parti­
+culière. Même si les éléments mesurés sont variables (e.g., le nombre de
+bonnes réponses, le nombre d’erreurs, la vitesse d’exécution), la mesure est
+majoritairement recueillie sous forme numérique (e.g., un score ou un temps
+de réponse). Cependant, la mesure seule de ce comportement ne veut rien
+dire. Un nombre en soi n’a aucune signification clinique. C’est l’interpréta­
+tion que le praticien en fait qui lui donne tout son sens.
+
+      “ [Notre méthode] n’est pas une méthode automatique,
+    comparable à une bascule de gare, sur laquelle il suffit
+      de monter pour que la machine vomisse notre poids
+   imprimé sur le ticket […]. Les résultats de notre examen
+  n’ont pas de valeurs s’ils sont séparés de tout commentaire,
+               ils ont besoin d’être interprétés .                               ”
+                                   Binet & Simon, 1908, p. 60, cité par Martin, 1997, p. 35.
+
+
+En clinique, cette mesure est majoritairement traitée selon la théorie clas­
+sique des tests (Spearman, 1904) dont un des postulats forts est qu’à tout
+score possible est associée une probabilité. L’hypothèse sous-jacente est
+que les individus vont se comporter majoritairement de la même manière
+dans une même situation et que certaines personnes auront des comporte­
+ments se distribuant autour de cette majorité. La théorie classique des tests
+sous-tend la plupart des travaux de validation des tests psychologiques. Le
+test est utilisé par le praticien comme un révélateur de certaines caractéris­
+tiques des personnes évaluées à travers un comportement dans une situa­
+tion particulière. Il mesure donc quelque chose de la personne qui l’exécute.
+Les manuels proposent des modèles théoriques explicatifs des performances
+obtenues, de ce quelque chose telle que la validité de construct. Mais un test
+mesure-t-il assurément une ou des fonctions cognitives précises, un ou des
+
+
+16                          © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+traits psychologiques ciblés ? La théorie classique des tests n’est actuelle­
+ment pas en mesure de répondre par l’affirmative à cette question. Cette
+définition proprement psychologique de ce que mesurent les scores psycho­
+métriques est d’ailleurs toujours sujette à débat (Markus & Borsboom,
+2013 ; Michell, 1999). Laissons donc pour le moment ce sujet en suspens
+pour s’intéresser à la mesure en tant que telle. Certes, la mesure doit être
+interprétée en référence à des contextes théoriques, mais elle doit aussi être
+classée parmi un ensemble de mesures recueillies. Rappelons qu’il s’agit de
+déterminer si le comportement observé est atypique, s’il doit alerter le pra­
+ticien sur l’éventuelle présence d’un dysfonctionnement, d’une déviance,
+d’un trouble ou d’une « sur-compétence ».
+
+
+
+L’IDÉE DE CLASSEMENT
+Le test doit permettre de mesurer un comportement ET de le situer dans un
+groupe6 biologiquement (par exemple l’âge) et/ou socialement (par exemple
+le niveau socio-professionnel) déterminé. Ce groupe est appelé l’échantil-
+lon de référence. Cet échantillon est ainsi constitué d’un ensemble de
+mesures obtenues en faisant passer le même test à un ensemble de per­
+sonnes. Il s’agit alors de classer la mesure du patient dans cet ensemble de
+mesures (classement majoritairement hiérarchique, de la plus faible perfor­
+mance à la meilleure performance).
+
+                “ La représentativité de l’échantillon de référence,
+           loin d’être un purisme méthodologique, va déterminer
+           en grande partie la qualité de la mesure et sa capacité
+             à nous renseigner sur le degré de variance du score
+                              d’un individu .                                            ”
+                                                        Amieva, 2016, p. 5 dans Amieva, Belin, & Maillet, 2016.
+
+
+Deux techniques de constitution de cet échantillon sont majoritairement utili­
+sées pour les tests psychologiques : la méthode d’échantillonnage par quo­
+tas et la méthode d’échantillonnage en grappe.
+
+
+6. En clinique, la majorité des tests utilisés sont normatifs (comme la comparaison à un groupe comme un
+groupe d’âge) et non « critériés » ou « à référence critérielle » (comme la comparaison à un critère comme
+un niveau de connaissances attendues) (Glaser, 1963).
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle             17
+ Méthode d’échantillonnage par quotas7
+
+Avec cette méthode, il s’agit de recruter les personnes de l’échantillon en
+fonction de caractéristiques propres à une population (âge, niveau d’études,
+genre…). En général, en France, les informations sur ces caractéristiques
+sont issues d’organismes nationaux de référencement comme l’Institut
+National de la Statistique et des Études Économiques (INSEE). Lorsqu’un
+test est construit, il est destiné à une population ciblée, comme par exemple
+des enfants français de 6 ans. Au 1er janvier 2017 (données INSEE8),
+844 456 enfants français nés en 2010 étaient recensés. Il n’est évidem­
+ment pas possible de tous leur faire passer un même test. Certains de ces
+enfants vont donc être choisis pour être représentatifs de ceux nés en
+France en 2010 pour constituer l’échantillon de référence. Ces enfants ne
+vont pas être choisis au hasard mais suivant certaines caractéristiques
+représentatives de la population à laquelle ils appartiennent. Les caractéris­
+tiques de tous les enfants français de 6 ans ne sont pas identiques. La ques­
+tion du choix des caractéristiques qui vont être prises en considération est
+alors posée. Celles qui sont supposées pouvoir influencer la performance au
+test et pour lesquelles des informations sont disponibles vont être privilé­
+giées. Pour une majorité de tests, les principales caractéristiques retenues
+comme pouvant avoir un impact sur la performance sont fréquemment le
+genre, la catégorie socio-professionnelle, la situation géographique et le
+niveau d’études (Brooks, Strauss, Sherman & Slick, 2009).
+Cette technique d’échantillonnage est majoritairement utilisée pour les bat­
+teries de tests comme les échelles de Wechsler (WAIS – Wechsler Adult
+Intelligence Scale, WISC – Wechsler Intelligence Scale for Children, WPPSI
+– Wechsler Preschool and Primary Scale of Intelligence ; Wechsler, 2011 ;
+2014 ; 2016), la NEPSY II (Korkman, Kemp, & Kirk, 2012), le KABC II
+(Kaufman Assessment Battery for Children, Kaufman et al., 2004), la MEM
+(Wechsler, 2001) et la CMS (Cohen, 2001).
+
+ Méthode d’échantillonnage en grappe9
+
+La seconde méthode fréquemment utilisée pour sélectionner des personnes
+représentatives de la population ciblée est de les choisir « au hasard ». Les
+
+7. Cette technique d’échantillonnage est une méthode d’échantillonnage non probabiliste appelée aussi
+méthode à choix raisonnés.
+8. https://www.insee.fr/fr/statistiques/1892086?sommaire=1912926
+9. Cette technique d’échantillonnage est une méthode d’échantillonnage probabiliste, aussi appelée
+méthode d’échantillonnage en groupe.
+
+
+
+18                                  © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+caractéristiques de la population référente n’ont alors plus d’importance,
+c’est le choix d’un groupe appartenant à cette population qui devient primor­
+dial. Toutes les personnes du groupe sélectionné passent alors le test. La
+taille de l’échantillon n’est pas fixée strictement au départ et dépend de la
+taille de chacune des grappes.
+Cette technique d’échantillonnage est fréquemment utilisée pour les tests iso­
+lés (Laby 5-12, Marquet-Doléac, Soppelsa, & Albaret, 2010 ; BHK, Charles,
+Soppelsa, & Albaret, 2004 ; Alouette-R, Lefavrais, 2005 ; Figure de Rey-R,
+Wallon & Mesmin, 2009) et pour les tests issus de l’expérimentation
+(articles dans des revues à comité de lecture, thèses, mémoires de recher­
+che…).
+En résumé, utiliser la performance d’un test pour un patient consiste à classer
+son score parmi plusieurs scores de personnes qui ont préalablement passé
+ce test (échantillon de référence). Ces personnes, censées représenter une
+population de référence, ont été sélectionnées soit à partir de caractéris­
+tiques précises, soit de manière aléatoire. La performance du patient est
+alors classée comme fréquente ou rare suivant que cette performance est
+fréquemment présente dans l’échantillon, inférieure ou supérieure à la majo­
+rité des performances des personnes composant cet échantillon (voir cha­
+pitre Comment interpréter les notes étalonnées issues de la loi normale ?).
+
+
+
+L’IMPORTANCE DE LA STANDARDISATION
+
+                         “ Toutes choses étant égales par ailleurs”.
+Pour classer la performance du patient à un test par rapport aux performan­
+ces de l’échantillon de référence, il est indispensable que le test effectué par
+le patient soit le même que celui réalisé par les personnes de l’échantillon de
+référence.
+Cependant, la situation de test introduit de fait des biais dans les passations
+individuelles comme les attentes du patient, l’attitude et les particularités du
+professionnel (genre, âge, apparence physique…). Toutefois, même s’il est
+impossible de réaliser une réplication parfaite de la même passation pour
+chaque test passé par chaque personne, le respect des règles de standardi­
+sation permet de s’assurer que le praticien est au plus proche de la manière
+dont ce test a été préalablement réalisé par l’échantillon de référence (voir
+exemple 1).
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   19
+                                      Exemple 1
+  Un test est composé de 10 problèmes, de sorte que les scores possibles
+  varient de 0 (aucune réponse n’est correcte) à 10 (toutes les réponses
+  sont correctes). Marie obtient un score de 8. Stéphanie passe aussi le
+  test mais cette fois, le praticien décide d’ajouter 6 problèmes supplé­
+  mentaires, les scores s’étendent donc de 0 à 16. Stéphanie obtient un
+  score de 8. Marie et Stéphanie obtiennent donc les mêmes scores, sauf
+  que Marie a 80 % de bonnes réponses alors que Stéphanie a seulement
+  50 % de bonnes réponses. Leur score est donc identique mais leur per­
+  formance n’est pas comparable.
+
+
+La standardisation concerne toutes les étapes de la passation d’un test :
+      n les consignes de passation : que doit faire la personne ? Comment lui
+          expliquer ce qu’elle doit faire ?
+      n   le matériel utilisé : l’utilisation d’un crayon sans gomme, de jetons
+          bleus, d’une feuille au format A5, d’un écran d’ordinateur…
+      n   la manière de coter les réponses : quelles données dois-je recueil­
+          lir ? Le temps d’exécution, les bonnes ou les mauvaises réponses ?
+          Quelle est la valeur de cette réponse ? 0, 1, 2 points ?
+
+La standardisation permet ainsi de limiter les biais inhérents à une situation
+de passation de tests. Plus la manière dont le praticien appréhende le test
+est proche de ce qu’a réalisé l’échantillon de référence, plus le classement
+de la performance du patient est fiable.
+
+
+
+
+20                              © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+                                                                 En bref
+   Il n’est pas prouvé qu’un test mesure une ou des fonctions cognitives
+   précises, un ou des traits psychologiques ciblés. A contrario, il est cer-
+   tain qu’un test mesure un comportement. Le lien entre mesure d’un
+   comportement et fonctions psychologiques est donc hypothétique, inter­
+   prété en fonction des savoirs théoriques du praticien.
+   La mesure du comportement d’un patient à un test est classée parmi
+   l’ensemble des mesures obtenues par les personnes ayant passé le
+   même test : l’échantillon de référence.
+   L’ensemble des performances de l’échantillon de référence à un test
+   devient alors l’étalon qui permet de juger la fréquence de la performance
+   du patient dans la population. Utiliser le même test est essentiel. Res-
+   pecter les conditions de standardisation (règles de passation et de
+   cotation) permet de ne pas rajouter « des biais aux biais » déjà présents
+   intrinsèquement à chaque passation de test (attitude du psychologue,
+   attentes du patient, influence des stéréotypes…).
+   Certaines informations sur l’échantillon de référence sont acces-
+   sibles dans les manuels de tests et les articles : effectif ; type d’échan­
+   tillonnage (quotas ou grappe) ; caractéristiques prises en considération
+   (e.g., âge, genre, catégorie socio-professionnelle) ; période de recueils
+   des données. La connaissance de cet étalon qu’est l’échantillon de réfé­
+   rence permet au praticien de situer au plus juste la performance du
+   patient.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   21
+Comment classer
+la performance
+d’un patient à un test ?
+Rappelons qu’un des objectifs principaux de l’utilisation d’un test est de
+pouvoir classer la performance du patient par rapport aux performances des
+personnes de l’échantillon. Le postulat fort est que le comportement observé
+du patient devrait rentrer dans la variation habituelle des comportements
+des personnes ayant passé le même test (Amieva, Michael, & Allain, 2011).
+L’idée est donc de pouvoir classer la performance du patient parmi cet
+échantillon (voir exemple 2) comme étant fréquente ou rare (supérieure ou
+inférieure).
+
+
+                                                             Exemple 2
+   Imaginons une course cycliste au sein de laquelle nous souhaitons situer
+   la performance d’un individu. Le temps mis par chaque coureur pour
+   réaliser cette course est recueilli. Cependant, cette mesure seule ne
+   renseigne pas sur la position d’un coureur par rapport aux autres. Le
+   temps mis par chaque coureur pour réaliser la course doit alors être
+   transformé en classement, du premier, ayant le temps le plus court, au
+   dernier, ayant le temps le plus long. Dans une course, comme lorsque
+   des performances sont recueillies lors de la passation d’un test, la majo­
+   rité des coureurs se situe au milieu (le peloton), les autres coureurs se
+   situant de part et d’autre de ce peloton (voir figure 1).
+
+
+
+
+                     FIGURE 1. Illustration de l’idée de classement d’une performance.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   23
+Les données recueillies (les notes brutes) sont donc nécessaires mais insuf­
+fisantes pour situer la performance du patient. Il est alors indispensable de
+transformer les performances de l’échantillon pour pouvoir les ordonner
+(voir exemple 1). Un des intérêts majeurs de cette transformation est qu’elle
+permet de rendre comparables des mesures différentes (e.g., des temps en
+secondes et un nombre de bonnes réponses) obtenues à des tests diffé­
+rents. Cette transformation est appelée l’étalonnage.
+Des catégories sont ainsi créées à partir des notes brutes de l’échantillon.
+Suite à cette opération, toutes les notes brutes possibles appartiennent à
+l’une ou l’autre des catégories de référence de l’étalonnage. Les principaux
+étalonnages utilisés pour évaluer le comportement d’un patient en clinique
+sont : les rangs percentiles10, le score z, les notes standard, les notes com­
+posites et les notes T. Chacune de ces transformations est détaillée dans les
+chapitres suivants.
+
+
+
+
+10. Dans la langue française, le terme exact est « rang centile ». Toutefois, l’anglicisme « percentile »
+est majoritairement utilisé dans la pratique clinique. Par exemple, ce terme est utilisé dans de nombreux
+manuels de tests pourtant rédigés en français comme celui du WISC (Wechsler, 2016) et de la Children’s
+Memory Scale (Cohen, 2001), ou d’ouvrages psychométriques (Laveault et Grégoire, 2014).
+
+
+
+24                                    © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+  Les rangs percentiles
+
+
+Pour classer la performance du patient parmi les performances d’un échan­
+tillon de référence, l’utilisation de rangs percentiles reste la transformation
+la plus intuitive. En effet, les rangs percentiles indiquent simplement la pro­
+portion de scores bruts issus de l’échantillon de référence qui sont au moins
+égaux et/ou inférieurs au score observé. De nombreux exemples de l’utilisa­
+tion de normes en rangs percentiles sont présents dans la littérature scien­
+tifique (voir par exemple Mitrushina, Boone, Razani & D’Elia, 2005 ; Strauss
+et al., 2006).
+
+
+
+COMMENT EST CALCULÉ UN RANG PERCENTILE ?
+Trois techniques de calcul du rang percentile (R100) existent (Crawford,
+Garthwaite, & Slick, 2009) :
+A. pourcentage de scores inférieurs au score observé ;
+B. pourcentage de scores inférieurs au score observé auquel on ajoute le
+   pourcentage de scores identiques au score observé ;
+C. pourcentage de scores inférieurs au score observé auquel on ajoute la
+   moitié du pourcentage des scores égaux au score observé (valeur de
+   correction, voir exemple 3).
+
+En général, la valeur obtenue est arrondie au nombre entier suivant. Pour
+aborder ces techniques de manière la plus explicite possible, plusieurs for­
+mules équivalentes peuvent être proposées. Le praticien peut ainsi choisir
+celle qui lui semble la plus pertinente en fonction des données qu’il possède.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   25
+ A. Rang percentile = pourcentage de scores inférieurs
+      au score observé
+
+
+
+
+  FORMULE 1. Calcul du rang percentile en fonction du pourcentage de scores inférieurs
+                                 au score observé.
+        I : nombre de scores de l’échantillon de référence strictement inférieurs au score observé ;
+                    N : nombre total de scores recueillis dans l’échantillon de référence.
+
+
+ B
+    . Rang percentile = pourcentage de scores inférieurs
+   au score observé auquel on ajoute le pourcentage de scores
+   identiques au score observé
+
+
+
+
+ FORMULE 2. Calcul du rang percentile en fonction du pourcentage de scores inférieurs
+ au score observé auquel on ajoute le pourcentage de scores identiques au score observé.
+       I : nombre de scores de l’échantillon de référence strictement inférieurs au score observé ;
+  E : nombre des scores de l’échantillon de référence égaux au score observé ; N : nombre de scores
+                                recueillis dans l’échantillon de référence.
+
+
+Avec cette définition, les rangs percentiles sont alors équivalents à des
+pourcentages cumulés.
+
+ C. Rang percentile = pourcentage de scores inférieurs
+      au score observé auquel on ajoute la moitié du pourcentage des scores
+      égaux au score observé
+
+
+
+
+FORMULE 3. Calcul du rang percentile en fonction du pourcentage de scores inférieurs au
+score observé auquel on ajoute la moitié du pourcentage des scores égaux au score observé.
+       I : nombre de scores de l’échantillon de référence strictement inférieurs au score observé ;
+  E : nombre des scores de l’échantillon de référence égaux au score observé ; N : nombre de scores
+                                recueillis dans l’échantillon de référence.
+
+
+
+26                                     © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+ou
+
+
+
+
+                FORMULE 4. Calcul du rang percentile en fonction du pourcentage
+          de scores inférieurs au score observé auquel on ajoute la moitié du pourcentage
+                                des scores égaux au score observé.
+          Pc = pourcentage cumulé ; %E : pourcentage des scores de l’échantillon de référence égaux
+                                             au score observé.
+
+
+
+                                                             Exemple 3
+   Imaginons un test qui consiste à reproduire des constructions à partir
+   d’un modèle dans un temps imparti. Ce test a été réalisé par 55 adultes
+   de 30 à 40 ans (effectif de l’échantillon de référence ; N=55). Le nombre
+   de constructions correctement réussies (scores bruts) par chaque par­
+   ticipant a été recueilli. Le tableau 1 récapitule les résultats de l’échantil­
+
+
+
+
+                        TABLEAU 1. Exemple de transformation en rangs percentiles.
+          R100 : rangs percentiles ; %I : pourcentage de scores de l’échantillon de référence inférieurs
+                                  au score observé ; Pc = pourcentage cumulé.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle            27
+  lon de référence, les pourcentages pour chaque score brut et les rangs
+  percentiles selon la définition A, B ou C. Pour ce test, tous les partici­
+  pants de l’échantillon ont réussi entre 0 et 14 constructions.
+  La question est alors de classer la performance d’un patient par rapport
+  à l’échantillon de référence. Imaginons qu’un patient réussisse 6 cons­
+  tructions. Huit personnes de l’échantillon de référence ont réussi 6 cons­
+  tructions. Donc, le patient a réalisé l’épreuve comme 18,18 % ((8/55) x
+  100) de l’échantillon de référence (pourcentage). Afin de classer sa
+  performance, il est alors nécessaire de recourir à une transformation en
+  rangs percentiles. On constate alors que lorsque la définition A est utili­
+  sée, le patient réussit mieux que 20 % des personnes de l’échantillon de
+  référence. Si les définitions B ou C sont utilisées, le patient réussit alors
+  mieux ou aussi bien que, respectivement, 35 % ou 28 % de l’échantillon
+  de référence. La technique de calcul utilisée pour la transformation en
+  rangs percentiles influe donc sur la place donnée à une performance
+  observée. Le choix de la technique a ainsi un impact sur l’estimation de
+  la performance du patient comme étant rare ou fréquente. Il semble
+  donc important que le praticien soit informé au préalable de la technique
+  utilisée.
+
+
+
+
+AVANTAGES ET INCONVÉNIENTS DE L’UTILISATION DES RANGS PERCENTILES
+Les rangs percentiles présentent le formidable avantage d’être une statis­
+tique simple à calculer, intuitive et facilement comprise. L’utilisation des rangs
+percentiles nous indique directement si la performance du patient est fré­
+quente ou rare par rapport à celles de l’échantillon de référence. D’ailleurs,
+cette simplicité est souvent rapportée comme facilitatrice dans la communi­
+cation des résultats aux non-professionnels (Gay, 1996 ; Jackson, 1996 ;
+Lezak, 1995). La signification des rangs percentiles est donc apparemment
+claire.
+Cependant cette simplicité apparente est sujette à trois sérieux biais de
+compréhension sur lesquels le praticien doit être vigilant :
+
+
+
+
+28                           © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+n  La confusion terminologique des notions de « rang percentile »,
+« pourcentage » et « classement » (Bowman, 2002). Les personnes non
+spécialistes sont a fortiori plus familières avec le terme « pourcentage »
+qu’avec celui de « rangs percentiles ». Certaines auront ainsi tendance à
+considérer comme équivalentes ces deux terminologies, ne prenant pas en
+compte le fait que tous les scores inférieurs au score du patient sont aussi
+pris en compte pour les rangs percentiles (voir exemple 3). Le terme « clas­
+sement » peut aussi prêter à confusion. En effet, contrairement à un con­
+cours où la première place est attribuée au meilleur score, pour les rangs
+percentiles la première place est attribuée au score le plus faible. Si on
+reprend l’exemple de la course cycliste (voir exemple 2), un classement au
+3e rang est interprété positivement, puisqu’il exprime le fait que cette perfor­
+mance se situe parmi les trois meilleures observées chez les coureurs.
+A contrario, une performance au rang percentile 3 est interprétée négative­
+ment puisqu’une performance aussi faible n’a été obtenue que par 3 % des
+personnes de l’échantillon de référence.
+
+n  L’illusion de distance équivalente entre les rangs. Les rangs
+percentiles fournissent des informations à propos de la position relative des
+individus les uns par rapport aux autres mais ne permettent pas de détermi­
+ner la distance exacte qui sépare les performances entre elles. À distance
+équivalente entre scores bruts, le nombre de rangs peut être très variable
+d’un test à l’autre (e.g., faible échantillon, effet plafond, distribution aplatie11)
+(voir exemple 412).
+
+
+                                                             Exemple 4
+    Imaginons que nous utilisons un test de vocabulaire, étalonné auprès de
+    70 personnes. Le nombre de réponses correctes est recueilli (scores
+    bruts). Toutes les personnes de l’échantillon de référence ont un score
+    compris entre 0 (aucune réponse correcte) et 9 (toutes les réponses
+    correctes). Une transformation en rangs percentiles suivant la définition
+    C est effectuée (voir tableau 2).
+
+
+
+
+11. Voir chapitre loi normale.
+12. Cet aspect, plus spécifique à l’interprétation intra-individuelle des résultats, ne sera pas davantage
+développé dans cet ouvrage mais pourra faire l’objet d’un autre guide.
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle       29
+               TABLEAU 2. Données recueillies pour le test de vocabulaire.
+                                  R100 : rangs percentiles.
+
+    Imaginons un patient qui, lors d’un re-test a obtenu une performance
+    supérieure de 2 points à sa performance précédente. Le patient est
+    passé d’un score de 2 à un score de 4. Imaginons un autre patient qui
+    lors d’un re-test obtient aussi une augmentation de 2 points par rapport
+    à son score précédent, passant de 6 à 8. Pour le premier patient, sa
+    performance est passée d’un rang percentile égal à 45 à un rang
+    percentile égal à 71, soit un gain de 26 rangs. Pour le second patient, sa
+    performance est passée d’un rang percentile égal à 87 à un rang
+    percentile égal à 96, soit un gain de 9 rangs. Ainsi, contrairement à la
+    différence entre les scores bruts qui est la même (2 points), la distance
+    entre les rangs percentiles est loin d’être équivalente. Le praticien doit
+    donc rester vigilant sur ce biais d’interprétation que peut engendrer
+    l’utilisation des différentes transformations statistiques.
+
+n   L’utilisation de techniques de calcul variables (trois définitions).
+Le score du patient est toujours exprimé en termes de place au sein de
+l’échantillon, mais cette place varie suivant la définition choisie (exemple 3). Il
+semble que le calcul des rangs percentiles effectué le plus couramment soit
+celui de la définition C, à savoir le pourcentage de scores inférieurs au score
+observé auquel on ajoute la moitié du pourcentage des scores égaux au score
+observé. On peut cependant regretter que le choix de la définition utilisée ne
+soit pas toujours précisé dans les manuels (Crawford et al., 2009).
+
+
+
+30                             © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+  Qu’est-ce que la loi normale ?
+
+
+En psychométrie, la distribution13 des scores à une épreuve, un test, est
+majoritairement considérée comme suivant une loi normale. Ainsi, le prati­
+cien est fréquemment amené à rencontrer des termes comme distribution
+normale, normale centrée, normale réduite, normale centrée réduite, gaus­
+sienne, en forme de cloche…
+
+         “ On nous dit que la courbe de Gauss est un des piliers
+            de la statistique. On la trouve dans tous les carnets
+           de santé et dans mille autres choses encore, irruption
+           singulière de l’analyse transcendante dans le panier
+                               de la ménagère .                                           ”
+                                                                                                  Bru, 2006, p. 7.
+
+
+Ce chapitre a pour objectif d’apporter des éléments de compréhension sur
+cette notion essentielle dans l’utilisation des tests.
+
+
+
+LOI NORMALE : UNE DISTRIBUTION UTOPIQUE DES SCORES
+
+             “ La déesse à laquelle les neuropsychologues vouent
+                    un culte passionnel est une cloche ”.
+                                             Amieva et al. 2011, p. 75 dans Thomas-Antérion et Barbeau, 2011.
+
+
+
+
+13. Une distribution est la manière dont des valeurs (scores) se positionnent autour de la moyenne.
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle                31
+ Un peu d’histoire…
+À l’origine, cette conception statistique de distribution de valeurs suivant
+une loi normale n’a pas été conçue pour l’étude du comportement humain.
+Cette loi aurait son origine mathématique dans le calcul des chances au jeu
+de pile ou face (Bru, 2006). Si on joue cent fois à pile ou face, on obtient alors
+sensiblement le même nombre de piles que de faces, mais pas strictement le
+même nombre. En effet, on obtient parfois un peu plus de piles que de faces,
+parfois un peu moins. Si on cherche à préciser ces variations, alors quels
+écarts entre le nombre de piles et le nombre de faces seraient considérés
+comme rares ? C’est dans ce contexte des probabilités et pour répondre à
+ce genre de questions que s’inscrit la loi normale.
+Le premier auteur à essayer de formaliser cette question semblerait être
+Daniel Bernoulli au XVIIe siècle (Bru, 2006). Par la suite, cette loi de proba­
+bilité a été particulièrement développée en astronomie pour l’étude des
+variations de luminance des corps célestes par deux astronomes, mathéma­
+ticiens et physiciens, Pierre-Simon de Laplace (1749-1827) et Carl Friede­
+rich Gauss (1777-1855). Les premières études appliquant cette distribution
+à des données en sciences humaines ont été réalisées quelques années plus
+tard par le statisticien Adolphe Quetelet (1796-1874). Une de ces études
+originelles la plus connue portait sur les tours de poitrine d’environ 4000 sol­
+dats écossais, commande probablement réalisée par l’armée britannique
+pour ajuster la confection de tenues militaires. L’auteur a alors observé que
+les différences de tailles entre les soldats se répartissaient selon la courbe
+de Gauss. L’étude probabiliste et l’utilisation statistique de la loi normale
+faisait dorénavant parties du champ des sciences humaines, se poursuivant
+durant les siècles suivants jusqu’à aujourd’hui.
+
+ En pratique…
+Il est admis que si l’on mesure un même comportement chez un grand nom­
+bre de personnes, les scores observés ne seraient pas identiques mais dif­
+féreraient légèrement les uns des autres. La fonction de la courbe de cette
+distribution peut être calculée selon la formule 5.
+
+
+
+
+              FORMULE 5. Calcul de la fonction de la courbe de la loi normale.
+      σ = écart-type de la population théorique ; e =espérance de X ; μ= moyenne de la population.
+
+
+32                                   © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+La distribution normale est donc une distribution théorique d’une variable
+continue au sein d’une population irréelle14 infinie. Trois caractéristiques
+principales la déterminent :
+1) L’effectif de la population dont serait issue la distribution normale
+   est infini. Une infinité d’individus constituant la population engendre une
+   infinité de valeurs à gauche et à droite de la courbe.
+2) La répartition des valeurs est symétrique : la moyenne est égale à la
+   médiane. Il existe autant de valeurs à gauche et à droite de la courbe.
+3) La répartition entre les écarts-types est fixée. La distribution normale
+   contient, de part et d’autre de la moyenne, environ 68 % des valeurs à –1
+   et +1 écart-type, 95 % des valeurs entre –2 et +2 écarts-types et 99 %
+   des valeurs entre –3 et +3 écarts-types.
+
+En appliquant ces trois conditions, la courbe représentant l’ensemble de la
+distribution des données est en forme de cloche (voir figure 2).
+
+
+
+
+                               FIGURE 2. Représentation de la distribution normale.
+                     µ = moyenne de la population infinie ; σ = écart-type de la population infinie
+
+
+La probabilité d’apparition d’un score est définie par la surface qui se trouve
+entre la courbe et l’axe horizontal (l’aire). Par exemple, si on lance 100 fois
+une pièce, on a 0,1 % de chance d’obtenir un nombre de « pile » inférieur à
+3 écarts-types (écarts à la moyenne).
+
+14. Au sens qui « n’a pas de réalité », qui n’existe qu’à l’état d’invention imaginative ou de conception
+logique.
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle       33
+La loi normale est donc une conception imaginaire d’une distribution de
+scores « irréels » que les praticiens calquent sur la distribution des scores
+de l’échantillon pour interpréter les résultats aux tests. Le praticien inter­
+prète donc le score d’un patient à partir d’une distribution de scores hypo­
+thétiques d’une population de référence.
+
+
+
+DISTRIBUTION NORMALE ET TESTS : LA CONFRONTATION AVEC LA RÉALITÉ
+La courbe normale est la base de la plupart des modèles statistiques en
+psychométrie. Cependant, il n’est pas si facile d’obtenir une telle courbe des
+scores lorsque l’on recueille les performances à un test. Par essence, les
+distributions de scores observés chez l’homme ne peuvent être qu’une
+approximation de cette distribution théorique. Il est donc nécessaire d’adap­
+ter la loi normale à la réalité humaine. La proximité entre la courbe issue des
+données de l’échantillon de référence et la courbe théorique issue de la loi
+normale est donc une donnée essentielle. Pour ce faire, des tests statistiques
+tels que les paramètres de forme sont utilisés (mesure d’aplatissement, kur-
+tosis et mesure de symétrie, skewness). La manipulation de certains fac­
+teurs peut permettre que la distribution issue de l’échantillon et la distribution
+normale soient les plus proches possible. La taille de l’effectif, le choix des
+critères de sélection de l’échantillon de référence, la sélection et/ou l’ordon­
+nancement des items du test sont autant de variables à ajuster pour per­
+mettre aux scores de se distribuer le plus normalement possible.
+Lorsque la distribution des scores est proche de la courbe de Gauss, il devient
+alors envisageable d’obtenir la probabilité d’occurrence d’un score au sein
+d’un intervalle particulier et ainsi de pouvoir comparer des scores les uns
+aux autres. Pour ce faire, le praticien est encouragé à calculer un score z.
+En pratique clinique, la transformation des notes brutes en score z est une des
+pratiques les plus fréquentes (Amieva et al., 2011). Le score z est tout sim­
+plement un calcul du nombre d’écarts-types séparant une valeur observée
+de la moyenne des résultats obtenus à un test par l’échantillon de référence
+(voir formule 6). Le score z peut être positif ou négatif.
+
+
+
+
+                            FORMULE 6. Calcul du score z.
+                m : moyenne de l’échantillon de référence ; x : valeur observée ;
+                         s : écart-type de l’échantillon de référence.
+
+
+
+34                               © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+L’intérêt de cette transformation est de représenter toute distribution nor­
+male sur une échelle commune, quel que soit le test utilisé. Dans le cas où la
+distribution est dite normale réduite ou centrée réduite, la moyenne est égale
+à 0 et l’écart-type est égal à 1 (m = 0 ; s = 1). La surface qui se trouve sous
+la courbe, l’aire, est égale à 1. Calculer le score z d’un résultat permet alors
+d’avoir accès à la probabilité d’obtenir ce résultat grâce à la valeur de l’aire
+sous la courbe. Heureusement, ce calcul fastidieux de l’aire est facilité en
+utilisant directement les tables de probabilité comme la table de la loi nor­
+male centrée réduite (voir figure 3 et tableau 3).
+
+
+
+
+          FIGURE 3 et TABLEAU 3. Distribution normale centrée réduite de loi normale
+              (avec p(z) ≥ 0,5) sous forme graphique et numérique avec un exemple
+                                        d’un z score à 1,29.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   35
+Il devient ainsi possible d’utiliser le tableau de la distribution normale cen­
+trée réduite (tableau 3) quels que soient la moyenne et l’écart de la distribu­
+tion des données de l’échantillon de référence. La table nous donne l’aire
+totale sous la courbe pour chaque score z, soit la probabilité qu’un tel score
+apparaisse. Par exemple, pour un score z de +1,29, il suffit de regarder en
+ligne à 1,2 et en colonne à 0,09 (1,2+0,09 = 1,29), l’aire sous la courbe est
+de 0,9015. Cela signifie que si on tire un score au hasard au sein de la
+population irréelle, on a un peu plus de 90 % de chance de tirer au hasard
+un score inclus dans cette zone (entre -∞ et +1,65 écart-type). En extrapo­
+lant cette loi de probabilité, il est alors possible de considérer que si
+100 individus passent un même test, 90 d’entre eux obtiendraient un score
+à +1,29 écarts-types ou moins (voir exemple 5).
+
+
+
+                                     Exemple 5
+  Imaginons un échantillon de 100 enfants âgés de 8 ans à qui l’on
+  demande de réaliser un test de répétition de chiffres à l’endroit. Les
+  scores obtenus s’étendent de 1 à 12. La moyenne est égale à 6,45 avec
+  un écart-type égal à 2,38 (voir tableau 4 et graphique 1).
+
+
+
+
+      TABLEAU 4 et GRAPHIQUE 1. Détail des résultats obtenus par les participants
+                       sous forme numérique et graphique.
+
+  Imaginons qu’un patient obtienne un score de 8. Il se trouve que les scores
+  observés se distribuent de manière relativement normale. Dans ce cas,
+
+
+
+36                             © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+   le calcul du score z avec la formule 6 est possible et estimé à +0,65
+   (= (8-6,45)/2,38). Si l’on prend le tableau de la loi normale (tableau 3),
+   en cherchant le score z de 0,65 (0,6 en ligne et 0,05 en colonne ;
+   0,6+0,05 = 0,65), on trouve à l’intersection une aire de 0,74. Il existe
+   donc 74 % de chance que le score de ce patient soit inférieur ou égal à
+   +0,65 écart-type. Si on extrapole sur la population irréelle, cela peut
+   aussi signifier que si on fait passer ce test à 100 enfants français de
+   8 ans, 74 auraient un score inférieur ou égal à celui du patient.
+
+
+Ainsi, le score z seul n’apporte aucune information pour l’interprétation du
+score du patient. Il est uniquement l’intermédiaire qui permet de connaître la
+probabilité de trouver ce score dans la population de référence à laquelle
+appartient l’individu. Les implications cliniques de la loi normale et du score z
+sont explicitées dans le chapitre suivant.
+
+
+                                                                 En bref
+   La loi normale est une conception imaginaire d’une distribution de
+   scores hypothétiques que les praticiens calquent sur la distribution des
+   scores de l’échantillon (de participants, de patients) pour interpréter les
+   résultats aux tests.
+   Des tests statistiques permettent de juger de la proximité entre la distri­
+   bution des scores de l’échantillon de référence et la distribution normale.
+   La manipulation de certaines variables permet de faire en sorte que la
+   distribution des scores de l’échantillon de référence soit la plus proche
+   possible de la distribution suivant la loi normale.
+   Lorsque les scores se distribuent normalement, il est alors possible
+   d’avoir la probabilité d’occurrence d’un score au sein d’un intervalle
+   particulier grâce au score z (l’aire sous la courbe). Le score z est un
+   calcul du nombre d’écarts-types séparant une valeur observée de la
+   moyenne des résultats obtenus à un test par l’échantillon de référence.
+   L’utilisation de la table de loi normale centrée réduite et du score z
+   permet de connaître la fréquence d’apparition d’un score X dans la
+   population. Ainsi, le score z peut être considéré comme l’intermédiaire
+   pour connaître la probabilité de trouver ce score dans la population de
+   référence.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   37
+ Comment interpréter les notes
+ étalonnées issues de la loi normale ?
+
+La plupart des tests repose sur la même conception statistique de la loi nor­
+male. Cependant, différentes transformations sont appliquées pour trans­
+former les scores bruts (nombre de réponses correctes, temps de réponses)
+en notes étalonnées. Trois types de scores étalonnés sont majoritairement
+utilisés (Laveault & Grégoire, 2014) : (1) les notes standard, (2) les notes
+composites et (3) les scores T. Ce chapitre se propose d’expliciter cha­
+cune de ces transformations permettant d’obtenir ces notes étalonnées.
+
+
+
+NOTES STANDARD
+Les notes standard reposent sur une transformation en échelle normalisée.
+La transformation des notes brutes en notes standard s’appuie sur l’idée de
+rapprocher une distribution de scores observés d’une distribution normale
+hypothétique. Elle postule que l’échantillon est issu d’une population dont la
+distribution des scores suit la loi normale. L’idée est de regrouper les scores
+bruts obtenus dans des « classes » (notes standard) pour que ces classes
+soient le plus proche possible des classes que l’on obtiendrait si les scores
+se distribuaient normalement. Par exemple, on sait que lorsque les scores
+se distribuent normalement, 34,1 % des scores se situent entre la moyenne
+et +/-1 écart-type. La transformation va faire en sorte que le pourcentage
+de scores de l’échantillon de référence situé entre 0 et +/- 1 écart-type se
+rapproche le plus possible de ces 34,1 % (voir exemple 6).
+
+
+
+
+38                          © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+                                                             Exemple 6
+   Imaginons un échantillon de 377 adultes de 30 à 40 ans qui réalisent un
+   test de détection de cibles visuelles (barrer un dessin cible parmi des dis­
+   tracteurs). Le nombre de réponses correctes est recueilli et s’étend de 0
+   à 30. Il est décidé de transformer ces 31 catégories en 19 classes norma­
+   lisées, s’étendant de 1 à 19 (voir tableaux 5 et 6 et graphiques 2 et 3).
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   39
+       TABLEAUX 5 et 6 et GRAPHIQUES 2 et 3. Détail des résultats obtenus
+             par les participants sous forme numérique et graphique.
+
+
+  Démarche de transformation
+      écider du nombre de classes. Pour réduire le nombre de catégo­
+  1. D
+     ries de l’échantillon de référence, 19 classes sont utilisées avec une
+     classe centrale égale à 10. Les 31 catégories de l’échantillon de
+     référence (catégorie 1 = aucune bonne réponse ; catégorie 2 = 1
+     bonne réponse ; catégorie 3 = 2 bonnes réponses jusqu’à la dernière
+     catégorie, la catégorie 31 = 30 bonnes réponses) sont ainsi réduites
+     en 19 classes.
+
+
+
+
+40                          © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+       éterminer les bornes de 19 classes dans une distribution normale
+   2. D
+      (voir tableau à droite, colonne « bornes théoriques »). Ensuite,
+      chaque classe doit avoir la même étendue. Dans cet exemple, l’éten­
+      due pour chaque classe est égale à 0,3315.
+       écupérer dans la table de la loi normale centrée réduite (tableau
+   3. R
+      3) la valeur associée à chacune de ces bornes (voir tableau à droite,
+      colonne « valeurs table loi normale »). Par exemple, pour la borne
+      1,98, dans la table, à l’intersection de 1,9 en ligne et 0,08 en colonne
+      se trouve 0,9762.
+   4. Calculer les pourcentages cumulés théoriques pour la distribution
+       des réponses hypothétiques de la population à partir de chaque
+       valeur de la table obtenue précédemment (voir tableau à droite,
+       colonne « pourcentages cumulés théoriques »). Par exemple, pour la
+       valeur 0,9762, nous obtenons 97,62 en pourcentages cumulés
+       (0,9762 x 100). Ainsi pour chaque classe, on obtient des pourcen­
+      tages cumulés théoriques issus de la loi normale.
+       alculer les pourcentages cumulés réels des réponses pour
+   5. C
+      chaque catégorie issus des réponses observées dans l’échantillon
+      de référence (voir tableau à gauche, colonne « pourcentages cumu­
+      lés réels »).
+       hercher les pourcentages cumulés réels les plus proches des
+   6. C
+      pourcentages cumulés théoriques (utilisation des « valeurs table
+      loi normale » dans le tableau de gauche, en rouge dans le tableau de
+      droite). Par exemple, 97,87 est le pourcentage cumulé réel le plus
+      proche du pourcentage théorique 97,62.
+       ttribuer pour chaque classe un effectif réel issu de l’échantillon
+   7. A
+      de référence en fonction de la loi normale (voir tableau à droite,
+      colonne « nombre réponses correctes de l’échantillon » et « nombre
+      de participants de l’échantillon »). Par exemple, pour la classe 1, le
+      pourcentage cumulé réel le plus proche du pourcentage cumulé
+      théorique de 0,15 est 0,27. 0,27 % correspond à une personne de
+      l’échantillon qui a eu un score de 0. Ainsi, 1 personne de l’effectif de
+      l’échantillon est attribuée en classe 1. La classe 2 a un pourcentage
+      cumulé théorique de 0,41. Le pourcentage cumulé réel le plus
+
+
+15. Il a été très difficile d’avoir accès à des informations explicites de transformation tant dans les
+manuels statistiques des sciences humaines que dans les manuels de tests. L’exemple proposé repose sur
+une transformation issue des échelles de Wechsler utilisant une étendue de classe égale à 0,33.
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle    41
+       proche est de 0,54. 0,54 % correspond à 2 personnes de
+       l’échantillon qui ont eu un score de 1. Ainsi, 2 personnes de
+       l’effectif de l’échantillon sont réparties en classe 2. Pour la
+       classe 12, le pourcentage cumulé théorique est 74,54. Le pour­
+       centage cumulé réel le plus proche est 75,07. Pour la classe 13,
+       le pourcentage cumulé théorique est 83,89. Le pourcentage
+       cumulé réel le plus proche est 84,88. Pour la classe 12, la caté­
+       gorie correspondante (nombre de réponses correctes) est 17.
+       Pour la classe 13, la catégorie correspondante (nombre de
+       réponses correctes) est 20. L’effectif des catégories 18, 19 et
+       20 sont alors attribués à la classe 13, soit 14+11+11 = 37.
+
+  La distribution obtenue avec cette transformation engendre une hypo­
+  thétique distribution des notes si toutes les personnes de la population
+  avaient réalisé ce test de détection de cibles. Par exemple, si une per­
+  sonne a un nombre de réponses correctes égal à 23, ce nombre de
+  bonnes réponses correspondrait à la classe 14. D’un point de vue
+  théorique, 90,66 % des personnes de la population se situeraient dans
+  cette classe ou en dessous de cette classe. D’un point de vue réel,
+  91,24 % des personnes de l’échantillon de référence ont eu un nombre
+  de bonnes réponses correspondant à cette classe ou en dessous de
+  cette classe.
+
+
+
+Cette normalisation des scores bruts permet de comparer des perfor­
+mances entre différents tests. En effet, elle s’appuie sur un même postulat :
+les échantillons de référence sont issus d’une même population dont les
+scores se distribuent normalement. Par contre, comme le montre l’exemple,
+elle modifie la forme de la distribution réelle de l’échantillon de référence
+(cf. différence de formes entre les graphiques 2 et 3), condensant certains
+scores entre eux au sein d’une même classe. Il est donc indispensable que
+la distribution des scores bruts soit déjà proche d’une distribution normale
+(voir chapitre Mises en garde).
+
+
+
+
+42                         © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+NOTES COMPOSITES
+Les notes composites reposent également sur une transformation en échelle
+normalisée. Cette transformation en notes composites est notamment utili­
+sée pour l’expression du Quotient Intellectuel16 (QI) comme celui utilisé dans
+les échelles de Wechsler (WAIS, Wechsler, 2011 ; WISC, Wechsler, 2016 ;
+WPPSI, Wechsler, 2014).
+Les notes composites reposent sur une transformation de la somme des
+notes déjà étalonnées (les notes standard) en une note unique, intégrant
+plusieurs notes étalonnées dont la distribution est normale (voir exemple 7).
+Pour le Quotient Intellectuel des échelles de Wechsler, la moyenne est alors
+de 100 et l’écart-type est de 15.
+
+
+
+                                                             Exemple 7
+   Imaginons un échantillon de 587 adolescents de 13 à 14 ans qui réa­
+   lisent trois tests différents : un test de reproduction graphique, un test de
+   construction et un test de raisonnement visuel. Les résultats (notes
+   brutes) à chacun de ces tests subissent une transformation en notes
+   standard suivant le principe décrit précédemment. La distribution des
+   notes obtenues suit donc la loi normale. La moyenne est de 10, l’étendue
+   de 1 à 19, avec un écart-type de 3. Une note générale reflétant les com­
+   pétences communes engagées dans ces trois épreuves est calculée. La
+   note minimale est 3 (avec une note standard minimale de 1 pour chaque
+   test ; la somme correspondante est 1+1+1 = 3) et la note maximale est
+   57 (avec une note standard maximale de 19 pour chaque subtest ; la
+   somme des notes maximales est : 19+19+19 = 57). La moyenne des
+   sommes des notes standard est égale à 29. On remarque que si les
+   notes standard de chaque test se distribuent suivant la loi normale, la
+   somme des notes standard a alors une distribution proche de la distribu­
+   tion gaussienne (voir tableau 7).
+
+
+
+
+16. Les constructeurs de tests d’intelligence s’appuient généralement sur le postulat d’une distribution
+normale de l’intelligence au sein de la population (Laveault et Grégoire, 2014).
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle     43
+      TABLEAU 7. Détail des résultats obtenus par les participants
+
+
+
+44                     © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+   Démarche de transformation17
+   1. 	Additionner les notes standard des trois épreuves pour chaque
+        personne de l’échantillon de référence. Dans l’exemple, la colonne
+        « somme des notes standard » correspond à ces sommes.
+   2. 	Calculer le nombre de participants ayant obtenu une somme spé-
+        cifique. Dans l’exemple, la colonne « nombre de participants » cor­
+        respond à ces effectifs. Ici, 14 participants ont obtenu une somme
+        des notes standard égale à 26. On remarque qu’aucun participant n’a
+        obtenu une somme de 0 à 2 puisque la somme ne peut être obtenue
+        qu’en additionnant trois notes étalonnées dont le minimum est 1.
+   3. 	Calculer les pourcentages cumulés des effectifs pour chaque
+        somme. Dans l’exemple, la colonne « pourcentages cumulés » cor­
+        respond à ces effectifs. Ici, 43,44 % des participants de l’échantillon
+        de référence ont obtenu la somme 26 ou moins.
+   4. 	Repérer les bornes entre lesquelles 50 % des sommes des notes
+        standard se répartissent. Ici, environ 50 % des notes se répar­
+        tissent entre la somme 18 et la somme 40 (75,98-25,21 = 50,77).
+   5. 	Calculer la distance entre la moyenne et ces 2 bornes (p). Ici, les
+        bornes inférieure et supérieure se situent à ±11 de la moyenne
+       (18 – 29 ; 40 – 29).
+   6. 	Calculer les bornes inférieure et supérieure d’une distribution
+        normale de scores hypothétiques de moyenne 100 et d’écart-
+        type 15. Dans une distribution normale, 50 % des scores se situent
+        à ±0,67 écart-type de la moyenne (voir tableau 3). Les bornes de
+       cette distribution sont donc entre 90 (100–(0.67 x 15)) et 110
+        (100+(0,67 x 15)). Dans ce cas, la distance entre les bornes infé­
+       rieure et supérieure est à ±10 de la moyenne (90 – 100 ; 100 – 110).
+   5. 	Calculer le Quotient en calquant la distribution des sommes des
+        notes standard sur la distribution normale de moyenne arbitraire
+        égale à 100 et d’écart-type arbitraire égal à 15 (voir formule 7).
+
+
+
+
+17. Procédure issue de l’étalonnage particulier utilisé pour le calcul des indices des échelles de
+Wechsler, dont le Quotient Intellectuel, afin d’être au plus proche des distributions originelles du QI
+classique (rapport entre l’âge mental sur l’âge réel multiplié par 100).
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle    45
+                                   FORMULE 7. Calcul du Quotient.
+       m : moyenne de l’échantillon de référence ; x : somme observée des notes standard ; p : distance
+      observée entre la borne observée, inférieure ou supérieure, et la moyenne observée (colonne dis-
+      tance observée) ; 100 = moyenne arbitraire des scores de la distribution normale ; 10 = distance
+          arbitraire entre la borne « normale », inférieure ou supérieure, et la moyenne « normale ».
+
+
+  Par exemple, pour une somme des notes standard de 26, on obtient un
+  Quotient égal à 97.
+
+
+
+
+Cette transformation des scores étalonnés permet alors de comparer des
+performances entre différents tests puisqu’elle s’appuie sur un même postu­
+lat, à savoir que les échantillons de référence sont issus d’une même popu­
+lation dont les scores se distribuent normalement. Par contre, cet étalonnage
+augmente nécessairement l’écart entre les notes composites et les notes
+brutes. En effet, la transformation en notes composites est en fait une double
+transformation nécessitant une transformation en notes standard, elles-
+mêmes transformées en notes composites. Ces données psychométriques
+sont inévitablement plus éloignées de ce qui a été obtenu par l’échantillon de
+référence, les données brutes étant transformées, puis retransformées.
+
+
+
+NOTES T
+La transformation en notes T est la plus contraignante des trois transforma­
+tions puisqu’elle nécessite que les scores observés se distribuent initiale­
+ment normalement. Ceci explique certainement le fait que ce type d’étalonnage
+est moins répandu que les précédents. En effet, on trouve des notes T dans
+une seule échelle de Wechsler (WNV, Échelle Non Verbale d’intelligence de
+Wechsler, Wechsler et Naglieri, 2009) et dans quelques tests de personnalité
+(e.g., MDI-C, Berndt & Kaiser, 1999 ; NEOPI-R, Costa & McCrae, 1992).
+
+
+46                                      © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+Pour cette transformation, une première étape consiste à calculer le score z
+pour chaque note brute (formule 6). Le score z exprime, en nombre d’écart-
+type, l’écart de la note brute par rapport à la moyenne. La note T est ensuite
+calculée en multipliant ce score z par 10 et en y ajoutant 50 (voir formule 8).
+La moyenne est alors de 50 et l’écart-type de 10 (voir exemple 8). Cette
+transformation est dite linéaire, elle ne modifie donc pas la forme de la dis­
+tribution.
+
+
+
+
+                                               FORMULE 8. Calcul de la note T.
+
+
+
+                                                             Exemple 8
+   Imaginons un échantillon de 112 adultes de 50 à 60 ans qui réalisent un
+   test de détection de cibles auditives (réaction à un mot cible). Le nombre
+   de réponses correctes (scores bruts) est recueilli. La moyenne est égale
+   à 5 et l’écart-type est égal à 2,30. Les scores bruts suivent une distri­
+   bution normale. Ci-dessous, le calcul effectué pour transformer les
+   scores bruts en notes T, de moyenne 50 et d’écart-type de 10 (voir
+   tableau 8 et graphique 4).
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   47
+      TABLEAU 8 et GRAPHIQUE 4. Détail des résultats obtenus par les participants
+                       sous forme numérique et graphique.
+
+
+
+Cette transformation des scores bruts permet aussi de comparer des per­
+formances entre différents tests en s’appuyant sur un même postulat d’une
+appartenance commune des échantillons de référence à une même popula­
+tion. Cependant, ce type d’étalonnage est contraignant dans sa construction
+puisqu’il ne peut être utilisé que si les performances recueillies se distri­
+buent déjà normalement. Son utilisation est particulièrement tributaire de la
+qualité de la constitution de l’échantillon et de la sélection des items du test.
+
+
+
+
+48                             © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+                                                                 En bref
+   Les notes standard, les notes composites et les scores T reposent sur le
+   même principe de la loi normale. À l’issue de la transformation, les
+   scores étalonnés se distribuent normalement. Pour les scores T, cette
+   distribution normale préexiste avant transformation, les performances
+   recueillies à un test se distribuant initialement de manière normale.
+   Contrairement aux notes standard et aux scores T, la transformation en
+   notes composites (par exemple le QI des échelles de Wechsler) est en
+   fait une double transformation impliquant une transformation en notes
+   standard et une transformation de ces notes standard.
+   Pour avoir recours à ces trois types d’étalonnage, il est indispensable que
+   la distribution des performances obtenues soit initialement très pro­che
+   d’une distribution normale. Si ce n’est pas le cas, les rangs percentiles
+   doivent alors être utilisés.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   49
+ Comment estimer la performance
+ du patient ?
+
+Les cinq principaux étalonnages utilisés pour estimer la fréquence du com­
+portement d’un patient ont été détaillés précédemment : les rangs percentiles
+(dont les pourcentages cumulés), les scores z, les notes standard, les notes
+composites et les notes T. Ces transformations ont pour vocation première
+de permettre un classement de la performance du patient au sein d’un
+échantillon, par extension de la population, comme étant une performance
+fréquente ou rare (meilleure ou plus faible). Mais comment procéder pour
+effectuer ce classement ?
+
+
+
+DES PROCÉDURES D’INTERPRÉTATION DIFFÉRENTES SELON LE TYPE DE NOTES
+Le mode opératoire pour interpréter une note transformée est variable sui­
+vant le type d’étalonnage utilisé. Dans le cas des rangs percentiles, le prati­
+cien prend directement en compte le rang percentile correspondant à la note
+observée et peut ainsi juger de la fréquence de la performance du patient.
+Par exemple, si cette note ou les notes inférieures ne sont rencontrées que
+chez 1 % des participants de l’échantillon, la performance du patient est
+alors considérée comme rare. A contrario, si cette note et les notes infé­
+rieures sont obtenues chez 50 % des patients, la performance du patient est
+alors considérée comme fréquente.
+Pour un score normalisé (score z, note standard, note composite, note T), la
+correspondance est loin d’être aussi directe. Par exemple, le fait qu’une note
+standard soit égale à 9 n’apporte aucune information explicite sur la fréquence
+de cette note. Un score z égal à –1,2, un QI égal à 77, une note T égale à 55,
+ne sont pas plus informatifs. Le nombre seul n’a aucun sens. Il devient seu­
+lement signifiant grâce à l’utilisation de la table de la loi normale permettant
+ainsi de connaître le pourcentage approximatif de la population qui pourrait
+obtenir ce même score ou un score inférieur (Crawford & Garth­waite, 2009).
+Les rangs percentiles sont donc plus intuitifs pour l’interprétation mais se
+réfèrent strictement à l’échantillon de référence, postulant que cet échantillon
+
+
+50                          © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+est représentatif de la population dont ils sont issus. Les scores normalisés
+sont plus complexes à interpréter en ce sens qu’ils nécessitent des étapes
+supplémentaires pour les exploiter. Néanmoins, cette transformation des
+scores rend les données hypothétiquement plus proches de la population
+théorique dont elles sont issues. Il convient donc au praticien de rester vigi­
+lant quant au type d’étalonnage utilisé pour nuancer ses interprétations.
+
+
+
+TOUS LES SCORES ÉTALONNÉS SONT-ILS ÉQUIVALENTS ?
+Selon l’étalonnage considéré, on observe une variation du nombre de posi­
+tions possibles sur la courbe de Gauss. En effet, dans la majorité des cas,
+notamment les échelles de Wechsler, l’étalonnage en notes standard permet
+de représenter une performance selon 19 positions possibles (de 1 à 19),
+tandis que les notes composites en offrent 120 (de 40 à 160), les rangs
+percentiles 100 (de 1 à 100) et les notes T 80 (de 10 à 90). Les scores z
+quant à eux, pourraient représenter une infinité de positions. En effet, con­
+trairement aux autres notes étalonnées, les scores z ne sont pas des unités
+discrètes mais se distribuent de manière continue (de –∞ à +∞). La consé­
+quence directe est que les différents types d’étalonnage ne peuvent être
+équivalents (voir exemple 9).
+
+
+
+                                                             Exemple 9
+    Les positions semblables sur la courbe de Gauss selon les différents
+    types d’étalonnage (rangs percentiles, scores z, notes standard, notes
+    composites et notes T) sont inscrits sur les tableaux 9 et 10. Les cor­
+    respondances ont été effectuées à partir des informations fournies par
+    Strauss et collaborateurs (2006).
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   51
+      TABLEAUX 9 et 10. Exemples de positions semblables sur la courbe de Gauss.
+
+
+  Pour une seule note standard de 4, on a 3 rangs percentiles correspon­
+  dants, 7 notes composites correspondantes, 6 notes T correspondantes
+  et une étendue correspondante de scores z de 0,49. Pour une seule
+  note standard de 9, on a 13 rangs percentiles correspondants, 5 notes
+  composites correspondantes, 3 notes T correspondantes et une éten­
+  due de score z égale à 0,02.
+
+
+
+Il existe ainsi des variations des étalonnages à l’intérieur d’une même classe
+suivant la position de la classe sur la courbe. Au voisinage de la moyenne, les
+participants sont nombreux et, par conséquent, les rangs percentiles sont
+très proches. Par contre aux extrémités de la distribution, les sujets se raré­
+fient et les rangs percentiles sont donc plus éloignés les uns des autres. Ces
+variations entraînent des difficultés d’interprétation sur lesquelles il est impor­
+tant de rester vigilant. L’étude menée par Leclef et collaborateurs (2018) a
+d’ailleurs montré que la qualité d’interprétation d’un score par le praticien
+variait en fonction du type d’étalonnage utilisé.
+
+
+
+COMMENT ESTIMER LA FRÉQUENCE D’UNE PERFORMANCE ? VALEURS « CLÉS »
+Même s’il existe actuellement une absence d’uniformité dans la littérature psy­
+chométrique sur des valeurs clés communes (Thomas-Antérion & Barbeau,
+2014), une tendance majoritaire se dégage pour certaines valeurs permet­
+tant de situer les performances d’un patient comme rares ou fréquentes. Le
+rang percentile 5 et le score z à –1,65 semblent être fréquemment utilisés
+comme des valeurs suffisamment rares pour attirer l’attention du praticien
+
+
+52                            © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+sur l’éventuelle présence d’un déficit (Amieva et al., 2011 ; Colombo et al.,
+2016 ; Jonin, 2013). À l’inverse, un score z supérieur à 1,65 a tendance à
+être considéré comme suffisamment exceptionnel pour être considéré comme
+reflétant la présence hypothétique d’une « sur-compétence ». Une perfor­
+mance comprise entre un score z de ±1 est fréquemment considérée comme
+étant dans la norme, in extenso fréquente (Cognet & Bachelier, 2016 ; Gré­
+goire, 2014). Entre ces valeurs, les performances sont alors considérées
+comme limites (inférieures ou supérieures)18. En se basant sur ces valeurs,
+il est possible d’obtenir des valeurs clés équivalentes quel que soit le type
+d’étalonnage considéré.
+
+Ainsi, pour les scores z, les valeurs clés sont :
+
+       score z ≤ –1,65                              = performance inférieure extrêmement rare
+       –1,65 < score z < –1                         = performance limite inférieure
+       -1 ≤ score z ≤ 1                             = performance fréquente ou dans la norme
+       1 < score z < 1,65                           = performance limite supérieure
+       score z ≥ 1,65                               = performance supérieure extrêmement rare
+
+
+Pour obtenir les valeurs clés des notes étalonnées basées sur la loi nor-
+male (notes standard, notes composites, note T), il suffit d’utiliser la valeur
+clé du score z considérée comme un écart à la moyenne (voir formule 9).
+
+
+
+
+                                           FORMULE 9. Calcul des valeurs clés.
+                        m = moyenne des notes étalonnées ; s : écart-type des notes étalonnées.
+
+
+Pour les notes standard (moyenne de 10 et écart-type de 3), on obtient les
+valeurs clés suivantes :
+
+  note standard ≤ 5 (10 + (3 x –1,65))                                 = performance inférieure extrêmement rare
+  5 < note standard < 7 (10 + (3 x –1))                                = performance limite inférieure
+
+
+
+
+18. Les terminologies utilisées n’étant pas consensuelles dans la littérature, les termes employés ont été
+inspirés de Flanagan et al. (2004), Strauss et al. (2006) et Weschler (2005).
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle                    53
+  7 ≤ note standard ≤ 13 (10 + (3 x 1))                      = performance fréquente ou dans la norme
+  13 < note standard < 15 (10 + (3 x 1,65))                  = performance limite supérieure
+  note standard ≥ 15                                         = performance supérieure extrêmement rare
+
+
+Pour les notes composites (moyenne de 100 et écart-type de 15), on
+obtient les valeurs clés suivantes :
+
+  note composite ≤ 75 (100 + (15 x –1,65))                   = performance inférieure extrêmement rare
+  75 < note composite < 85 (100 + (15 x –1))                 = performance limite inférieure
+  85 ≤ note composite ≤ 115 (100 + (15 x 1))                 = performance fréquente ou dans la norme
+  115 < note composite < 125                                 = performance limite supérieure
+  note composite ≥ 125 (100+(15 x 1,65))                     = performance supérieure extrêmement rare
+
+
+Pour les notes T (moyenne de 50 et écart-type de 10), on obtient les
+valeurs clés suivantes :
+
+  note T ≤ 33 (50 + (10 x –1,65))               = performance inférieure extrêmement rare
+  33 < note T < 40 (50 + (10 x –1))             = performance limite inférieure
+  40 ≤ note T ≤ 60 (50 + (10 x 1))              = performance fréquente ou dans la norme
+  60 < note T < 76 (50 + (10 x 1,65))           = performance limite supérieure
+  note T ≥ 76                                   = performance supérieure extrêmement rare
+
+
+Pour obtenir les valeurs clés en rangs percentiles, il suffit d’utiliser la
+table de la loi normale centrée réduite (tableau 3). Ainsi, pour un score z
+de 1, on obtient une valeur de la table de 0,843. Dans la population hypothé­
+tique de référence, 84 % de la population aurait une performance associée
+à un score z inférieur ou égal à 1. Pour un score z de –1,65, on obtient une
+valeur issue de la table de 0,0495 (1-0.9505 car p(Z < z) = 1 – p(Z > z)).
+Dans la population hypothétique de référence, 5 % de la population aurait une
+performance associée à un score z inférieur ou égal à –1,65. En appliquant
+cette procédure, on obtient les valeurs clés suivantes :
+
+
+
+
+54                                     © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+   rangs percentiles ≤ 5                                 = performance inférieure extrêmement rare
+   5 < rangs percentiles < 16                            = performance limite inférieure
+   16 ≤ rangs percentiles ≤ 84                           = performance fréquente ou dans la norme
+   84 < rangs percentiles < 95                           = performance limite supérieure
+   rangs percentiles ≥ 95                                = performance supérieure extrêmement rare
+
+
+Ces calculs de valeurs clés nous permettent de prendre conscience de
+l’importance d’être attentif aux types d’étalonnage, aux valeurs d’écarts-
+types et de moyennes utilisées pour chaque transformation. Par exemple, un
+score de 65 sera considéré comme une performance supérieure extrême­
+ment rare à la WNV (note T, Weschler & Naglieri, 2009) alors que ce même
+score sera considéré comme une performance inférieure extrêmement rare
+au WISC V (note composite, Weschler, 2016).
+
+
+
+ET LES SCORES SEUILS19 ?
+Les scores seuils sont utilisés en clinique comme critères de présence d’un
+trouble ou de sa probable apparition. Ils consistent à identifier un seuil de
+performance qui permettra de classer un score dans deux catégories pos­
+sibles : « normal », c’est-à-dire supérieur à un niveau de performance attendu
+ou « anormal », c’est-à-dire inférieur ou égal à un niveau de performance
+attendu. Dans un cas comme dans l’autre, il est indispensable de disposer
+d’un groupe clinique présentant un trouble ciblé. Dans la situation de la pré­
+sence du trouble (à visée diagnostique), un groupe clinique présentant un
+déficit spécifique va être amené à réaliser le même test que l’échantillon de
+référence. On repère alors à partir de quel score, ce groupe clinique se dif­
+férencie de l’échantillon. Dans la situation prédictive (à visée de dépistage),
+l’ensemble des participants de l’échantillon de référence est suivi après la
+passation du test et les personnes déclarant a posteriori un déficit spécifique
+sont repérées (constitution après coup du groupe clinique). On détermine
+alors à partir de quel score ce groupe clinique se différencierait du reste de
+l’échantillon au moment de la passation du test.
+Pour un test donné, le score seuil est déterminé en fonction de la sensibilité
+(probabilité qu’une personne échoue le test alors qu’elle présente le déficit
+
+
+19. Cut-off score en anglais
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle      55
+cible) et de la spécificité (probabilité qu’une personne réussisse le test alors
+qu’elle ne présente pas le déficit cible). Le score seuil permet donc d’identi­
+fier un maximum de personnes présentant un déficit cible (vrai positif) tout
+en minimisant le risque de considérer des personnes « saines » comme pré­
+sentant ce déficit (faux positif) ou des personnes présentant le déficit comme
+« saines » (faux négatif). Le choix du juste positionnement du score seuil
+repose donc entre ce fragile équilibre sensibilité/spécificité. Pour ce, la courbe
+ROC (Delacour, Servonnet, Perrot, Vigezzi & Ramirez, 2005), qui corres­
+pond à la représentation graphique de la relation existante entre la sensibi­
+lité et la spécificité d’un test pour toutes les valeurs seuils possibles, est
+fréquemment utilisée. Cette courbe permet de comparer des performances
+diagnostiques de plusieurs tests et d’estimer la valeur seuil optimale d’un
+test en tenant compte des données épidémiologiques de certaines patholo­
+gies. Le juste positionnement d’un score seuil est déterminé en fonction des
+enjeux et des risques diagnostiques. Un même test peut d’ailleurs avoir dif­
+férents scores seuils selon le diagnostic visé ou les catégories socio-profes­
+sionnelles des personnes. On retrouve l’utilisation de ces seuils dans des
+échelles comme la BREF (Batterie Rapide d’Efficience Frontale ; Slachevsky
+et al., 2004), la SEA (Social cognition and Emotional Assesment ; Fukiewiez
+et al., 2012) ou le RL/RI-16 (Sarazin et al., 2007).
+
+
+
+ET LES ÂGES DE DÉVELOPPEMENT20 ?
+Certains tests proposent d’exprimer la performance du patient en termes
+d’âges de développement. Les équivalences d’âges au test correspondent à
+l’âge auquel une note brute ou étalonnée donnée est généralement obtenue
+par les enfants d’un âge donné (voir exemple 10). La performance d’une
+personne à un test, par extension la capacité évaluée, est alors caractérisée
+en termes d’âge.
+
+
+
+
+20. On trouve aussi le terme d’âge mental plus spécifiquement utilisé dans le cas de l’évaluation intel-
+lectuelle.
+
+
+
+56                                   © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+                                                           Exemple 10
+   Imaginons 150 enfants de 7 à 12 ans qui effectuent un test de répétition
+   de mots. 30 enfants de chaque âge réalisent le test. Le nombre de mots
+   correctement répétés (scores bruts) est recueilli (voir tableau 11).
+
+
+
+
+                 TABLEAU 11. Nombre de bonnes réponses obtenues pour chaque âge.
+                     En rouge, le nombre maximal de bonnes réponses données pour chaque âge.
+
+
+   Dans cet échantillon de référence, on retrouve le plus grand nombre
+   d’enfants pour un score brut égal à 3 à 8 ans, égal à 4 à 9 ans, égal à 5
+   à 10 ans, égal à 6 à 11 ans et égal à 7 à 12 ans. Un patient de 12 ans
+   qui obtiendrait un score brut de 5 serait alors considéré comme ayant un
+   âge de développement de 10 ans (score obtenu par le plus grand nombre
+   d’enfants de 10 ans).
+
+
+L’utilisation de ces âges au test est de prime abord très séduisante puis­
+qu’elle permet de décrire la performance d’un patient de manière intuitive,
+plus facilement compréhensible. Cependant, cette transformation présente
+cinq limitations importantes :
+1) Les valeurs des scores de l’échantillon de référence à un test doi­
+   vent augmenter avec l’âge. Cette transformation est inapplicable lors­
+   que la composante mesurée n’évolue pas ou plus avec l’âge comme par
+   exemple les traits d’anxiété ou les capacités intellectuelles de l’adulte.
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   57
+2) Les valeurs des scores de l’échantillon de référence à un test doi­
+   vent augmenter de manière linéaire avec l’âge. En d’autres termes,
+   l’augmentation de la performance à un test doit suivre de manière ana­
+   logue l’avancée en âge. Malheureusement, la corrélation entre la variable
+   « âge » et la variable « performance » est rarement parfaite (Laveault &
+   Grégoire, 2014).
+3) La performance d’un enfant peut correspondre à un niveau d’âge
+   inférieur à un âge chronologique et pourtant se situer dans la zone
+   « normale » des enfants du même âge. Si on reprend l’exemple 10, un
+   enfant de 9 ans qui a un score brut de 3 aurait un âge de développement
+   de 8 ans. On considérera alors que pour la capacité engagée dans ce
+   test, cet enfant a un an de retard de développement alors que 40 %
+   (((1+1+3+6) / 30) x 100) des enfants de 9 ans ont obtenu ce score ou
+   moins.
+4) Le retard en âge observé n’est pas équivalent quel que soit l’âge
+   con­sidéré. En effet, un retard d’un an à l’âge de 2 ans n’a pas la même
+   signification que le même retard de 1 an à l’âge de 13 ans.
+5) L’expression en termes d’âge de développement pour une capacité
+   impliquée dans un test a tendance à être généralisée sur l’ensemble
+   du fonctionnement du patient. En effet, un adolescent de 14 ans obte­
+   nant une performance équivalente à celle d’un enfant de 6 ans n’a certai­
+   nement pas procédé de la même manière que ce dernier (différence entre
+   le quantitatif et le qualitatif). Dans le cas de cet adolescent, nous nous
+   trouvons sur une trajectoire probablement déviante qu’il serait inappro­
+   prié de considérer comme reflétant un retard dans une trajectoire déve­
+   loppementale normale. Cependant, la tentation est grande de considérer
+   que cet adolescent se comporte de la même manière que ce jeune enfant
+   pour cette compétence, mais aussi pour d’autres compétences relative­
+   ment proches.
+
+Compte tenu de ces sérieuses limitations, il est recommandé de ne pas uti­
+liser les équivalences en niveaux d’âges comme mode principal d’expression
+des résultats (Laveault & Grégoire, 2014 ; Wechsler, 2016).
+
+
+
+
+58                         © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+                                                                 En bref
+   En se basant sur ce qui se dégage majoritairement de la littérature, il est
+   possible d’obtenir des valeurs clés permettant un classement de fréquence
+   équivalent quel que soit le type d’étalonnage utilisé (voir tableau 12).
+
+
+
+
+                TABLEAU 12. Récapitulatif des valeurs clés selon le type d’étalonnage.
+
+
+   Il est indispensable d’être particulièrement vigilant quant aux types
+   d’étalonnages utilisés et aux valeurs de moyennes et d’écarts-types
+   afin de déterminer les valeurs clés permettant un classement de la fré­
+   quence de la performance du patient.
+   Les scores seuils sont décidés arbitrairement par les auteurs des tests
+   en fonction de l’objectif du test et des valeurs de sensibilité et de spéci-
+   ficité choisies. L’usage de la transformation en âges de développe-
+   ment doit être restreint et utilisé avec une infinie prudence en raison
+   des nombreuses limitations pouvant entraîner des interprétations erro­
+   nées des résultats.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   59
+Mise en garde
+Les chapitres précédents ont non seulement permis d’expliciter les termino­
+logies récurrentes dans l’interprétation des résultats psychométriques, mais
+aussi de proposer des méthodes pour exploiter au mieux ces données. Ce
+chapitre a pour fonction d’alerter le praticien sur les conséquences d’une
+interprétation inadéquate de ces informations statistiques. Deux points pri­
+mordiaux sont développés afin de mettre en garde le professionnel sur l’uti­
+lisation de certaines procédures séduisantes pouvant l’entraîner sur des
+fausses pistes interprétatives.
+
+
+
+UTILISER SYSTÉMATIQUEMENT LE SCORE Z, EST-CE BIEN « NORMAL » ?
+Lorsque le praticien a accès à un test ou à un article avec des résultats inté­
+ressants pour une population particulière, il est naturellement tenté de s’en
+servir comme des données normatives avec l’utilisation du score z. Cepen­
+dant, comme expliqué précédemment, théoriquement il n’est possible d’avoir
+recours au score z que si la distribution des scores suit la loi normale. En
+effet, le score z seul n’a aucun sens, c’est seulement quand on l’utilise à
+l’aide de la table de la loi normale qu’il permet de récupérer des informations
+sur la fréquence d’un comportement. Cependant, cette variable est tellement
+attrayante que le praticien est fréquemment tenté de l’utiliser, quelle que soit
+la forme de la distribution des notes. Malheureusement, contrairement à une
+idée répandue, cette transformation en score z n’a pas le pouvoir de norma­
+liser la distribution (Grégoire & Laveault, 2014). La transformation en score
+z étant une transformation linéaire, si la distribution n’est pas normale avant
+transformation en score z, elle ne le sera pas non plus après transformation.
+Quelles sont alors les conséquences de s’appuyer sur un score z quand la
+distribution n’est pas normale ? Trois grands cas de figures sont décrits ci-
+après pour rendre compte des problèmes engendrés par une utilisation
+abusive du score z.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   61
+ 1) Obtention d’une valeur seuil inexistante : augmentation
+       des faux négatifs
+Dans ce cas de figure, la distribution des données observées entraîne une
+homogénéisation des résultats qui rend impossible l’existence d’une valeur
+seuil. Dans l’exemple 11, l’épreuve ne permet pas de discriminer les diffé­
+rentes performances des participants. En d’autres termes, quel que soit le
+nombre de bonnes réponses, l’effectif est relativement identique (courbe
+aplatie). Dans ce cas, utiliser les scores z met le praticien dans la situation où
+la valeur seuil obtenue n’existe pas dans la réalité du test. Tous les patients
+réalisant cette épreuve seront considérés comme suffisamment perfor­
+mants pour amener le praticien à exclure la présence d’une atteinte d’une
+compétence fortement impliquée dans cette épreuve (augmentation de faux
+négatifs).
+
+
+
+                                   Exemple 11
+    Imaginons que 393 enfants de 6 ans aient réalisé un test de dénomina­
+    tion rapide. Le nombre de réponses correctes est recueilli et se distribue
+    de 1 à 10 comme indiqué sur le graphique 5. La moyenne est égale à
+    5,43 et l’écart-type à 6,29.
+
+
+
+
+               GRAPHIQUE 5. Détail des résultats au test de dénomination
+
+.
+
+
+
+
+62                             © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+   Si on applique la formule 6 du précédent chapitre avec le score z pour
+   repérer la valeur seuil à partir de laquelle la performance est estimée
+   comme extrêmement rare de manière inférieure, on obtient, en arrondis­
+   sant au nombre entier le plus proche, –5 (5,43+(6,29 x –1,65)). En
+   d’autres termes, seuls les patients obtenant un nombre de bonnes
+   réponses égal à –5 seront considérés comme présentant une perfor­
+   mance suffisamment rare pour alerter sur la présence d’un éventuel
+   déficit. Cette valeur n’existant pas, le praticien utilisant ce test ne pourra
+   jamais estimer une performance comme extrêmement rare.
+
+
+ 2) Obtention d’une valeur seuil trop sensible :
+      augmentation des faux positifs
+Dans ce cas de figure, la distribution des données entraîne une augmenta­
+tion des chances d’estimer la performance du patient comme rare alors que
+cette performance est en fait relativement fréquente dans l’échantillon de
+référence. Dans l’exemple 12, l’épreuve est tellement facile pour les partici­
+pants que la majorité des réponses recueillies se trouve à droite de la courbe
+(effet plafond). Dans ce cas, utiliser les scores z met le praticien dans la
+situation où la valeur seuil obtenue existe dans la réalité du test mais se
+retrouve chez un grand nombre de participants de l’échantillon de référence.
+Ce type de distribution va amener à surestimer la présence d’un trouble chez
+les patients (augmentation des faux positifs).
+
+
+
+                                                           Exemple 12
+   Imaginons que 345 adultes de 20 à 30 ans aient réalisé un test consis­
+   tant à tracer le plus vite possible différents parcours. Le nombre de
+   parcours correctement tracés est recueilli et se distribue de 1 à 13 comme
+   indiqué sur le graphique 6. On constate que la majorité des résultats se
+   trouve à droite de la courbe (effet plafond), ce qui signifie que ce test est
+   tellement facile que les participants ont en général beaucoup de bonnes
+   réponses. La moyenne est égale à 10,01 et l’écart-type à 2,63.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   63
+               GRAPHIQUE 6. Détail des résultats au test de traçage.
+
+
+  Si on applique la formule 6 du précédent chapitre avec le score z pour
+  repérer la valeur seuil à partir de laquelle la performance est estimée
+  comme extrêmement rare de manière inférieure, en arrondissant au nom­
+  bre entier le plus proche, on obtient 6 (10,01+(2,63 x –1,65)). Ainsi, les
+  patients obtenant un score égal ou inférieur à 6 attireront l’attention du
+  praticien puisque ces scores sont censés être présents chez seulement
+  5 % de la population. Cependant, dans cet exemple, cette performance
+  correspond en fait à 13 % des performances de l’échantillon de réfé­
+  rence. Ainsi, le praticien aura tendance à considérer une performance
+  comme rare alors qu’elle est relativement fréquente au sein de l’échan­
+  tillon de référence.
+
+
+ 3) Obtention d’une valeur seuil peu sensible : augmentation
+      des faux négatifs
+Dans ce cas de figure, la distribution des données recueillies entraîne une
+augmentation des chances de considérer la performance du patient comme
+fréquente alors qu’elle est relativement rare dans l’échantillon de référence.
+L’épreuve est tellement difficile pour les participants que la majorité des
+réponses recueillies se trouve à gauche de la courbe (illustration de cet effet
+plancher dans l’exemple 13). Dans ce cas, utiliser les scores z met le praticien
+dans la situation où la valeur seuil obtenue existe dans la réalité du test mais
+n’a été obtenue que chez très peu de participants de l’échantillon de référence.
+Il a donc de fortes chances de passer à côté d’une performance qui pourrait
+refléter la présence d’un trouble (augmentation du nombre de faux négatifs).
+
+
+64                           © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+                                                           Exemple 13
+   Imaginons que 158 enfants de 9 ans aient réalisé un test consistant à
+   appuyer sur un bouton lorsqu’un symbole cible apparaît sur l’écran. Le
+   nombre de réponses correctes est recueilli et se distribue de 1 à 10
+   comme indiqué sur le graphique 7. On constate que la majorité des
+   résultats se trouve à gauche de la courbe (effet plancher), ce qui signifie
+   que ce test est trop difficile, les participants ayant en général peu de
+   bonnes réponses. La moyenne est égale à 3,89 et l’écart-type à 1,89.
+
+
+
+
+               GRAPHIQUE 7. Détail des résultats au test de détection de cible visuelle.
+
+   Si on applique la formule 6 du précédent chapitre avec le score z pour
+   repérer la valeur seuil à partir de laquelle la performance est estimée
+   comme extrêmement rare de manière inférieure, en arrondissant au
+   nombre entier le plus proche, on obtient 1 (3,89+(1,89 x –1,65)).
+   Cependant, cette performance correspond seulement à 0,01 % des per­
+   formances de l’échantillon de référence alors qu’elle devrait corres­
+   pondre à 5 % des performances de la population. Le praticien pourrait
+   alors avoir tendance à sous-estimer l’extrême rareté de cette performance
+   et ne pas être suffisamment alerté par le caractère déviant de cette per­
+   formance.
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   65
+Il est donc particulièrement important que le praticien soit vigilant sur la
+forme de la distribution des données de l’échantillon de référence afin de se
+poser la question de la pertinence de l’utilisation d’un score z pour estimer
+la fréquence de la performance d’un patient. Le praticien doit se méfier de
+cette « divinité cloche » ! La distribution de performances n’est pas intrinsè­
+quement normale. Les données issues des tests présentent souvent des
+effets d’asymétrie (Crawford et al., 2009). Si les notes ne se distribuent pas
+normalement, il est donc fortement recommandé d’avoir recours aux rangs
+percentiles. Il est fréquent que les rangs percentiles ne soient pas dispo­
+nibles dans les articles ou certains tests. John Crawford21 propose des
+procédures afin de les obtenir à partir des notes brutes de l’échantillon de
+référence. Encore faut-il que ces données soient accessibles, ce qui n’est
+malheureusement pas toujours le cas.
+
+
+
+CONNAÎT-ON SUFFISAMMENT L’ÉCHANTILLON DE RÉFÉRENCE ?
+Dans les chapitres précédents nous avons vu qu’un test permet de situer un
+comportement au sein d’un groupe : l’échantillon de référence. Cet échan­
+tillon varie suivant le nombre de caractéristiques prises en considération, la
+technique d’échantillonnage (e.g., quotas ou grappes) et le nombre de per­
+sonnes composant cet échantillon (effectif).
+Dans le cas de l’échantillonnage par quotas, une première remarque consiste
+à se questionner sur les choix des caractéristiques « privilégiées » pour
+sélectionner les personnes constituant l’échantillon. Comment justifier qu’une
+caractéristique plutôt qu’une autre ait plus de risques de biaiser la mesure
+d’un test ? Par exemple, dans un test de précision visuo-motrice, pourquoi la
+localisation géographique du participant risquerait-elle d’influer plus forte­
+ment les performances que la latéralité manuelle ? Cependant, la littérature
+scientifique ainsi que les manuels de tests ne permettent pas actuellement
+de répondre à cette question. Une seconde remarque porte sur le nombre
+de caractéristiques à sélectionner. Tout d’abord, cette sélection est intrin­
+sèquement limitée par la disponibilité des données. Si les informations sur le
+lieu géographique, la situation professionnelle, l’âge des personnes d’une
+population (caractéristiques fréquemment utilisés dans les tests) sont aisé­
+ment accessibles, ce n’est nécessairement pas le cas pour des informations
+comme la latéralité manuelle, les capacités oculomotrices, la qualité de
+
+21. http://homepages.abdn.ac.uk/j.crawford/pages/dept/psychom.htm
+
+
+
+66                                © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+l’audition… Le nombre de caractéristiques d’une population prises en consi­
+dération dépend donc de leur accessibilité.
+À partir de ces données disponibles, deux choix peuvent être réalisés :
+sélectionner peu de caractéristiques ou un maximum de caractéris-
+tiques.
+Dans le premier cas, la qualité de la représentativité de l’échantillon de
+référence risque d’être amoindrie. En effet, l’impact d’autres caractéris­
+tiques sur les performances est alors négligé. Chaque catégorie est repré­
+sentée par des individus qui peuvent se différencier sur de nombreuses
+caractéristiques susceptibles d’influer les performances aux tests (voir
+exemple 14).
+
+
+
+                                                           Exemple 14
+   Parmi une population factice d’un million d’adultes entre 25 et 30 ans
+   (P = 100 %), imaginons un test ayant pour objectif d’évaluer les connais­
+   sances académiques de cette population. Un échantillon de référence de
+   60 personnes est constitué en utilisant uniquement le genre comme
+   caractéristique de sélection (EE = 60). Dans la population de référence,
+   60 % sont des hommes (Masculin, P = 60 % et Féminin, P = 40 %). Il se
+   trouve que, dans l’échantillon, toutes les personnes sélectionnées ont
+   obtenu une licence universitaire (niveau Bac+3) quel que soit leur genre
+   (BAC+3, EE = 100 %). Par contre, dans la population de référence
+   seulement 20 % d’hommes et de femmes ont un niveau licence (BAC+3,
+   P = 20 %). Les performances ont alors de fortes chances d’être influen­
+   cées par le niveau d’étude des participants plutôt que par leur genre. Par
+   exemple, un homme n’ayant pas obtenu le baccalauréat aura de fortes
+   chances d’avoir une performance inférieure à celles de l’échantillon de
+   référence. Le praticien aura alors tendance à être alerté par cette faible
+   performance qui ne serait en fait que le reflet d’une différence d’exposi­
+   tion aux connaissances académiques par rapport aux personnes de
+   l’échantillon de référence.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   67
+                         FIGURE 4. Répartition du nombre de personnes
+                         de la population et de l’échantillon de référence.
+                        P = Pourcentage de la population factice de référence ;
+                     EE% = pourcentage de personnes de l’échantillon de référence ;
+                       EE = nombre de personnes de l’échantillon de référence ;
+                       EP = nombre de personnes théoriques dans l’échantillon
+                                   de référence en fonction de P.
+
+
+
+Dans un second cas, un maximum de caractéristiques peut être retenu. Cepen­
+dant, un patient passant ce test aurait alors plus de risques de ne pas avoir
+de personnes de l’échantillon de référence partageant les mêmes caracté­
+ristiques que lui (voir exemple 15).
+
+
+                                        Exemple 15
+  Au 1 janvier 2017, 51 % des enfants de 7 ans de la population française
+        er
+
+  sont des garçons, 1,8 % de ces enfants sont issus du monde agricole22,
+  19 % habitent en Île-de-France23. Dans l’échantillon de référence, 51 %
+  des enfants de 7 ans d’origine française devront donc être des garçons,
+  1,8 % de ces enfants devront être issus du monde agricole, 19 % devront
+  habiter en Île-de-France. Ainsi, plus le nombre de caractéristiques consi­
+  dérées est élevé, plus il est compliqué de recruter des personnes ayant
+  toutes les caractéristiques nécessaires (garçon et né en 2010 et fils
+  d’agriculteur et habitant en Île-de-France) et plus l’effectif de l’échantillon
+  de référence devra être important.
+
+
+22. données inférées des chiffres de l’INSEE sur les catégories socio-professionnelles des personnes
+majeures.
+23. données inférées des chiffres de l’INSEE sur les répartitions de la population par région et par
+département.
+
+
+
+68                                  © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+Ainsi, faire en sorte que l’échantillon de référence représente la population
+ciblée repose sur un subtil équilibre entre le nombre de personnes compo­
+sant l’échantillon (l’effectif) et le nombre de caractéristiques considérées
+pour sa constitution (voir exemple 16).
+
+
+
+                                                           Exemple 16
+   Parmi une population de 60 millions d’habitants, imaginons que les
+   caractéristiques suivantes soient disponibles pour constituer un échan­
+   tillon de référence de 100 personnes (voir figure 5).
+          n genre           à 2 modalités : masculin ; féminin.
+          n âge    à 4 modalités : 18 à 29 ans ; 30 à 39 ans ; 40 à 59 ans ; plus
+                de 60 ans.
+          n catégorie      socio-professionnelle à 8 modalités : agriculteurs
+                exploitants ; artisans ; commerçants et assimilés ; chefs d’entrepri­
+                ses ; cadres et professions intellectuelles supérieures ; professions
+                intermédiaires ; employés ; ouvriers ; retraités ; sans emploi.
+          n niveau    d’études à 6 modalités : collège ; CAP/BEP ; lycée ; bac­
+                calauréat ; bac+2 ; supérieur à bac+2.
+          n zone     géographique à 5 modalités : communes de moins de
+                2 000 habitants ; communes de 2 000 à 19 999 ; communes de
+                20 000 à 99 999 ; communes de 100 000 à 1 999 999 ; Paris et
+                région parisienne.
+
+   Si toutes les informations disponibles sont prises en considération, il
+   s’agit de trouver des personnes pour 1920 catégories différentes (2 x
+   4 x 8 x 6 x 5) pour constituer l’échantillon de référence le plus repré­
+   sentatif possible. Prenons l’exemple d’une catégorie où il est nécessaire
+   de recruter des hommes qui ont de 18 à 29 ans ET qui sont cadres ou
+   exercent une profession intellectuelle supérieure ET qui sont sortis du
+   système scolaire au collège ET qui vivent dans une commune de moins
+   de 2000 habitants.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   69
+      FIGURE 5. Répartition du nombre de personnes de l’échantillon de référence (E)
+           respectant les caractéristiques de la population de référence (P).
+
+  Avec un échantillon de 100 personnes, il est aisé de se rendre compte que
+  chaque personne de la population de référence ne peut être représentée
+  par une personne de l’échantillon de référence. Ce n’est qu’à partir d’un
+  effectif de 5000 personnes qu’il devient possible d’avoir une personne
+  dans cette catégorie.
+
+
+Pour la méthode d’échantillonnage par grappe, un des inconvénients majeurs
+est le risque élevé d’homogénéité des grappes (voir exemple 17). Augmenter
+l’effectif de l’échantillon ne diminue que partiellement ce risque. En effet,
+multiplier les grappes permet de diversifier les personnes recrutées mais si
+les grappes sont elles-mêmes homogènes, on retrouve la même probléma­
+tique.
+
+
+
+
+70                              © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+                                                           Exemple 17
+   Imaginons un test évaluant la vitesse de lecture des enfants de 10 ans.
+   La technique d’échantillonnage consiste à sélectionner des groupes de
+   population comme les élèves d’une école, les habitants d’une zone géo­
+   graphique…
+   Si 60 enfants de 10 ans sont présents dans une école sélectionnée, tous
+   les enfants de cette école se verront proposer le test. Si cette école a
+   particulièrement mis l’accent, ces dernières années, sur l’entraînement
+   à la lecture rapide, les performances obtenues ont de fortes chances
+   d’être plus élevées que ce qui existe dans la population générale. La
+   plupart des performances seraient alors plus élevées que celles de la
+   population de référence. Dans ce cas, un patient aura plus de risques
+   d’obtenir une performance inférieure à celle de l’échantillon de réfé­
+   rence (augmentation des faux positifs).
+
+
+Il est donc précieux de connaître les caractéristiques de l’échantillon avec
+lequel le praticien va comparer la performance du patient. Est-ce que mon
+patient est représenté dans l’échantillon de référence ? Est-ce que des per­
+sonnes de l’âge de mon patient ont réalisé ce test ? Est-ce que mon patient
+a des caractéristiques qui sont prises en considération dans la constitution
+de l’échantillon de référence ? Comparer la performance de mon patient
+bilingue avec celles des personnes de l’échantillon de référence tous mono­
+lingues va-t-elle fausser mon interprétation ? À combien de performances la
+performance du patient est-elle comparée ? 1, 20, 200 ? En quelle année
+les performances de l’échantillon de référence ont-elles été recueillies ?
+Est-ce que je peux comparer la performance de mon patient aux perfor­
+mances de personnes ayant passé ce test en 1980 alors que nous sommes
+en 201724 ? Est-ce que les expressions, les mots utilisés dans ce test conçu
+en 1960 seront compris de la même manière en 2017 ? Est-ce adapté de
+comparer le score de mon patient âgé de 85 ans à l’ensemble des scores de
+la catégorie « plus de 60 ans » ?
+Il semble donc indispensable que le praticien accorde une place importante
+aux caractéristiques de l’échantillon de référence. L’interprétation des résul­
+tats du patient en dépend. Par exemple, Amieva et collaborateurs (2007) ont
+montré que pour le RL/RI-16 items (Grober & Buscke, 1987), les scores
+
+24. Voir pour exemple l’effet Flynn montrant un accroissement des scores aux tests permettant un calcul
+du quotient intellectuel sur plusieurs générations (Hiscock, 2007).
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle    71
+différaient significativement d’une étude à l’autre25. Dans leur ouvrage col­
+lectif, Mitrushina et collaborateurs (2005) ont répertorié pour un même test
+(Stroop et TMT) plusieurs dizaines de normes disponibles. Ainsi, le praticien
+ne devrait-il pas choisir les normes dont l’échantillon de référence aurait les
+caractéristiques les plus proches du patient ? On peut cependant regretter
+que les informations relatives à ces échantillons de référence ne soient pas
+toujours suffisamment documentées dans les manuels ou les articles. À
+charge alors au praticien de se positionner en connaissance de cause.
+
+
+
+                                                En bref
+  La distribution de performances n’est pas systématiquement nor-
+  male.
+  Utiliser une transformation en score z sur des données qui ne se distri­
+  buent pas normalement augmente très fortement le risque de proposer une
+  fausse interprétation des résultats du patient : augmentation du risque
+  de faux négatifs et de faux positifs. L’utilisation des rangs percentiles
+  est parfois plus judicieuse.
+  On ne connaît jamais assez l’échantillon de référence.
+  La représentativité de l’échantillon de référence détermine en grande
+  partie la qualité de la mesure et sa capacité à renseigner le praticien
+  sur le degré de déviance de la performance d’un individu par rapport à
+  un groupe de référence.
+  Cette représentativité dépend de l’effectif de l’échantillon, du mode
+  d’échantillonnage et des caractéristiques choisies pour la sélection
+  des personnes constituant cet échantillon.
+  Il est indispensable de se renseigner sur le mode d’étalonnage et la
+  composition de l’échantillon de référence avant toute utilisation d’un
+  test.
+
+
+
+
+25. Pour un autre exemple, voir aussi le California Verbal Learning Test (CVLT ; Delis, Kramer, Kaplan, &
+Ober, 1987) dans Brooks et collaborateurs (2009).
+
+
+
+72                                    © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+  Conclusion
+
+
+L’explosion ces dix dernières années des tests psychométriques a créé un
+bouleversement phénoménal dans « la boîte à outils » des professionnels
+(Colombo et al., 2016). La pratique des tests pouvant avoir un impact impor­
+tant sur la vie du patient, le praticien se doit de maîtriser ses outils. Des
+recommandations autour de bonnes pratiques sont déjà disponibles, comme
+celles proposées par la Conférence de consensus autour de l’examen psy­
+chologique et des mesures en psychologie de l’enfant (Voyazopoulos,
+Vannetzel & Eynard, 2011). Cependant, force est de constater que le pro­
+fessionnel est souvent mal outillé face à la réalité, en manque d’outils pra­
+tico-pratiques d’interprétation des données psychométriques : lacunes dans
+la formation initiale, informations contradictoires dans les manuels de tests,
+insuffisances des formations continues… En écrivant ce guide, j’avais donc
+pour objectif d’aider le professionnel utilisant des tests à dompter les infor­
+mations psychométriques. En maîtrisant ces concepts statistiques, le prati­
+cien peut ainsi exploiter au mieux les tests afin de proposer une appréciation
+au plus juste des forces et faiblesses du patient, tout en restant conscient
+des limites des outils qu’il utilise.
+Le focus de ce livre a été intentionnellement restreint à la comparaison des
+performances du patient par rapport à un groupe de référence (analyse inter-
+individuelle). Cependant, même si cette comparaison est incontournable, elle
+ne peut s’abstraire d’une comparaison des performances du patient par
+rapport à lui-même (analyse intra-individuelle). Les éléments cliniques
+observés lors de la passation sont des éléments précieux pour cette compa­
+raison. Même si deux personnes obtiennent un score brut identique, elles
+n’ont pas nécessairement répondu de la même manière, réussi aux mêmes
+items. Les données psychométriques sont aussi des outils efficaces pour
+compléter ces observations cliniques. Les intervalles de confiance, les matrices
+de corrélations inter-tests, les données issues des groupes cliniques… sont
+des éléments parmi d’autres qui peuvent être exploités dans la clinique quo­
+tidienne pour ajuster un projet individuel, estimer les progrès d’un patient,
+évaluer l’adéquation d’une prise en charge, objectiver l’impact d’un traite­
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   73
+ment médicamenteux… Malheureusement, même si quelques auteurs se sont
+penchés sur la question (par exemple, John Crawford), là aussi le praticien
+reste encore trop peu outillé pour exploiter ces données dans ce contexte
+intra-individuel. Un autre ouvrage serait à prévoir pour compléter celui-ci.
+To be continued…
+Présentement, le praticien se trouve déjà confronté à un problème récurrent.
+Les tests sont loin d’être parfaits comme le souligne Amieva et collabora­
+teurs (2011) :
+
+      “ En clair, il existe peu de tests cognitifs bien normés
+                             en France ”.
+                                                                                 Amieva et al., p. 83 (2011).
+
+
+Un moyen de contourner cette problématique est d’utiliser plusieurs tests
+similaires évaluant une même compétence. Si les données obtenues conver­
+gent dans le même sens, il devient alors possible d’appuyer avec plus de
+convictions les conclusions d’une évaluation. Cependant, cette solution
+reste peu satisfaisante. Combiner plusieurs tests incorrectement normés ne
+sera jamais équivalent à l’utilisation d’un même outil adéquatement normé.
+Le test perd alors de son utilité en ne pouvant remplir sa fonction première :
+apporter des éléments objectifs en complément d’observations cliniques.
+Améliorer la formation des professionnels et la qualité des données psycho­
+métriques des tests apparaît donc comme une priorité. Ces réflexions ne
+peuvent se faire que dans le contexte d’un partenariat étroit entre le domaine
+universitaire (enseignement et recherche) et les regroupements de profes­
+sionnels, à l’instar d’associations telles que l’Organisation Française des
+Psychologues spécialisés en Neuropsychologie (OFPN). Déterminer les
+besoins des professionnels pour ajuster les tests à la réalité du terrain, for­
+mer les praticiens de manière continue sur la pratique des tests, développer
+un consensus dans l’exploitation des données psychométriques, rendre les
+manuels de tests plus explicites, construire des tests fiables et ciblés…
+Autant d’actions que seule une collaboration étroite entre milieu universi­
+taire et milieu professionnel peut réaliser afin de garantir des pratiques
+psychométriques de qualité pour tous les patients.
+
+
+
+
+74                          © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+  Références
+
+
+Amieva, H., Belin, C. et Maillet, D. (2016). L’évaluation neuropsychologique :
+De la norme à l’exception. France : De Boeck supérieur.
+Amieva, H., Michael, G.A. et Allain, P. (2011). Les normes et leur utilisation.
+In Thomas-Antérion, C. et Barbeau, E. (dir), Neuropsychologie en pratique(s)
+(p. 73-85). Marseille : Solal.
+Amieva, H., Carcaillon, L., Rouze, L., Alzit-Schuermans, P., Millet, X., Darti­
+gues, J.F. et Fabrigoule, C. (2007). Test de rappel libre/rappel indicé à
+16 items : normes en population générale chez des sujets âgés issues de
+l’étude des 3 cités. Revue Neurologique, 163, 205-21.
+Berndt, D.J. et Kaiser, C.F. (1999). MDI-C, Échelle composite de dépression
+pour enfants. Paris : Les Éditions du Centre de Psychologie Appliquée.
+Binet, A. et Simon, T. (1908). Le développement de l’intelligence chez les
+enfants. L’Année Psychologique, 14, 1-94.
+Bowman, M.L. (2002). The perfidy of percentiles. Archives of clinical neuro-
+psychology, 3, 295-303.
+Brooks, B., Strauss, E., Sherman, E.M.S., et Slick, D.J. (2009). Developments
+in Neuropsychological Assessment. Canadian Psychology, 50(3), 196-209.
+Bru, B. (2006). La courbe de Gauss ou le théorème de Bernouilli raconté aux
+enfants. Mathematics and Social Sciences, 175, 5-23.
+Charles, M., Soppelsa, R. et Albaret, J.M. (2004). BHK : Échelle d’évaluation
+rapide de l’écriture chez l’enfant. Paris : Les Éditions du Centre de Psycholo­
+gie Appliquée.
+Cognet, G. et Bachelier, D. (2016). Clinique de l’examen psychologique de
+l’enfant et de l’adolescent : Approches intégrative et neuropsychologique.
+Paris : Dunod.
+Cohen, M.J. (2001). Échelle de mémoire pour enfants. Paris : Les Éditions du
+Centre de Psychologie Appliquée.
+Colombo, F., Amieva, H., Lecerf, T. et Verdon, V. (2016). La norme en neuro­
+psychologie, un concept à facettes multiples. Revue de neuropsychologie 8(1),
+61-69.
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   75
+Costa, P.T. et McCrae, R.R. (1992). Revised NEO Personality Inventory
+(NEO-PI-R) and NEO Five-Factor Inventory (NEO-FFI) manual. Odessa, FL :
+Psychological Assessment Ressources.
+Crawford, J.R. et Garthwaite, P.H. (2009). Percentiles please : The case for
+expressing neuropsychological test scores and accompanying confidence
+limits as percentile ranks. The Clinical Neuropsychologist, 23(2), 193-204.
+Crawford, J.R., Garthwaite, P.H et Slick, D.J. (2009). On percentile norms in
+neuropsychology : Proposed reporting standards and methods for quantifying
+the uncertainty over the percentile ranks of test scores. The Clinical Neuro-
+psychologist, 23(7), 1173-1195.
+Delacour, H., Servonnet, A., Perrot, A., Vigezzi, J.F., et Ramirez, J.M. (2005).
+La courbe ROC (receiver operating characteristic) : principes et principales
+applications en biologie clinique. Annales de Biologie Clinique, 63(2), 145-154.
+Delis, D.C., Kramer, J.H., Kaplan, E. et Ober, B.A. (1987). California Verbal
+Learning Test. San Antonio, TX : The Psychological Corporation.
+Flanagan, D.P. et Kaufman, A.S. (2004). Essentials of WISC-IV Assessment.
+Hoboken. NJ : John Wiley and Sons.
+Funkiewiez, A., Bertoux, M., de Souza, L.C., Levy, R. et Dubois, B. (2012). The
+SEA (social cognition and emotional assessment) : A clinical neuropsychologi­
+cal tool for early diagnosis of frontal variant of frontotemporal lobar degenera­
+tion. Neuropsychology, 26(1), 81-90.
+Gay, L.R. (1996). Educational research : competencies for analysis and appli-
+cation – 5e édition. Englewood Cliffs, NJ : Merrill.
+Glaser, R. (1963). Instructional technology and the measurement of learning
+outcomes : some questions. American psychologist, 18, 519-521.
+Grégoire, J. (2009). L’examen clinique de l’intelligence de l’enfant : fonde-
+ments et pratique du WISC-IV (No. 2). Liège : Mardaga.
+Grégoire, J. (2014). L’examen diagnostique est-il normatif ? A.N.A.E., 132-
+133, 459-465.
+Grober, E. et Buschke, H. (1987). Genuine memory deficits in dementia.
+Developmental Psychology, 3, 13-36.
+Guilmette, T.J., Hagan, L.D. et Giuliano, A.J. (2008). Assigning qualitative
+descriptions to test scores in neuropsychology : forensic implications. The
+clinical neuropsychologist, 22, 122-139.
+Hiscock, M. (2007). The Flynn effect and its relevance to neuropsychology.
+Journal of clinical and experimental neuropsychology, 29(5), 514-526.
+Huteau, M. et Lautrey, J. (1997). Les tests d’intelligence. Paris : La Décou­
+verte & Syros.
+
+
+76                           © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+Jackson, C. (1996). Understanding psychological testing. Leicester, UK : Bri­
+tish Psychological Society.
+Jonin, P.Y. (2013). Statistiques appliquées en neuropsychologie : le cas
+unique au quotidien ! Les Cahiers de Neuropsychologie Clinique, 2, 44-51.
+Kaufman, A.S., Lichtenberger, E.O., Fletcher-Janzen, E. et Kaufman, N.L.
+(2005). Essentials of KABC-II assessment. John Wiley & Sons.
+Korkman, M., Kemp, S. et Kirk, U. (2012). Bilan neuropsychologique de l’en-
+fant – 2e édition. Paris : Les Éditions du Centre de Psychologie Appliquée.
+Laveault, D. et Grégoire, J. (2014). Introduction aux théories des tests : en
+psychologie et en sciences de l’éducation – 3e édition. Paris : De Boeck Supé­
+rieur.
+Leclef, P., Ponchel, A., Chancenotte, S., Marey, S., Muneaux, M. (2018). L’in­
+terprétation des scores en neuropsychologie : la tour de Babel ?. Les Cahiers
+de Neuropsychologie Clinique, 5, 42-56.]
+Lefavrais, P. (2005). Alouette-R : Test d’analyse de la lecture et de la dyslexie.
+Paris : Les Éditions du Centre de Psychologie Appliquée.
+Lévy, A. et Missler, S. (2010). Conférence de consensus : l’examen psycholo­
+gique et l’utilisation des mesures en psychologie de l’enfant. A.N.A.E., 109,
+318-322.
+Lezak, M. (1995). Neuropsychological assessment – 3e édition. New York :
+Oxford University Press.
+Markus, K.A. et Borsboom, D. (2013). Frontiers of Test Validity Theory : Mea-
+surement, Causation, and Meaning. New York, NY : Routledge.
+Marquet-Doléac, J., Soppelsa, R. et Albaret, J.M. (2010). Laby 5-12 : Test
+des labyrinthes pour les enfants de 5 à 12 ans. France : Hogrefe.
+Martin, O. (1997). La mesure de l’esprit, Origines et développement de la
+psychométrie 1900-1950. Paris : L’Harmattan.
+Michell J. (1999). Measurement in psychology. A critical history of a metho-
+dological concept. Cambridge (UK) : Cambridge University Press.
+Mitrushina, M., Boone, K.B., Razani, J. et D’Elia, L.F. (2005). Handbook of
+Normative Data for Neuropsychological Assessment – 2rd édition. Oxford :
+Oxford University Press.
+Pichot, P. (1968). Les tests mentaux. Paris : Presses Universitaires de
+France, « Que sais-je ? ».
+Reuchlin, M. (1969). Les méthodes en psychologie. Paris : Presse Universi­
+taire de France.
+Sarazin, M., Berr, C., De Rotrou, J., Fabrigoule, C., Pasquier, F., Legrain, S.,
+Michel, B., Puel, M., Volteau, M., Touchon, J., Verny, M. et Dubois, B. (2007).
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   77
+Amnestic syndrome of the medial temporal type identifies prodromal AD : a
+longitudinal study. Neurology, 69(19),1859-1867.
+Slachevsky, A., Villalpando, J.M., Sarazin, M., Hahn-Barma, V. et Pillon, B.
+(2004). Frontal assessment battery and differential diagnosis of frontotempo­
+ral dementia and Alzheimer disease. Archives of Neurology 61(7), 1104-
+1107.
+Spearman, C.E. (1904). General intelligence objectively measured and deter­
+mined. American Journal of Psychology, 15, 201-209.
+Strauss, E., Sherman, E.M.S. et Spreen, O. (2006). A compendium of neuro-
+psychological tests : Administration, norms, and commentary – 3e édition. New
+York : Oxford University Press.
+Thomas-Antérion C. et Barbeau E. (2012). Éthique et tests neuropsycholo­
+giques. Gériatrie, psychologie et neuropsychiatrie du vieillissement, 10(4),
+445-452.
+Voyazopoulos, R., Vannetzel, L. et Eynard, L.-A. (2011). L’examen psycholo-
+gique de l’enfant et l’utilisation des mesures – conférence de consensus.
+Vrignaud, P., Castro, D. et Mogenet, J.-L. (2000). Recommandations interna­
+tionales sur l’utilisation des tests. Des mesures en psychologie de l’enfant.
+Pratiques psychologiques : numéro spécial hors-série.
+Wallon, P. et Mesmin, C. (2009). Test de la figure complexe de Rey, version
+révisée. Paris : Les Éditions du Centre de Psychologie Appliquée.
+Wechsler, D. (2001). MEM-III Échelle clinique de mémoire – 3e édition. Paris :
+Les Éditions du Centre de Psychologie Appliquée.
+Wechsler, D. (2005). WISC-IV Échelle d’intelligence de Wechsler pour
+enfants et adolescents – 4e édition. Paris : Les Éditions du Centre de Psycho­
+logie Appliquée.
+Wechsler, D. (2011). WAIS-IV Nouvelle version de l’échelle d’intelligence de
+Wechsler pour adultes – 4e édition. Paris : Les Éditions du Centre de Psycho­
+logie Appliquée.
+Wechsler, D. (2014). WPPSI Échelle d’intelligence de Wechsler pour la
+période préscolaire et primaire – 4e édition. Paris : Les Éditions du Centre de
+Psychologie Appliquée.
+Wechsler, D. (2016). WISC-V Échelle d’intelligence de Wechsler pour enfants
+et adolescents – 5e édition. Paris : Les Éditions du Centre de Psychologie
+Appliquée.
+Wechsler, D. et Naglieri, J. (2009). WNV-Échelle non verbale d’intelligence
+de Wechsler. Paris : Les Éditions du Centre de Psychologie Appliquée.
+
+
+
+
+78                          © De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle
+         Ce guide n’aurait jamais existé sans les rencontres que j’ai
+              vécues depuis une quinze d’années de pratique.
+        Un grand merci aux enfants, adolescents, familles et équipes
+        pour m’avoir permis d’enrichir ma pratique professionnelle à
+                            travers ces échanges.
+
+
+       Ce guide n’aurait jamais atteint cette qualité sans les précieux
+       conseils des spécialistes des secteurs de la formation initiale,
+          de la recherche et de la pratique clinique. Merci à vous,
+       Marie de Montalembert, Stéphanie Ducrot, Benjamin Furnari,
+                Lise Malvy, Brigitte Nevers, Jacqueline Pho,
+                     François Radiguer et Xavier Seron.
+
+
+             Ce guide n’aurait jamais abouti sans l’appui et le soutien
+              constant de mon mari et de mes enfants à qui je dédie
+                                   cet ouvrage.
+
+
+
+
+© De Boeck Supérieur, ouvrage numérique gratuit soumis au droit de la propriété intellectuelle   79
+D
+        epuis le début de mes études universitaires, j’ai toujours été
+        intéressée par l’interface entre recherche et pratique clinique,
+        entre rigueur méthodologique et souplesse face à la réalité.
+C’est donc tout naturellement qu’après l’obtention de mon doctorat en
+psychologie cognitive, j’ai réalisé un master en neuropsychologie.
+Je suis alors devenue une praticienne alliant ces deux bagages,
+recherche et pratique, l’un s’enrichissant perpétuellement de l’autre.
+Dans cette continuité, j’ai nécessairement eu envie de partager mes
+connaissances, à travers des interventions universitaires, des
+discussions avec mes patients, des formations auprès des
+professionnels et des familles.
+
+Ce guide est une transcription écrite d’une partie de ces échanges :
+Est-ce que ce test est adapté pour mon patient ? À partir de quel score
+dois-je m’alerter ? Qu’elle est la différence entre les rangs percentiles
+et les pourcentages cumulés ? Pourquoi cet auteur mentionne 2 écarts
+type et cet autre –1,65 écart type ? Pourquoi transformer des notes
+brutes en notes standard ? À quoi sert le tableau de la loi normale ?
+Comment les personnes de l’échantillon de référence sont-elles
+choisies ? Comment utiliser un score z ?
+Pourquoi ce score ne « colle » par avec mon analyse clinique ?
+
+J’espère que ce guide apportera au praticien des clés de
+compréhension lui permettant de s’appuyer de manière juste sur les
+données psychométriques pour aider au mieux chacun de ses patients.
+
+
+
+
+View publication stats
+
