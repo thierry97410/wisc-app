@@ -5,14 +5,52 @@ from io import StringIO
 from pypdf import PdfReader
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="WISC-V Pro (Version Stable)", page_icon="🧠", layout="wide")
+st.set_page_config(page_title="WISC-V Auto-Expert", page_icon="🧠", layout="wide")
 st.title("🧠 Assistant WISC-V : Expert & Documenté")
 
+# --- CONNEXION API ---
 try:
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 except:
-    st.error("Clé API manquante.")
+    st.error("Erreur critique : Clé API manquante dans les secrets.")
     st.stop()
+
+# --- DIAGNOSTIC & SÉLECTION DU MODÈLE (NOUVEAU) ---
+with st.sidebar:
+    st.header("⚙️ Configuration IA")
+    
+    # On récupère la liste des modèles disponibles pour VOTRE clé
+    try:
+        available_models = []
+        for m in genai.list_models():
+            if 'generateContent' in m.supported_generation_methods:
+                available_models.append(m.name)
+        
+        # S'il n'y a pas de modèles 1.5, on prévient
+        model_options = [m for m in available_models if "gemini" in m]
+        
+        if not model_options:
+            st.error("Aucun modèle Gemini trouvé pour cette clé.")
+            selected_model_name = "gemini-pro" # Fallback
+        else:
+            # On met le 1.5 Flash en premier s'il existe, sinon le Pro
+            default_ix = 0
+            for i, name in enumerate(model_options):
+                if "flash" in name:
+                    default_ix = i
+                    break
+            
+            selected_model_name = st.selectbox(
+                "🤖 Modèle utilisé", 
+                model_options, 
+                index=default_ix,
+                help="Si un modèle échoue, essayez-en un autre dans la liste."
+            )
+            st.success(f"Modèle actif : {selected_model_name}")
+
+    except Exception as e:
+        st.error(f"Erreur de connexion Google : {e}")
+        st.stop()
 
 # --- FONCTION DE LECTURE (PDF & TXT) ---
 def read_file_content(file_obj, filename):
@@ -30,10 +68,10 @@ def read_file_content(file_obj, filename):
                 stringio = StringIO(file_obj.getvalue().decode("utf-8"))
                 text = stringio.read()
     except Exception as e:
-        st.error(f"Erreur lecture {filename}: {e}")
+        st.warning(f"Impossible de lire {filename}: {e}")
     return text
 
-# --- CHARGEMENT AUTOMATIQUE DOCS ---
+# --- CHARGEMENT DES DOCS ---
 knowledge_base = ""
 files_loaded = []
 for filename in os.listdir('.'):
@@ -43,16 +81,14 @@ for filename in os.listdir('.'):
             knowledge_base += f"\n--- REF: {filename} ---\n{content}\n"
             files_loaded.append(filename)
 
-# --- SIDEBAR ---
+# --- SUITE SIDEBAR ---
 with st.sidebar:
     st.header("📚 Base Documentaire")
     if files_loaded:
-        st.success(f"{len(files_loaded)} documents actifs.")
+        st.info(f"{len(files_loaded)} documents chargés.")
         with st.expander("Voir liste"):
             for f in files_loaded:
                 st.write(f"- {f}")
-    else:
-        st.info("Aucun document trouvé.")
     
     st.markdown("---")
     uploaded_files = st.file_uploader("Ajout manuel", type=['txt', 'pdf'], accept_multiple_files=True)
@@ -60,10 +96,10 @@ with st.sidebar:
         for u in uploaded_files:
             c = read_file_content(u, u.name)
             knowledge_base += f"\n--- REF SUPP: {u.name} ---\n{c}\n"
-        st.success("Documents ajoutés !")
+        st.success("Docs ajoutés !")
 
-# --- INTERFACE ---
-st.info("💡 **Consigne :** Laissez la valeur à **0** pour tout Indice ou Subtest **non calculé** ou **non administré**.")
+# --- INTERFACE PRINCIPALE ---
+st.info("💡 **Consigne :** Laissez à **0** les épreuves non administrées.")
 
 col1, col2 = st.columns([1, 1])
 
@@ -127,67 +163,54 @@ with col2:
     anamnese = st.text_area("Contexte / Anamnèse", height=200)
     observations = st.text_area("Observations pendant le test", height=200)
 
-# --- LOGIQUE DE GENERATION ---
+# --- GENERATION ---
 if st.button("✨ Analyser le profil", type="primary"):
     
-    # 1. Construction dynamique des INDICES
+    # Filtrage des données > 0
     indices_str = ""
-    indices_map = {
-        "QIT": qit, "ICV": icv, "IVS": ivs, 
-        "IRF": irf, "IMT": imt, "IVT": ivt
-    }
-    for name, score in indices_map.items():
-        if score > 0:
-            indices_str += f"- {name}: {score} (M=100, ET=15)\n"
-    if indices_str == "": indices_str = "Aucun indice global calculé."
+    for name, score in {"QIT": qit, "ICV": icv, "IVS": ivs, "IRF": irf, "IMT": imt, "IVT": ivt}.items():
+        if score > 0: indices_str += f"- {name}: {score} (M=100, ET=15)\n"
+    if not indices_str: indices_str = "Aucun indice global."
 
-    # 2. Construction dynamique des SUBTESTS
     subtests_str = ""
-    scores_map = {
+    s_map = {
         "Similitudes": sim, "Vocabulaire": voc, "Information": info, "Compréhension": comp,
-        "Cubes": cub, "Puzzles": puz,
-        "Matrices": mat, "Balances": bal, "Arithmétique": arit,
+        "Cubes": cub, "Puzzles": puz, "Matrices": mat, "Balances": bal, "Arithmétique": arit,
         "Mém. Chiffres": mem_c, "Mém. Images": mem_i, "Séquence L-C": seq,
         "Code": cod, "Symboles": sym, "Barrage": bar
     }
-    for name, score in scores_map.items():
-        if score > 0:
-            subtests_str += f"- {name}: {score} (M=10, ET=3)\n"
-    if subtests_str == "": subtests_str = "Aucun subtest saisi."
+    for name, score in s_map.items():
+        if score > 0: subtests_str += f"- {name}: {score} (M=10, ET=3)\n"
+    if not subtests_str: subtests_str = "Aucun subtest."
 
-    with st.spinner("Analyse experte en cours..."):
-        # C'EST ICI QUE NOUS AVONS CHANGÉ LE NOM DU MODÈLE POUR LA VERSION PRO
+    with st.spinner(f"Analyse en cours avec {selected_model_name}..."):
         try:
-            model = genai.GenerativeModel('gemini-1.5-pro')
+            # ON UTILISE LE MODELE CHOISI DANS LA SIDEBAR
+            model = genai.GenerativeModel(selected_model_name)
             
             prompt = f"""
             Rôle : Psychologue expert WISC-V.
-            Tâche : Rédiger la section "Évaluation Psychométrique".
+            Tâche : Rédiger l'analyse psychométrique (Partie III).
             
-            BIBLIOTHÈQUE DE RÉFÉRENCE (Analyse théorique obligatoire) :
+            BIBLIOTHÈQUE DE RÉFÉRENCE (Documents fournis) :
             {knowledge_base}
             
-            DONNÉES DU PATIENT :
+            DONNÉES PATIENT :
             - Contexte : {anamnese}
             - Observations : {observations}
-            
-            SCORES DISPONIBLES :
-            
-            ### INDICES :
-            {indices_str}
-            
-            ### SUBTESTS :
-            {subtests_str}
+            - INDICES : {indices_str}
+            - SUBTESTS : {subtests_str}
             
             CONSIGNES :
-            1. Analyse UNIQUEMENT les scores > 0 ci-dessus.
-            2. Utilise les PDF fournis pour justifier l'interprétation (hétérogénéité, implications cliniques).
+            1. Analyse UNIQUEMENT les scores présents.
+            2. Utilise les documents fournis pour justifier les hypothèses.
             3. Situe les scores en Ecarts-Types.
-            4. Synthétise les forces et faiblesses.
+            4. Synthétise forces/faiblesses et valide ou non l'homogénéité.
             """
             
             res = model.generate_content(prompt)
             st.markdown(res.text)
             
         except Exception as e:
-            st.error(f"Erreur technique : {e}")
+            st.error(f"Erreur avec ce modèle : {e}")
+            st.info("Essayez de sélectionner un autre modèle dans la liste à gauche (ex: gemini-pro ou gemini-1.5-flash-001).")
