@@ -5,8 +5,8 @@ from io import StringIO
 from pypdf import PdfReader
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="WISC-V Expert (Gen 2.5)", page_icon="🚀", layout="wide")
-st.title("🧠 Assistant WISC-V : Nouvelle Génération")
+st.set_page_config(page_title="WISC-V Expert (France)", page_icon="🇫🇷", layout="wide")
+st.title("🧠 Assistant WISC-V : Expert & Documenté")
 
 # --- CONNEXION API ---
 try:
@@ -33,37 +33,42 @@ def read_file(file_obj, filename):
     except: pass
     return text
 
-# --- SIDEBAR : DOCUMENTS ---
+# --- SIDEBAR ---
 knowledge_base = ""
 files_loaded = []
+total_chars = 0
 
 with st.sidebar:
-    st.header("📚 Bibliothèque")
+    st.header("📚 Documents")
     
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
     
     if local_files:
         st.success(f"{len(local_files)} documents détectés.")
+        st.info("💡 Astuce : Si ça plante, décochez les livres inutiles (ex: Administration).")
+        
         for f in local_files:
-            # Par défaut coché
             if st.checkbox(f"Utiliser : {f}", value=True):
                 c = read_file(f, f)
                 if c: 
                     knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
                     files_loaded.append(f)
-    else:
-        st.info("Aucun document trouvé sur le serveur.")
-
+                    total_chars += len(c)
+    
     st.divider()
     uploads = st.file_uploader("Ajout manuel (+)", type=['pdf', 'txt'], accept_multiple_files=True)
     if uploads:
         for u in uploads:
             c = read_file(u, u.name)
             knowledge_base += f"\n--- UPLOAD: {u.name} ---\n{c}\n"
+            total_chars += len(c)
             files_loaded.append(u.name)
-    
-    st.markdown("---")
-    st.caption("✅ Modèle actif : **Gemini 2.5 Flash**")
+
+    # Indicateur de poids pour vous aider
+    if total_chars > 800000:
+        st.warning(f"⚠️ Volume très lourd ({total_chars} caractères). Risque de saturation.")
+    else:
+        st.caption(f"Volume actuel : {total_chars} caractères (OK)")
 
 # --- INTERFACE ---
 col1, col2 = st.columns([1, 1])
@@ -106,9 +111,8 @@ with col2:
     obs = st.text_area("Observations", height=200, placeholder="Comportement...")
 
 # --- GENERATION ---
-if st.button("✨ Lancer l'Analyse (Gemini 2.5)", type="primary"):
+if st.button("✨ Lancer l'Analyse (Gemini 1.5)", type="primary"):
     
-    # Données
     data = "SCORES:\n"
     for k,v in {"QIT":qit,"ICV":icv,"IVS":ivs,"IRF":irf,"IMT":imt,"IVT":ivt}.items():
         if v > 0: data += f"- Indice {k}: {v} (M=100, ET=15)\n"
@@ -119,8 +123,9 @@ if st.button("✨ Lancer l'Analyse (Gemini 2.5)", type="primary"):
 
     with st.spinner("Analyse experte en cours..."):
         try:
-            # ON UTILISE LE MODÈLE QUI EST DANS VOTRE LISTE
-            model = genai.GenerativeModel('gemini-2.5-flash')
+            # RETOUR AU MODÈLE 1.5 FLASH (1 Million de tokens !)
+            # Il doit fonctionner maintenant que vous êtes en France.
+            model = genai.GenerativeModel('gemini-1.5-flash')
             
             prompt = f"""
             Tu es un psychologue expert WISC-V.
@@ -136,10 +141,9 @@ if st.button("✨ Lancer l'Analyse (Gemini 2.5)", type="primary"):
             
             CONSIGNE:
             Rédige l'analyse psychométrique (Partie III).
-            1. Vérifie la validité du QIT (Indices homogènes ou hétérogènes ?).
-            2. Justifie chaque interprétation par les textes théoriques fournis (CHC, etc.).
-            3. Croise les résultats chiffrés avec les observations (ex: anxiété, attention).
-            4. Sois rigoureux sur les termes psychométriques.
+            1. Vérifie la validité du QIT.
+            2. Justifie chaque interprétation par les textes théoriques fournis.
+            3. Croise les résultats avec les observations.
             """
             
             res = model.generate_content(prompt)
@@ -147,3 +151,5 @@ if st.button("✨ Lancer l'Analyse (Gemini 2.5)", type="primary"):
             
         except Exception as e:
             st.error(f"Erreur : {e}")
+            if "429" in str(e):
+                st.warning("⚠️ Trop de documents ! Décochez le 'Manuel d'Administration' dans la barre de gauche, il est très lourd et inutile pour l'interprétation.")
