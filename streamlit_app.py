@@ -8,8 +8,8 @@ from docx import Document
 from datetime import date
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="WISC-V Expert Pro", page_icon="🧠", layout="wide")
-st.title("🧠 Assistant WISC-V : Expert & Indices Complémentaires")
+st.set_page_config(page_title="WISC-V Expert Pro", page_icon="📝", layout="wide")
+st.title("🧠 Assistant WISC-V : Rédaction Différée")
 
 # --- CONNEXION ---
 try:
@@ -20,14 +20,17 @@ except:
 
 # --- FONCTION CALCUL AGE ---
 def calculer_age(d_naiss, d_bilan):
-    if d_bilan < d_naiss: return 0, 0
-    ans = d_bilan.year - d_naiss.year
-    mois = d_bilan.month - d_naiss.month
-    if d_bilan.day < d_naiss.day: mois -= 1
-    if mois < 0:
-        ans -= 1
-        mois += 12
-    return ans, mois
+    try:
+        if d_bilan < d_naiss: return 0, 0
+        ans = d_bilan.year - d_naiss.year
+        mois = d_bilan.month - d_naiss.month
+        if d_bilan.day < d_naiss.day: mois -= 1
+        if mois < 0:
+            ans -= 1
+            mois += 12
+        return ans, mois
+    except:
+        return 0, 0
 
 # --- FONCTION LECTURE ---
 def read_file(file_obj, filename):
@@ -51,7 +54,7 @@ def read_file(file_obj, filename):
 def create_docx(text_content, prenom, age_str):
     doc = Document()
     doc.add_heading(f'Analyse WISC-V : {prenom}', 0)
-    doc.add_paragraph(f"Âge : {age_str}")
+    doc.add_paragraph(f"Âge au bilan : {age_str}")
     doc.add_paragraph(text_content)
     bio = io.BytesIO()
     doc.save(bio)
@@ -80,18 +83,55 @@ with st.sidebar:
     elif total_chars > 0: st.success("✅ Poids OK")
 
 # --- INTERFACE ---
-st.subheader("1. Identité")
-c1, c2, c3 = st.columns(3)
-with c1:
-    prenom = st.text_input("Prénom", placeholder="Ex: Léo")
+st.subheader("1. Identité & Chronologie")
+
+col_id1, col_id2, col_id3 = st.columns(3)
+
+# COLONNE 1 : L'ENFANT
+with col_id1:
+    st.markdown("##### 👤 L'Enfant")
+    prenom = st.text_input("Prénom", placeholder="Ex: Lucas")
     sexe = st.radio("Sexe", ["Garçon", "Fille"], horizontal=True)
-with c2:
-    d_naiss = st.date_input("Né(e) le", value=date(2015, 1, 1), min_value=date(1900,1,1))
     lateralite = st.radio("Latéralité", ["Droitier", "Gaucher"], horizontal=True)
-with c3:
-    d_test = st.date_input("Date Bilan", value=date.today())
+
+# COLONNE 2 : DATE DE NAISSANCE
+with col_id2:
+    st.markdown("##### 🎂 Date de Naissance")
+    cn_jour, cn_mois, cn_annee = st.columns([1, 1, 1.5])
+    with cn_jour:
+        jj_n = st.number_input("Jour", 1, 31, 1, key="j_n")
+    with cn_mois:
+        mm_n = st.number_input("Mois", 1, 12, 1, key="m_n")
+    with cn_annee:
+        aa_n = st.number_input("Année", 2000, 2030, 2015, key="a_n")
+    
+    try:
+        d_naiss = date(aa_n, mm_n, jj_n)
+    except:
+        st.error("Date invalide")
+        d_naiss = date.today()
+
+# COLONNE 3 : DATE DU BILAN (Modifiée en 3 cases)
+with col_id3:
+    st.markdown("##### 📅 Date du Bilan (Passation)")
+    cb_jour, cb_mois, cb_annee = st.columns([1, 1, 1.5])
+    with cb_jour:
+        # On met par défaut la date d'aujourd'hui, mais modifiable facilement
+        jj_b = st.number_input("Jour", 1, 31, date.today().day, key="j_b")
+    with cb_mois:
+        mm_b = st.number_input("Mois", 1, 12, date.today().month, key="m_b")
+    with cb_annee:
+        aa_b = st.number_input("Année", 2020, 2030, date.today().year, key="a_b")
+    
+    try:
+        d_test = date(aa_b, mm_b, jj_b)
+    except:
+        st.error("Date invalide")
+        d_test = date.today()
+    
+    # Résultat Calcul
     ans, mois = calculer_age(d_naiss, d_test)
-    st.markdown(f"### {ans} ans {mois} mois")
+    st.success(f"Âge au bilan :\n### {ans} ans et {mois} mois")
 
 st.divider()
 
@@ -99,7 +139,6 @@ col_scores, col_inputs = st.columns([1, 1])
 
 with col_scores:
     st.subheader("2. Saisie des Subtests (Notes Standard)")
-    # Saisie directe pour calcul live
     sc1, sc2 = st.columns(2)
     with sc1:
         sim = st.number_input("Similitudes", 0, 19, 0)
@@ -120,15 +159,13 @@ with col_scores:
         bar = st.number_input("Barrage", 0, 19, 0)
 
 with col_inputs:
-    st.subheader("3. Indices Principaux & Complémentaires")
+    st.subheader("3. Indices")
     
-    # CALCUL AUTOMATIQUE DES SOMMES POUR AIDE
     somme_iag = sim + voc + cub + mat + bal
     somme_icc = memc + memi + sym + cod
-    # INV = Cubes + Puzzles + Matrices + Balances + Mém Images + Code
     somme_inv = cub + puz + mat + bal + memi + cod
     
-    st.info(f"💡 **Sommes calculées (Regarde tes tables) :**\n- Pour IAG : **{somme_iag}**\n- Pour ICC : **{somme_icc}**\n- Pour INV : **{somme_inv}**")
+    st.warning(f"🧮 **Aide au Calcul (Sommes) :**\n- IAG = **{somme_iag}**\n- ICC = **{somme_icc}**\n- INV = **{somme_inv}**")
     
     ic1, ic2 = st.columns(2)
     with ic1:
@@ -140,7 +177,6 @@ with col_inputs:
         imt = st.number_input("IMT (Mémoire)", 0, 160, 0)
         ivt = st.number_input("IVT (Vitesse)", 0, 160, 0)
         st.markdown("---")
-        # Indices complémentaires
         iag = st.number_input("IAG (Aptitude G.)", 0, 160, 0)
         icc = st.number_input("ICC (Comp. Cogn.)", 0, 160, 0)
         inv = st.number_input("INV (Non Verbal)", 0, 160, 0)
@@ -155,10 +191,9 @@ if st.button(f"✨ Analyser le profil de {prenom if prenom else 'l\'enfant'}", t
     
     if total_chars > LIMIT_CHARS: st.error("Trop lourd !"); st.stop()
 
-    infos = f"Enfant: {prenom}, {sexe}. {ans} ans {mois} mois. Latéralité: {lateralite}."
+    infos = f"Enfant: {prenom}, {sexe}. Age au bilan: {ans} ans et {mois} mois. Latéralité: {lateralite}."
     
     data = "SCORES:\n"
-    # Indices
     for k,v in {"QIT":qit,"ICV":icv,"IVS":ivs,"IRF":irf,"IMT":imt,"IVT":ivt}.items():
         if v > 0: data += f"- Indice {k}: {v}\n"
     for k,v in {"IAG":iag, "ICC":icc, "INV (Non Verbal)":inv}.items():
@@ -168,7 +203,7 @@ if st.button(f"✨ Analyser le profil de {prenom if prenom else 'l\'enfant'}", t
     for k,v in sub_map.items():
         if v > 0: data += f"- {k}: {v}\n"
 
-    with st.spinner(f"Rédaction experte en cours..."):
+    with st.spinner(f"Rédaction experte pour {prenom}..."):
         try:
             model = genai.GenerativeModel('gemini-2.5-flash')
             prompt = f"""
@@ -180,17 +215,11 @@ if st.button(f"✨ Analyser le profil de {prenom if prenom else 'l\'enfant'}", t
             {data}
             SOURCES: {knowledge_base}
             
-            CONSIGNE DE RÉDACTION (Partie Interprétation):
-            1. Analyse l'homogénéité du QIT.
-            
-            2. FOCUS SUR LES INDICES COMPLÉMENTAIRES (Si fournis) :
-               - IAG vs ICC : Vérifie si le potentiel de raisonnement (IAG) est masqué par les fragilités instrumentales (ICC).
-               - ANALYSE INV : Si l'INV est fourni ({inv}), compare-le à l'ICV. Si l'ICV est faible (ou trouble du langage), souligne que l'INV est une mesure plus fiable de l'intelligence fluide.
-               
-            3. CROISEMENT CLINIQUE :
-               - Lie les chutes de scores aux observations (ex: anxiété, agitation, problème moteur si gaucher + échec Code).
-               
-            Utilise un ton professionnel et bienveillant.
+            CONSIGNE DE RÉDACTION:
+            1. Commence par indiquer l'âge précis au moment du bilan.
+            2. Analyse l'homogénéité du QIT.
+            3. Traite les indices complémentaires (IAG, ICC, INV) pour affiner le profil.
+            4. Fais des liens entre clinique (anxiété, lenteur...) et scores.
             """
             
             res = model.generate_content(prompt)
