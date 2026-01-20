@@ -4,11 +4,12 @@ import os
 import io
 from io import StringIO
 from pypdf import PdfReader
-from docx import Document # L'outil pour Word
+from docx import Document
+from datetime import date
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="WISC-V Pro", page_icon="📝", layout="wide")
-st.title("🧠 Assistant WISC-V : Analyse & Export")
+st.set_page_config(page_title="WISC-V Complet", page_icon="📅", layout="wide")
+st.title("🧠 Assistant WISC-V : Données Complètes")
 
 # --- CONNEXION ---
 try:
@@ -17,7 +18,20 @@ except:
     st.error("Clé API manquante.")
     st.stop()
 
-# --- LECTURE ---
+# --- FONCTION CALCUL AGE ---
+def calculer_age(d_naiss, d_bilan):
+    if d_bilan < d_naiss:
+        return 0, 0
+    ans = d_bilan.year - d_naiss.year
+    mois = d_bilan.month - d_naiss.month
+    if d_bilan.day < d_naiss.day:
+        mois -= 1
+    if mois < 0:
+        ans -= 1
+        mois += 12
+    return ans, mois
+
+# --- FONCTION LECTURE ---
 def read_file(file_obj, filename):
     text = ""
     try:
@@ -35,13 +49,11 @@ def read_file(file_obj, filename):
     except: pass
     return text
 
-# --- FONCTION EXPORT WORD ---
-def create_docx(text_content):
+# --- EXPORT WORD ---
+def create_docx(text_content, identite):
     doc = Document()
-    doc.add_heading('Analyse WISC-V', 0)
-    # On ajoute le texte généré
+    doc.add_heading(f'Compte Rendu WISC-V : {identite}', 0)
     doc.add_paragraph(text_content)
-    # On sauvegarde en mémoire (virtuelle)
     bio = io.BytesIO()
     doc.save(bio)
     return bio
@@ -53,12 +65,13 @@ LIMIT_CHARS = 800000
 
 with st.sidebar:
     st.header("📚 Bibliothèque")
-    st.caption("Gardez la jauge VERTE (Gemini 2.5 Flash).")
+    st.caption("Gardez la jauge VERTE (Gemini 2.5).")
     
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
     
     if local_files:
         for f in local_files:
+            # Par défaut décoché pour sécurité
             if st.checkbox(f"📄 {f}", value=False):
                 c = read_file(f, f)
                 knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
@@ -71,11 +84,34 @@ with st.sidebar:
     elif total_chars > 0:
         st.success("✅ Poids OK")
 
-# --- INTERFACE ---
+# --- INTERFACE PRINCIPALE ---
+
+# 1. IDENTITÉ & CALCUL D'ÂGE
+st.subheader("1. Identité & Contexte")
+col_id1, col_id2, col_id3 = st.columns(3)
+
+with col_id1:
+    d_naiss = st.date_input("Date de naissance", value=date(2014, 1, 1), min_value=date(1900, 1, 1))
+    sexe = st.radio("Sexe", ["Garçon", "Fille"], horizontal=True)
+
+with col_id2:
+    d_test = st.date_input("Date du bilan", value=date.today())
+    lateralite = st.radio("Latéralité", ["Droitier", "Gaucher", "Ambidextre"], horizontal=True)
+
+with col_id3:
+    # Calcul automatique
+    ans, mois = calculer_age(d_naiss, d_test)
+    st.markdown(f"### 🎂 Âge au bilan :")
+    st.markdown(f"## **{ans} ans et {mois} mois**")
+    if ans < 6 or ans > 16:
+        st.warning("⚠️ Attention : Hors tranche d'âge standard WISC-V (6-16).")
+
+st.divider()
+
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    st.subheader("1. Scores")
+    st.subheader("2. Scores (Notes Standard)")
     c1, c2 = st.columns(2)
     with c1:
         qit = st.number_input("QIT", 0, 160, 0)
@@ -86,7 +122,7 @@ with col1:
         imt = st.number_input("IMT", 0, 160, 0)
         ivt = st.number_input("IVT", 0, 160, 0)
 
-    with st.expander("Subtests"):
+    with st.expander("Saisir les Subtests"):
         sc1, sc2 = st.columns(2)
         with sc1:
             sim = st.number_input("Similitudes", 0, 19, 0)
@@ -107,16 +143,25 @@ with col1:
             bar = st.number_input("Barrage", 0, 19, 0)
 
 with col2:
-    st.subheader("2. Clinique")
-    ana = st.text_area("Anamnèse", height=150)
-    obs = st.text_area("Observations", height=150)
+    st.subheader("3. Clinique")
+    ana = st.text_area("Anamnèse & Motif", height=150, placeholder="Motif de la demande, histoire scolaire...")
+    obs = st.text_area("Observations (Comportement)", height=150, placeholder="Fatigabilité, coopération, anxiété...")
 
 # --- GENERATION ---
-if st.button("✨ Analyser (Gemini 2.5)", type="primary"):
+if st.button("✨ Analyser le profil", type="primary"):
     
     if total_chars > LIMIT_CHARS:
         st.error("Décochez des livres à gauche !")
         st.stop()
+
+    # Formatage des données pour l'IA
+    infos_patient = f"""
+    - Sexe : {sexe}
+    - Latéralité : {lateralite}
+    - Date de naissance : {d_naiss.strftime('%d/%m/%Y')}
+    - Date du bilan : {d_test.strftime('%d/%m/%Y')}
+    - AGE CALCULÉ : {ans} ans et {mois} mois.
+    """
 
     data = "SCORES:\n"
     for k,v in {"QIT":qit,"ICV":icv,"IVS":ivs,"IRF":irf,"IMT":imt,"IVT":ivt}.items():
@@ -128,21 +173,42 @@ if st.button("✨ Analyser (Gemini 2.5)", type="primary"):
     with st.spinner("Rédaction en cours..."):
         try:
             model = genai.GenerativeModel('gemini-2.5-flash')
-            prompt = f"""Rôle: Expert WISC-V. SOURCES: {knowledge_base}. CAS: {ana} / {obs} / {data}. TÂCHE: Rédiger analyse psychométrique détaillée (Partie III). Justifier avec sources."""
+            prompt = f"""
+            Rôle: Psychologue Expert WISC-V.
+            
+            DONNÉES ADMINISTRATIVES :
+            {infos_patient}
+            
+            CAS CLINIQUE :
+            - Anamnèse: {ana}
+            - Obs: {obs}
+            - Résultats:
+            {data}
+            
+            SOURCES THÉORIQUES DISPONIBLES :
+            {knowledge_base}
+            
+            CONSIGNE :
+            Rédige l'analyse psychométrique (Partie III du bilan).
+            1. Commence par une phrase d'intro citant l'âge exact ({ans} ans {mois} mois) et la latéralité si pertinente pour les épreuves graphiques.
+            2. Analyse les scores en utilisant les sources théoriques.
+            3. Si l'enfant est gaucher et a échoué au Code ou Barrage, vérifie si cela peut être une cause (gêne motrice) et mentionne-le.
+            """
             
             res = model.generate_content(prompt)
             
-            # Affichage écran
+            # Affichage
             st.markdown("### Résultat :")
             st.markdown(res.text)
             
-            # Création du bouton Word
-            docx_file = create_docx(res.text)
+            # Bouton Word
+            nom_fichier = f"WISC_{ans}ans{mois}m.docx"
+            docx_file = create_docx(res.text, f"{ans} ans {mois} mois")
             
             st.download_button(
                 label="📄 Télécharger en Word (.docx)",
                 data=docx_file,
-                file_name="Analyse_WISC.docx",
+                file_name=nom_fichier,
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
             
