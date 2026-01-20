@@ -1,12 +1,14 @@
 import streamlit as st
 import google.generativeai as genai
 import os
+import io
 from io import StringIO
 from pypdf import PdfReader
+from docx import Document # L'outil pour Word
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="WISC-V Futur", page_icon="🚀", layout="wide")
-st.title("🧠 Assistant WISC-V : Modèle Expérimental")
+st.set_page_config(page_title="WISC-V Pro", page_icon="📝", layout="wide")
+st.title("🧠 Assistant WISC-V : Analyse & Export")
 
 # --- CONNEXION ---
 try:
@@ -33,36 +35,41 @@ def read_file(file_obj, filename):
     except: pass
     return text
 
-# --- SIDEBAR (Gestion du Poids) ---
+# --- FONCTION EXPORT WORD ---
+def create_docx(text_content):
+    doc = Document()
+    doc.add_heading('Analyse WISC-V', 0)
+    # On ajoute le texte généré
+    doc.add_paragraph(text_content)
+    # On sauvegarde en mémoire (virtuelle)
+    bio = io.BytesIO()
+    doc.save(bio)
+    return bio
+
+# --- SIDEBAR (Gestion Poids) ---
 knowledge_base = ""
 total_chars = 0
-LIMIT_CHARS = 800000 # Environ 200k tokens (marge de sécurité pour le 2.5 Flash)
+LIMIT_CHARS = 800000
 
 with st.sidebar:
-    st.header("📚 Bibliothèque & Quota")
-    st.caption("Le modèle Gemini 2.5 est puissant mais limité en quantité. **Gardez la jauge dans le VERT.**")
+    st.header("📚 Bibliothèque")
+    st.caption("Gardez la jauge VERTE (Gemini 2.5 Flash).")
     
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
     
-    # Sélecteur
     if local_files:
         for f in local_files:
-            # Par défaut, on ne coche RIEN pour te laisser choisir
             if st.checkbox(f"📄 {f}", value=False):
                 c = read_file(f, f)
                 knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
                 total_chars += len(c)
     
     st.divider()
-    
-    # JAUGE DE POIDS
-    st.markdown(f"**Volume actuel : {total_chars} caractères**")
+    st.markdown(f"**Poids : {total_chars} car.**")
     if total_chars > LIMIT_CHARS:
-        st.error(f"🛑 STOP ! Trop lourd ({total_chars}). Décochez des livres sinon erreur 429.")
+        st.error("🛑 Trop lourd !")
     elif total_chars > 0:
-        st.success("✅ Volume OK. Vous pouvez lancer.")
-    else:
-        st.info("Cochez au moins 1 livre.")
+        st.success("✅ Poids OK")
 
 # --- INTERFACE ---
 col1, col2 = st.columns([1, 1])
@@ -85,7 +92,7 @@ with col1:
             sim = st.number_input("Similitudes", 0, 19, 0)
             voc = st.number_input("Vocabulaire", 0, 19, 0)
             info = st.number_input("Info", 0, 19, 0)
-            comp = st.number_input("Compréhension", 0, 19, 0)
+            comp = st.number_input("Comp", 0, 19, 0)
             cub = st.number_input("Cubes", 0, 19, 0)
             puz = st.number_input("Puzzles", 0, 19, 0)
         with sc2:
@@ -94,7 +101,7 @@ with col1:
             arit = st.number_input("Arithmétique", 0, 19, 0)
             memc = st.number_input("Mém. Chiffres", 0, 19, 0)
             memi = st.number_input("Mém. Images", 0, 19, 0)
-            seq = st.number_input("Séquence L-C", 0, 19, 0)
+            seq = st.number_input("Séquence", 0, 19, 0)
             cod = st.number_input("Code", 0, 19, 0)
             sym = st.number_input("Symboles", 0, 19, 0)
             bar = st.number_input("Barrage", 0, 19, 0)
@@ -105,10 +112,10 @@ with col2:
     obs = st.text_area("Observations", height=150)
 
 # --- GENERATION ---
-if st.button("✨ Analyser (Gemini 2.5 Flash)", type="primary"):
+if st.button("✨ Analyser (Gemini 2.5)", type="primary"):
     
     if total_chars > LIMIT_CHARS:
-        st.error("Volume trop élevé. Décochez des documents à gauche.")
+        st.error("Décochez des livres à gauche !")
         st.stop()
 
     data = "SCORES:\n"
@@ -118,32 +125,26 @@ if st.button("✨ Analyser (Gemini 2.5 Flash)", type="primary"):
     for k,v in sub_map.items():
         if v > 0: data += f"- {k}: {v}\n"
 
-    with st.spinner("Analyse futuriste en cours..."):
+    with st.spinner("Rédaction en cours..."):
         try:
-            # ON UTILISE CELUI QUE TU AS DANS TA LISTE
             model = genai.GenerativeModel('gemini-2.5-flash')
-            
-            prompt = f"""
-            Rôle: Expert WISC-V.
-            
-            SOURCES:
-            {knowledge_base}
-            
-            DONNÉES:
-            - Anamnèse: {ana}
-            - Obs: {obs}
-            - {data}
-            
-            CONSIGNE:
-            Rédige l'analyse psychométrique (Partie III).
-            Utilise les sources pour justifier les hypothèses.
-            Sois précis.
-            """
+            prompt = f"""Rôle: Expert WISC-V. SOURCES: {knowledge_base}. CAS: {ana} / {obs} / {data}. TÂCHE: Rédiger analyse psychométrique détaillée (Partie III). Justifier avec sources."""
             
             res = model.generate_content(prompt)
+            
+            # Affichage écran
+            st.markdown("### Résultat :")
             st.markdown(res.text)
+            
+            # Création du bouton Word
+            docx_file = create_docx(res.text)
+            
+            st.download_button(
+                label="📄 Télécharger en Word (.docx)",
+                data=docx_file,
+                file_name="Analyse_WISC.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            )
             
         except Exception as e:
             st.error(f"Erreur : {e}")
-            if "429" in str(e):
-                st.error("💀 QUOTA DÉPASSÉ : Décochez encore un livre, c'est trop lourd pour ce modèle !")
