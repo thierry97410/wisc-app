@@ -8,8 +8,8 @@ from docx import Document
 from datetime import date
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="WISC-V Complet", page_icon="📅", layout="wide")
-st.title("🧠 Assistant WISC-V : Données Complètes")
+st.set_page_config(page_title="WISC-V Expert", page_icon="🧒", layout="wide")
+st.title("🧠 Assistant WISC-V : Analyse Personnalisée")
 
 # --- CONNEXION ---
 try:
@@ -50,9 +50,10 @@ def read_file(file_obj, filename):
     return text
 
 # --- EXPORT WORD ---
-def create_docx(text_content, identite):
+def create_docx(text_content, prenom, age_str):
     doc = Document()
-    doc.add_heading(f'Compte Rendu WISC-V : {identite}', 0)
+    doc.add_heading(f'Analyse WISC-V : {prenom}', 0)
+    doc.add_paragraph(f"Âge : {age_str}")
     doc.add_paragraph(text_content)
     bio = io.BytesIO()
     doc.save(bio)
@@ -65,53 +66,50 @@ LIMIT_CHARS = 800000
 
 with st.sidebar:
     st.header("📚 Bibliothèque")
-    st.caption("Gardez la jauge VERTE (Gemini 2.5).")
+    st.caption("Cochez uniquement le nécessaire (Manuel Interprétation).")
     
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
     
     if local_files:
         for f in local_files:
-            # Par défaut décoché pour sécurité
+            # Par défaut décoché
             if st.checkbox(f"📄 {f}", value=False):
                 c = read_file(f, f)
                 knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
                 total_chars += len(c)
     
     st.divider()
-    st.markdown(f"**Poids : {total_chars} car.**")
     if total_chars > LIMIT_CHARS:
-        st.error("🛑 Trop lourd !")
+        st.error(f"🛑 Trop lourd ({total_chars}) ! Décochez.")
     elif total_chars > 0:
         st.success("✅ Poids OK")
 
 # --- INTERFACE PRINCIPALE ---
 
-# 1. IDENTITÉ & CALCUL D'ÂGE
-st.subheader("1. Identité & Contexte")
+# 1. IDENTITÉ
+st.subheader("1. Identité de l'enfant")
 col_id1, col_id2, col_id3 = st.columns(3)
 
 with col_id1:
-    d_naiss = st.date_input("Date de naissance", value=date(2014, 1, 1), min_value=date(1900, 1, 1))
+    prenom = st.text_input("Prénom", placeholder="Ex: Lucas")
     sexe = st.radio("Sexe", ["Garçon", "Fille"], horizontal=True)
 
 with col_id2:
-    d_test = st.date_input("Date du bilan", value=date.today())
-    lateralite = st.radio("Latéralité", ["Droitier", "Gaucher", "Ambidextre"], horizontal=True)
+    d_naiss = st.date_input("Date de naissance", value=date(2015, 1, 1), min_value=date(1900, 1, 1))
+    lateralite = st.radio("Latéralité", ["Droitier", "Gaucher"], horizontal=True)
 
 with col_id3:
+    d_test = st.date_input("Date du bilan", value=date.today())
     # Calcul automatique
     ans, mois = calculer_age(d_naiss, d_test)
-    st.markdown(f"### 🎂 Âge au bilan :")
-    st.markdown(f"## **{ans} ans et {mois} mois**")
-    if ans < 6 or ans > 16:
-        st.warning("⚠️ Attention : Hors tranche d'âge standard WISC-V (6-16).")
+    st.markdown(f"### {ans} ans et {mois} mois")
 
 st.divider()
 
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    st.subheader("2. Scores (Notes Standard)")
+    st.subheader("2. Scores")
     c1, c2 = st.columns(2)
     with c1:
         qit = st.number_input("QIT", 0, 160, 0)
@@ -122,7 +120,7 @@ with col1:
         imt = st.number_input("IMT", 0, 160, 0)
         ivt = st.number_input("IVT", 0, 160, 0)
 
-    with st.expander("Saisir les Subtests"):
+    with st.expander("Subtests (Notes Standard)"):
         sc1, sc2 = st.columns(2)
         with sc1:
             sim = st.number_input("Similitudes", 0, 19, 0)
@@ -144,25 +142,19 @@ with col1:
 
 with col2:
     st.subheader("3. Clinique")
-    ana = st.text_area("Anamnèse & Motif", height=150, placeholder="Motif de la demande, histoire scolaire...")
-    obs = st.text_area("Observations (Comportement)", height=150, placeholder="Fatigabilité, coopération, anxiété...")
+    ana = st.text_area("Anamnèse", height=150, placeholder="Motif, histoire scolaire, familiale...")
+    obs = st.text_area("Observations", height=150, placeholder="Comportement pendant les épreuves...")
 
 # --- GENERATION ---
-if st.button("✨ Analyser le profil", type="primary"):
+if st.button(f"✨ Analyser le profil de {prenom if prenom else 'l\'enfant'}", type="primary"):
     
     if total_chars > LIMIT_CHARS:
-        st.error("Décochez des livres à gauche !")
+        st.error("Trop de documents cochés !")
         st.stop()
 
-    # Formatage des données pour l'IA
-    infos_patient = f"""
-    - Sexe : {sexe}
-    - Latéralité : {lateralite}
-    - Date de naissance : {d_naiss.strftime('%d/%m/%Y')}
-    - Date du bilan : {d_test.strftime('%d/%m/%Y')}
-    - AGE CALCULÉ : {ans} ans et {mois} mois.
-    """
-
+    # Données compilées
+    infos = f"Enfant: {prenom}, {sexe}. {ans} ans et {mois} mois. Latéralité: {lateralite}."
+    
     data = "SCORES:\n"
     for k,v in {"QIT":qit,"ICV":icv,"IVS":ivs,"IRF":irf,"IMT":imt,"IVT":ivt}.items():
         if v > 0: data += f"- {k}: {v}\n"
@@ -170,45 +162,37 @@ if st.button("✨ Analyser le profil", type="primary"):
     for k,v in sub_map.items():
         if v > 0: data += f"- {k}: {v}\n"
 
-    with st.spinner("Rédaction en cours..."):
+    with st.spinner(f"Rédaction de l'analyse pour {prenom}..."):
         try:
             model = genai.GenerativeModel('gemini-2.5-flash')
             prompt = f"""
-            Rôle: Psychologue Expert WISC-V.
+            Rôle: Expert WISC-V.
+            CONTEXTE: {infos}
+            ANAMNÈSE: {ana}
+            OBSERVATIONS: {obs}
+            RÉSULTATS: {data}
+            SOURCES: {knowledge_base}
             
-            DONNÉES ADMINISTRATIVES :
-            {infos_patient}
-            
-            CAS CLINIQUE :
-            - Anamnèse: {ana}
-            - Obs: {obs}
-            - Résultats:
-            {data}
-            
-            SOURCES THÉORIQUES DISPONIBLES :
-            {knowledge_base}
-            
-            CONSIGNE :
-            Rédige l'analyse psychométrique (Partie III du bilan).
-            1. Commence par une phrase d'intro citant l'âge exact ({ans} ans {mois} mois) et la latéralité si pertinente pour les épreuves graphiques.
-            2. Analyse les scores en utilisant les sources théoriques.
-            3. Si l'enfant est gaucher et a échoué au Code ou Barrage, vérifie si cela peut être une cause (gêne motrice) et mentionne-le.
+            CONSIGNE:
+            Rédige l'interprétation des résultats.
+            Utilise le prénom "{prenom}" pour rendre le texte humain.
+            Justifie tes hypothèses avec les sources théoriques.
+            Sois vigilant sur les liens entre résultats et comportement (ex: agitation et indices de vitesse).
             """
             
             res = model.generate_content(prompt)
             
-            # Affichage
             st.markdown("### Résultat :")
             st.markdown(res.text)
             
-            # Bouton Word
-            nom_fichier = f"WISC_{ans}ans{mois}m.docx"
-            docx_file = create_docx(res.text, f"{ans} ans {mois} mois")
+            # Nom du fichier propre (ex: Analyse_Lucas.docx)
+            filename = f"Analyse_{prenom}_{ans}ans.docx" if prenom else "Analyse_WISC.docx"
+            docx_file = create_docx(res.text, prenom, f"{ans} ans {mois} mois")
             
             st.download_button(
-                label="📄 Télécharger en Word (.docx)",
+                label="📄 Télécharger en Word",
                 data=docx_file,
-                file_name=nom_fichier,
+                file_name=filename,
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
             
