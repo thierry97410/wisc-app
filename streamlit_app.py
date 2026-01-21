@@ -8,8 +8,8 @@ from docx import Document
 from datetime import date
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="WISC-V Expert Pro", page_icon="📝", layout="wide")
-st.title("🧠 Assistant WISC-V : Rédaction Différée")
+st.set_page_config(page_title="WISC-V Expert Pro", page_icon="🎓", layout="wide")
+st.title("🧠 Assistant WISC-V : Analyse & Orientations")
 
 # --- CONNEXION ---
 try:
@@ -53,7 +53,7 @@ def read_file(file_obj, filename):
 # --- EXPORT WORD ---
 def create_docx(text_content, prenom, age_str):
     doc = Document()
-    doc.add_heading(f'Analyse WISC-V : {prenom}', 0)
+    doc.add_heading(f'Compte Rendu WISC-V : {prenom}', 0)
     doc.add_paragraph(f"Âge au bilan : {age_str}")
     doc.add_paragraph(text_content)
     bio = io.BytesIO()
@@ -87,14 +87,14 @@ st.subheader("1. Identité & Chronologie")
 
 col_id1, col_id2, col_id3 = st.columns(3)
 
-# COLONNE 1 : L'ENFANT
+# ENFANT
 with col_id1:
     st.markdown("##### 👤 L'Enfant")
     prenom = st.text_input("Prénom", placeholder="Ex: Lucas")
     sexe = st.radio("Sexe", ["Garçon", "Fille"], horizontal=True)
     lateralite = st.radio("Latéralité", ["Droitier", "Gaucher"], horizontal=True)
 
-# COLONNE 2 : DATE DE NAISSANCE
+# NAISSANCE (3 cases)
 with col_id2:
     st.markdown("##### 🎂 Date de Naissance")
     cn_jour, cn_mois, cn_annee = st.columns([1, 1, 1.5])
@@ -104,32 +104,22 @@ with col_id2:
         mm_n = st.number_input("Mois", 1, 12, 1, key="m_n")
     with cn_annee:
         aa_n = st.number_input("Année", 2000, 2030, 2015, key="a_n")
-    
-    try:
-        d_naiss = date(aa_n, mm_n, jj_n)
-    except:
-        st.error("Date invalide")
-        d_naiss = date.today()
+    try: d_naiss = date(aa_n, mm_n, jj_n)
+    except: d_naiss = date.today()
 
-# COLONNE 3 : DATE DU BILAN (Modifiée en 3 cases)
+# BILAN (3 cases)
 with col_id3:
-    st.markdown("##### 📅 Date du Bilan (Passation)")
+    st.markdown("##### 📅 Date du Bilan")
     cb_jour, cb_mois, cb_annee = st.columns([1, 1, 1.5])
     with cb_jour:
-        # On met par défaut la date d'aujourd'hui, mais modifiable facilement
         jj_b = st.number_input("Jour", 1, 31, date.today().day, key="j_b")
     with cb_mois:
         mm_b = st.number_input("Mois", 1, 12, date.today().month, key="m_b")
     with cb_annee:
         aa_b = st.number_input("Année", 2020, 2030, date.today().year, key="a_b")
+    try: d_test = date(aa_b, mm_b, jj_b)
+    except: d_test = date.today()
     
-    try:
-        d_test = date(aa_b, mm_b, jj_b)
-    except:
-        st.error("Date invalide")
-        d_test = date.today()
-    
-    # Résultat Calcul
     ans, mois = calculer_age(d_naiss, d_test)
     st.success(f"Âge au bilan :\n### {ans} ans et {mois} mois")
 
@@ -165,7 +155,7 @@ with col_inputs:
     somme_icc = memc + memi + sym + cod
     somme_inv = cub + puz + mat + bal + memi + cod
     
-    st.warning(f"🧮 **Aide au Calcul (Sommes) :**\n- IAG = **{somme_iag}**\n- ICC = **{somme_icc}**\n- INV = **{somme_inv}**")
+    st.warning(f"🧮 **Aide Calcul (Sommes) :**\n- IAG = **{somme_iag}**\n- ICC = **{somme_icc}**\n- INV = **{somme_inv}**")
     
     ic1, ic2 = st.columns(2)
     with ic1:
@@ -182,32 +172,32 @@ with col_inputs:
         inv = st.number_input("INV (Non Verbal)", 0, 160, 0)
 
 st.divider()
-st.subheader("4. Clinique")
-ana = st.text_area("Anamnèse", height=100)
-obs = st.text_area("Observations", height=100)
+st.subheader("4. Clinique & Scolarité")
+ana = st.text_area("Anamnèse & Scolarité actuelle", height=100, placeholder="Ex: Enfant en CM1, difficultés lecture, suivi ortho...")
+obs = st.text_area("Observations Comportementales", height=100, placeholder="Agitation, anxiété, opposition, fatigabilité...")
 
 # --- GENERATION ---
-if st.button(f"✨ Analyser le profil de {prenom if prenom else 'l\'enfant'}", type="primary"):
+if st.button(f"✨ Analyser et Préconiser pour {prenom if prenom else 'l\'enfant'}", type="primary"):
     
     if total_chars > LIMIT_CHARS: st.error("Trop lourd !"); st.stop()
 
-    infos = f"Enfant: {prenom}, {sexe}. Age au bilan: {ans} ans et {mois} mois. Latéralité: {lateralite}."
+    infos = f"Enfant: {prenom}, {sexe}. Age bilan: {ans} ans {mois} mois. Latéralité: {lateralite}."
     
     data = "SCORES:\n"
     for k,v in {"QIT":qit,"ICV":icv,"IVS":ivs,"IRF":irf,"IMT":imt,"IVT":ivt}.items():
         if v > 0: data += f"- Indice {k}: {v}\n"
     for k,v in {"IAG":iag, "ICC":icc, "INV (Non Verbal)":inv}.items():
         if v > 0: data += f"- Indice Complémentaire {k}: {v}\n"
-        
+    
     sub_map = {"Sim":sim, "Voc":voc, "Info":info, "Comp":comp, "Cub":cub, "Puz":puz, "Mat":mat, "Bal":bal, "Arit":arit, "MemC":memc, "MemI":memi, "Seq":seq, "Cod":cod, "Sym":sym, "Bar":bar}
     for k,v in sub_map.items():
         if v > 0: data += f"- {k}: {v}\n"
 
-    with st.spinner(f"Rédaction experte pour {prenom}..."):
+    with st.spinner(f"Rédaction de l'analyse et des orientations..."):
         try:
             model = genai.GenerativeModel('gemini-2.5-flash')
             prompt = f"""
-            Rôle: Expert WISC-V.
+            Rôle: Psychologue Expert WISC-V.
             CONTEXTE: {infos}
             ANAMNÈSE: {ana}
             OBSERVATIONS: {obs}
@@ -215,18 +205,31 @@ if st.button(f"✨ Analyser le profil de {prenom if prenom else 'l\'enfant'}", t
             {data}
             SOURCES: {knowledge_base}
             
-            CONSIGNE DE RÉDACTION:
-            1. Commence par indiquer l'âge précis au moment du bilan.
-            2. Analyse l'homogénéité du QIT.
-            3. Traite les indices complémentaires (IAG, ICC, INV) pour affiner le profil.
-            4. Fais des liens entre clinique (anxiété, lenteur...) et scores.
+            CONSIGNE DE RÉDACTION STRUCTURÉE:
+            
+            1. INTERPRÉTATION DES RÉSULTATS (Partie III) :
+               - Analyse l'homogénéité (QIT valide ?).
+               - Compare IAG vs ICC et ICV vs INV si pertinents.
+               - Fais des liens avec la clinique (ex: TDAH et chute IMT/IVT).
+            
+            2. RECOMMANDATIONS & ORIENTATIONS (Partie IV) :
+               - Affiche cette partie clairement avec un titre "IV. Pistes de travail et Orientations".
+               - PÉDAGOGIE : Propose des aménagements concrets en classe (ex: Tiers-temps, ordinateur, supports visuels, placement en classe) adaptés aux points faibles (ex: si IMT faible -> consignes courtes).
+               - SOINS : Suggère des bilans complémentaires si nécessaire (Orthophonie, Psychomotricité, Attentionnel).
+               - ORIENTATION SCOLAIRE :
+                 * Si déficience intellectuelle ou troubles sévères : discute l'hypothèse ULIS (TFC, TSLA selon le profil) ou IMPro.
+                 * Si difficultés scolaires massives mais QIT limite/normal faible : discute l'hypothèse SEGPA.
+                 * Si troubles du comportement majeurs (mentionnés dans les obs) : discute l'hypothèse ITEP.
+                 * Utilise toujours le conditionnel pour les orientations ("Une orientation vers... pourrait être discutée").
+            
+            Ton : Professionnel, nuancé, précis.
             """
             
             res = model.generate_content(prompt)
             st.markdown("### Résultat :")
             st.markdown(res.text)
             
-            filename = f"Analyse_{prenom}_{ans}ans.docx" if prenom else "Analyse.docx"
+            filename = f"Bilan_WISC_{prenom}_{ans}ans.docx" if prenom else "Bilan_WISC.docx"
             docx_file = create_docx(res.text, prenom, f"{ans} ans {mois} mois")
             st.download_button("📄 Télécharger Word", docx_file, filename, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
             
