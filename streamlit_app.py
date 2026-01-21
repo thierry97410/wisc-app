@@ -158,59 +158,99 @@ with col_check3:
     st.markdown("🗣️ **Langue / Créole**")
     creole = st.radio("Usage du Créole", ["-- (Non/Peu)", "+- (Moyen)", "++ (Dominant)"], index=0, label_visibility="collapsed")
 
-ana = st.text_area("Anamnèse", height=80, placeholder="Contexte familial, motif de la consultation, scolarité...")
+ana = st.text_area("Anamnèse", height=80, placeholder="Contexte familial, motif, scolarité...")
 obs_libre = st.text_area("Autres observations", height=80)
 
 st.markdown("---")
 
 # ==========================================
-# 3. PSYCHOMÉTRIE
+# 3. PSYCHOMÉTRIE (NOUVELLE MISE EN PAGE)
 # ==========================================
 st.header("3. Psychométrie")
-col_scores, col_inputs = st.columns([1, 1.2])
 
-with col_scores:
-    st.subheader("Subtests")
-    sc1, sc2 = st.columns(2)
-    with sc1:
-        sim = st.number_input("Similitudes", 0, 19, 0)
-        voc = st.number_input("Vocabulaire", 0, 19, 0)
-        cub = st.number_input("Cubes", 0, 19, 0)
-        mat = st.number_input("Matrices", 0, 19, 0)
-        bal = st.number_input("Balances", 0, 19, 0)
-        arit = st.number_input("Arithmétique", 0, 19, 0)
-        cod = st.number_input("Code", 0, 19, 0)
-    with sc2:
-        info = st.number_input("Info", 0, 19, 0)
-        comp = st.number_input("Compréhension", 0, 19, 0)
-        puz = st.number_input("Puzzles", 0, 19, 0)
-        memc = st.number_input("Mém. Chiffres", 0, 19, 0)
-        memi = st.number_input("Mém. Images", 0, 19, 0)
-        sym = st.number_input("Symboles", 0, 19, 0)
-        seq = st.number_input("Séquence", 0, 19, 0)
-        bar = st.number_input("Barrage", 0, 19, 0)
+# --- BLOC 1 : PROFIL DES NOTES STANDARDS ---
+st.subheader("A. Profil des Notes Standards")
 
-with col_inputs:
-    st.subheader("Indices")
-    somme_iag = sim + voc + cub + mat + bal
-    somme_icc = memc + memi + sym + cod
-    somme_inv = cub + puz + mat + bal + memi + cod
-    st.caption(f"Aide : IAG={somme_iag} | ICC={somme_icc} | INV={somme_inv}")
-    
-    ic1, ic2 = st.columns(2)
-    with ic1:
-        qit = st.number_input("QIT", 0, 160, 0)
-        icv = st.number_input("ICV", 0, 160, 0)
-        ivs = st.number_input("IVS", 0, 160, 0)
-        irf = st.number_input("IRF", 0, 160, 0)
-    with ic2:
-        imt = st.number_input("IMT", 0, 160, 0)
-        ivt = st.number_input("IVT", 0, 160, 0)
-        iag = st.number_input("IAG", 0, 160, 0)
-        icc = st.number_input("ICC", 0, 160, 0)
-        inv = st.number_input("INV", 0, 160, 0)
+# Ligne 1 : SIM, VOC, INF, COM (4 colonnes)
+c1, c2, c3, c4 = st.columns(4)
+with c1: sim = st.number_input("Similitudes (SIM)", 0, 19, 0)
+with c2: voc = st.number_input("Vocabulaire (VOC)", 0, 19, 0)
+with c3: info = st.number_input("Information (INF)", 0, 19, 0)
+with c4: comp = st.number_input("Compréhension (COM)", 0, 19, 0)
 
-# --- STATS ---
+# Ligne 2 : CUB, PUZ (2 colonnes)
+c1, c2 = st.columns(2)
+with c1: cub = st.number_input("Cubes (CUB)", 0, 19, 0)
+with c2: puz = st.number_input("Puzzles (PUZ)", 0, 19, 0)
+
+# Ligne 3 : MAT, BAL, ARI (3 colonnes)
+c1, c2, c3 = st.columns(3)
+with c1: mat = st.number_input("Matrices (MAT)", 0, 19, 0)
+with c2: bal = st.number_input("Balances (BAL)", 0, 19, 0)
+with c3: arit = st.number_input("Arithmétique (ARI)", 0, 19, 0)
+
+# Ligne 4 : MCH, MIM, SLC (3 colonnes)
+c1, c2, c3 = st.columns(3)
+with c1: memc = st.number_input("Mém. Chiffres (MCH)", 0, 19, 0)
+with c2: memi = st.number_input("Mém. Images (MIM)", 0, 19, 0)
+with c3: seq = st.number_input("Séquence L-C (SLC)", 0, 19, 0)
+
+# Ligne 5 : COD, SYM, BAR (3 colonnes)
+c1, c2, c3 = st.columns(3)
+with c1: cod = st.number_input("Code (COD)", 0, 19, 0)
+with c2: sym = st.number_input("Symboles (SYM)", 0, 19, 0)
+with c3: bar = st.number_input("Barrage (BAR)", 0, 19, 0)
+
+st.markdown("---")
+
+# --- BLOC 2 : PROFIL DES NOTES COMPOSITES ---
+st.subheader("B. Profil des Notes Composites")
+
+# Calcul des Sommes pour aide
+somme_iag = sim + voc + cub + mat + bal
+somme_icc = memc + memi + sym + cod
+somme_inv = cub + puz + mat + bal + memi + cod
+
+# Ligne QIT (Centré ou isolé)
+col_qit_label, col_qit_input, col_qit_status = st.columns([1, 1, 2])
+with col_qit_input:
+    qit = st.number_input("QIT (Total)", 0, 160, 0)
+
+# Ligne Indices Principaux (5 colonnes)
+c1, c2, c3, c4, c5 = st.columns(5)
+with c1: icv = st.number_input("ICV", 0, 160, 0)
+with c2: ivs = st.number_input("IVS", 0, 160, 0)
+with c3: irf = st.number_input("IRF", 0, 160, 0)
+with c4: imt = st.number_input("IMT", 0, 160, 0)
+with c5: ivt = st.number_input("IVT", 0, 160, 0)
+
+# Calcul Automatique de l'homogénéité (affiché à côté du QIT)
+with col_qit_status:
+    # On vérifie si les indices sont remplis
+    indices_check = [icv, ivs, irf, imt, ivt]
+    if all(i > 0 for i in indices_check):
+        ecart_max = max(indices_check) - min(indices_check)
+        st.write("") # spacer
+        st.write("") # spacer
+        if ecart_max >= 23:
+            st.error(f"⚠️ **Non Homogène** (Écart = {ecart_max})")
+            homogeneite_txt = "Non Homogène (QIT invalide cliniquement)"
+        else:
+            st.success(f"✅ **Homogène** (Écart = {ecart_max})")
+            homogeneite_txt = "Homogène (QIT valide)"
+    else:
+        st.info("Saisissez les 5 indices pour le calcul d'homogénéité")
+        homogeneite_txt = "Non calculé"
+
+# Ligne Indices Complémentaires (3 colonnes)
+st.caption(f"Aide Calculs : IAG (Somme {somme_iag}) | ICC (Somme {somme_icc}) | INV (Somme {somme_inv})")
+c1, c2, c3 = st.columns(3)
+with c1: iag = st.number_input("IAG", 0, 160, 0)
+with c2: icc = st.number_input("ICC", 0, 160, 0)
+with c3: inv = st.number_input("INV", 0, 160, 0)
+
+
+# --- STATS & GRAPH ---
 st.divider()
 col_graph, col_stats = st.columns([1, 1.5])
 indices_principaux = {"ICV": icv, "IVS": ivs, "IRF": irf, "IMT": imt, "IVT": ivt}
@@ -248,7 +288,7 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
     contexte_langue = f"Utilisation du Créole : {creole}"
     observations_compilees = ", ".join(obs_cliniques) + ". " + obs_libre
     
-    data = "SCORES:\n"
+    data = f"Statut QIT: {homogeneite_txt}\nSCORES:\n"
     for k,v in indices_principaux.items():
         if v > 0: data += f"- Indice {k}: {v}\n"
     for k,v in {"IAG":iag, "ICC":icc, "INV":inv}.items():
@@ -279,18 +319,18 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
             CONSIGNE DE RÉDACTION:
             
             1. INTRODUCTION & VALIDITÉ DU BILAN :
-               - Analyse l'homogénéité du QIT.
-               - IMPORTANT : Si le Créole est dominant ou moyen, discute de la validité de l'ICV (Verbal).
+               - Analyse l'homogénéité du QIT (Homogène ou pas ?).
+               - IMPORTANT : Si le Créole est dominant ou moyen, discute de la validité de l'ICV.
             
             2. ANALYSE INTER-INDIVIDUELLE (NORME):
                - Situe les scores par rapport à la moyenne 100.
             
             3. ANALYSE INTRA-INDIVIDUELLE (PROFIL):
                - Analyse les points forts/faibles relatifs de l'enfant.
-               - Croise avec la clinique (verbalisation, attention, etc.).
+               - Croise avec la clinique.
             
             4. RECOMMANDATIONS:
-               - Pistes pédagogiques (ex: supports visuels si Créole dominant, tiers-temps...).
+               - Pistes pédagogiques adaptées.
                - Orientations (ULIS, SEGPA...).
             """
             
