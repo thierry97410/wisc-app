@@ -10,8 +10,8 @@ from docx import Document
 from datetime import date
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="WISC-V Réunion", page_icon="🇷🇪", layout="wide")
-st.title("🧠 Assistant WISC-V : Expert & Contextualisé")
+st.set_page_config(page_title="Assistant WISC-V", page_icon="🧠", layout="wide")
+st.title("🧠 Assistant d'Analyse Expert en WISC V")
 
 # --- CONNEXION ---
 try:
@@ -95,7 +95,7 @@ with st.sidebar:
 # ==========================================
 # 1. IDENTITÉ
 # ==========================================
-st.header("1. Identité & Chronologie")
+st.header("1. Identité")
 col_id1, col_id2, col_id3 = st.columns(3)
 
 with col_id1:
@@ -127,9 +127,9 @@ with col_id3:
 st.markdown("---")
 
 # ==========================================
-# 2. OBSERVATIONS & CONTEXTE (Modifié)
+# 2. ANAMNÈSE ET OBSERVATIONS
 # ==========================================
-st.header("2. Observations Cliniques & Langue")
+st.header("2. Anamnèse et Observations")
 col_check1, col_check2, col_check3 = st.columns(3)
 obs_cliniques = []
 
@@ -146,7 +146,6 @@ with col_check2:
     if st.checkbox("Défaut d'attention"): obs_cliniques.append("Défaut d'attention")
     if st.checkbox("Besoin de relance"): obs_cliniques.append("Besoin de relance")
     st.markdown("---")
-    # Ajout des deux extrêmes verbaux
     if st.checkbox("Verbalisation +++ (Abondante)"): obs_cliniques.append("Verbalisation abondante/Logorrhée")
     if st.checkbox("Verbalisation --- (Pauvre/Mutisme)"): obs_cliniques.append("Verbalisation pauvre, voire mutisme")
 
@@ -156,19 +155,18 @@ with col_check3:
     if st.checkbox("Lenteur"): obs_cliniques.append("Lenteur graphique")
     if st.checkbox("Autocritique"): obs_cliniques.append("Autocritique excessive")
     st.markdown("---")
-    # Ajout Créole ici ou en dessous ? Le mettre ici est visuel.
     st.markdown("🗣️ **Langue / Créole**")
     creole = st.radio("Usage du Créole", ["-- (Non/Peu)", "+- (Moyen)", "++ (Dominant)"], index=0, label_visibility="collapsed")
 
-ana = st.text_area("Anamnèse", height=80, placeholder="Contexte familial, motif de la consultation...")
+ana = st.text_area("Anamnèse", height=80, placeholder="Contexte familial, motif de la consultation, scolarité...")
 obs_libre = st.text_area("Autres observations", height=80)
 
 st.markdown("---")
 
 # ==========================================
-# 3. SCORES
+# 3. PSYCHOMÉTRIE
 # ==========================================
-st.header("3. Scores & Psychométrie")
+st.header("3. Psychométrie")
 col_scores, col_inputs = st.columns([1, 1.2])
 
 with col_scores:
@@ -259,13 +257,13 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
     for k,v in sub_map.items():
         if v > 0: data += f"- {k}: {v}\n"
 
-    with st.spinner(f"Rédaction contextuelle en cours..."):
+    with st.spinner(f"Rédaction de l'analyse..."):
         try:
             model = genai.GenerativeModel('gemini-2.5-flash')
             prompt = f"""
             Rôle: Expert Psychologue WISC-V (Contexte La Réunion).
             CONTEXTE: {infos}
-            CONTEXTE LINGUISTIQUE: {contexte_langue} (Crucial pour l'ICV).
+            CONTEXTE LINGUISTIQUE: {contexte_langue}.
             OBSERVATIONS: {observations_compilees}
             ANAMNÈSE: {ana}
             
@@ -282,19 +280,17 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
             
             1. INTRODUCTION & VALIDITÉ DU BILAN :
                - Analyse l'homogénéité du QIT.
-               - IMPORTANT : Si le Créole est "++ (Dominant)" ou "+- (Moyen)", discute de la validité de l'ICV (Verbal). Si l'ICV est faible, souligne le biais culturel/linguistique possible et suggère de se fier davantage à l'IVS/IRF ou l'INV.
+               - IMPORTANT : Si le Créole est dominant ou moyen, discute de la validité de l'ICV (Verbal).
             
             2. ANALYSE INTER-INDIVIDUELLE (NORME):
                - Situe les scores par rapport à la moyenne 100.
             
             3. ANALYSE INTRA-INDIVIDUELLE (PROFIL):
                - Analyse les points forts/faibles relatifs de l'enfant.
-               - Croise avec la clinique :
-                 * Si "Verbalisation ---" est coché : lie le mutisme/retrait aux résultats verbaux (inhibition ?).
-                 * Si "Verbalisation +++" est coché : lie au style cognitif.
+               - Croise avec la clinique (verbalisation, attention, etc.).
             
             4. RECOMMANDATIONS:
-               - Pistes pédagogiques (ex: supports visuels si Créole dominant).
+               - Pistes pédagogiques (ex: supports visuels si Créole dominant, tiers-temps...).
                - Orientations (ULIS, SEGPA...).
             """
             
