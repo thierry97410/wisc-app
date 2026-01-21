@@ -9,21 +9,21 @@ from pypdf import PdfReader
 from docx import Document
 from datetime import date
 
-# --- CONFIGURATION ---
+# --- 1. CONFIGURATION ---
 st.set_page_config(page_title="Assistant WISC-V", page_icon="🧠", layout="wide")
 st.title("🧠 Assistant d'Analyse Expert en WISC V")
 
 # --- AVERTISSEMENT ---
 st.warning("⚠️ **AVERTISSEMENT :** Outil d'aide à la rédaction. L'analyse clinique reste la responsabilité du psychologue.")
 
-# --- CONNEXION ---
+# --- CONNEXION API ---
 try:
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 except:
-    st.error("Clé API manquante.")
+    st.error("Clé API manquante dans les secrets Streamlit.")
     st.stop()
 
-# --- FONCTIONS ---
+# --- FONCTIONS UTILITAIRES ---
 def calculer_age(d_naiss, d_bilan):
     try:
         if d_bilan < d_naiss: return 0, 0
@@ -87,43 +87,21 @@ def create_docx(text_content, prenom, age_str):
     doc.save(bio)
     return bio
 
-# --- SIDEBAR (AUTOMATIQUE) ---
+# --- SIDEBAR (CHARGEMENT AUTO) ---
 knowledge_base = ""
-total_chars = 0
-LIMIT_CHARS = 1000000 # Marge large pour Gemini 2.5/1.5
-
 with st.sidebar:
     st.header("📚 Bibliothèque (Auto)")
-    
-    # Scan automatique du dossier
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
-    
     if local_files:
-        # Barre de progression ou indicateur simple
         with st.spinner("Chargement des sources..."):
             for f in local_files:
                 c = read_file(f, f)
                 knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
-                total_chars += len(c)
-        
-        # Affichage du statut
-        st.success(f"✅ **{len(local_files)} documents intégrés**")
-        
-        # Petit détail repliable si tu veux vérifier ce qui est chargé
-        with st.expander("Voir la liste des fichiers"):
-            for f in local_files:
-                st.caption(f"📄 {f}")
-                
-        # Vérification du poids
-        st.divider()
-        st.caption(f"Poids total : {total_chars} caractères")
-        if total_chars > LIMIT_CHARS:
-            st.error("⚠️ Attention : Volume critique. Supprimez des fichiers inutiles.")
-        else:
-            st.info("🟢 Capacité IA : OK")
-            
+        st.success(f"✅ {len(local_files)} documents actifs")
+        with st.expander("Voir détails"):
+            for f in local_files: st.caption(f"📄 {f}")
     else:
-        st.warning("Aucun document trouvé dans le dossier.")
+        st.warning("Aucun document PDF trouvé.")
 
 # ==========================================
 # 1. IDENTITÉ
@@ -203,31 +181,27 @@ st.header("3. Psychométrie")
 
 st.subheader("A. Profil des Notes Standards")
 
-# Ligne 1 : SIM, VOC, INF, COM
+# Ligne 1
 c1, c2, c3, c4 = st.columns(4)
 with c1: sim = st.number_input("Similitudes (SIM)", 0, 19, 0)
 with c2: voc = st.number_input("Vocabulaire (VOC)", 0, 19, 0)
 with c3: info = st.number_input("Information (INF)", 0, 19, 0)
 with c4: comp = st.number_input("Compréhension (COM)", 0, 19, 0)
-
-# Ligne 2 : CUB, PUZ
+# Ligne 2
 c1, c2 = st.columns(2)
 with c1: cub = st.number_input("Cubes (CUB)", 0, 19, 0)
 with c2: puz = st.number_input("Puzzles (PUZ)", 0, 19, 0)
-
-# Ligne 3 : MAT, BAL, ARI
+# Ligne 3
 c1, c2, c3 = st.columns(3)
 with c1: mat = st.number_input("Matrices (MAT)", 0, 19, 0)
 with c2: bal = st.number_input("Balances (BAL)", 0, 19, 0)
 with c3: arit = st.number_input("Arithmétique (ARI)", 0, 19, 0)
-
-# Ligne 4 : MCH, MIM, SLC
+# Ligne 4
 c1, c2, c3 = st.columns(3)
 with c1: memc = st.number_input("Mém. Chiffres (MCH)", 0, 19, 0)
 with c2: memi = st.number_input("Mém. Images (MIM)", 0, 19, 0)
 with c3: seq = st.number_input("Séquence L-C (SLC)", 0, 19, 0)
-
-# Ligne 5 : COD, SYM, BAR
+# Ligne 5
 c1, c2, c3 = st.columns(3)
 with c1: cod = st.number_input("Code (COD)", 0, 19, 0)
 with c2: sym = st.number_input("Symboles (SYM)", 0, 19, 0)
@@ -237,12 +211,11 @@ st.markdown("---")
 
 st.subheader("B. Profil des Notes Composites")
 
-# Calcul Sommes
 somme_iag = sim + voc + cub + mat + bal
 somme_icc = memc + memi + sym + cod
 somme_inv = cub + puz + mat + bal + memi + cod
 
-# Vérification Homogénéité (Grégoire)
+# Vérif Homogénéité (Grégoire)
 valid_icv, txt_icv = check_homogeneite_indice(sim, voc, "ICV")
 valid_ivs, txt_ivs = check_homogeneite_indice(cub, puz, "IVS")
 valid_irf, txt_irf = check_homogeneite_indice(mat, bal, "IRF")
@@ -259,22 +232,22 @@ with col_qit_input: qit = st.number_input("QIT (Total)", 0, 160, 0)
 # Indices Principaux
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1: 
-    icv = st.number_input("ICV", 0, 160, 0); 
+    icv = st.number_input("ICV", 0, 160, 0)
     if txt_icv: st.caption(txt_icv)
 with c2: 
-    ivs = st.number_input("IVS", 0, 160, 0); 
+    ivs = st.number_input("IVS", 0, 160, 0)
     if txt_ivs: st.caption(txt_ivs)
 with c3: 
-    irf = st.number_input("IRF", 0, 160, 0); 
+    irf = st.number_input("IRF", 0, 160, 0)
     if txt_irf: st.caption(txt_irf)
 with c4: 
-    imt = st.number_input("IMT", 0, 160, 0); 
+    imt = st.number_input("IMT", 0, 160, 0)
     if txt_imt: st.caption(txt_imt)
 with c5: 
-    ivt = st.number_input("IVT", 0, 160, 0); 
+    ivt = st.number_input("IVT", 0, 160, 0)
     if txt_ivt: st.caption(txt_ivt)
 
-# Calcul QIT
+# Calcul Validité QIT
 with col_qit_status:
     indices_check = [icv, ivs, irf, imt, ivt]
     if all(i > 0 for i in indices_check):
@@ -292,8 +265,8 @@ with col_qit_status:
     else:
         st.info("Saisie incomplète"); homogeneite_txt = "Non calculé"
 
-# Indices Complémentaires
-st.caption(f"Aide Calculs : IAG ({somme_iag}) | ICC ({somme_icc}) | INV ({somme_inv})")
+# Complémentaires
+st.caption(f"Calculs : IAG ({somme_iag}) | ICC ({somme_icc}) | INV ({somme_inv})")
 c1, c2, c3 = st.columns(3)
 with c1: iag = st.number_input("IAG", 0, 160, 0)
 with c2: icc = st.number_input("ICC", 0, 160, 0)
@@ -331,8 +304,6 @@ with col_stats:
 st.markdown("---")
 if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
     
-    if total_chars > LIMIT_CHARS: st.error("Trop lourd !"); st.stop()
-
     infos = f"Enfant: {prenom}, {sexe}. Age: {ans} ans {mois} mois. Latéralité: {lateralite}."
     contexte_langue = f"Utilisation du Créole : {creole}"
     observations_compilees = ", ".join(obs_cliniques) + ". " + obs_libre
@@ -355,20 +326,24 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
             model = genai.GenerativeModel('gemini-2.5-flash')
             prompt = f"""
             Rôle: Expert Psychologue WISC-V (Contexte La Réunion).
-            AVERTISSEMENT: Outil d'aide, à vérifier.
+            AVERTISSEMENT: Outil d'aide, analyse à vérifier par le psy.
+            
             CONTEXTE: {infos}
             LANGUE: {contexte_langue}.
             OBSERVATIONS: {observations_compilees}
             ANAMNÈSE: {ana}
-            RÉSULTATS: {data}
+            
+            RÉSULTATS & VALIDITÉ:
+            {data}
+            
             STATS INTRA: Moyenne perso: {moyenne_perso if len(indices_valides)>0 else 'N/A'}. {txt_stats}
             SOURCES: {knowledge_base}
             
-            CONSIGNE:
+            CONSIGNE DE RÉDACTION:
             1. INTRODUCTION & VALIDITÉ (QIT, Indices, Créole).
             2. INTER-INDIVIDUELLE (Norme).
             3. INTRA-INDIVIDUELLE (Profil).
-            4. RECOMMANDATIONS.
+            4. RECOMMANDATIONS (Pédagogie & Orientation).
             """
             
             res = model.generate_content(prompt)
