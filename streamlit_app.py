@@ -13,8 +13,8 @@ from datetime import date
 st.set_page_config(page_title="Assistant WISC-V", page_icon="🧠", layout="wide")
 st.title("🧠 Assistant d'Analyse Expert en WISC V")
 
-# --- AVERTISSEMENT DÉONTOLOGIQUE ---
-st.warning("⚠️ **AVERTISSEMENT :** Cet outil est une aide à la rédaction. L'analyse générée ne dispense en aucun cas d'un travail d'analyse clinique approfondie par le psychologue. Les résultats sont sujets à caution et doivent être vérifiés.")
+# --- AVERTISSEMENT ---
+st.warning("⚠️ **AVERTISSEMENT :** Outil d'aide à la rédaction. L'analyse clinique reste la responsabilité du psychologue.")
 
 # --- CONNEXION ---
 try:
@@ -35,16 +35,10 @@ def calculer_age(d_naiss, d_bilan):
     except: return 0, 0
 
 def check_homogeneite_indice(val1, val2, nom_indice):
-    """Vérifie l'homogénéité selon Grégoire (Écart < 5)"""
-    # Si l'un des subtests est à 0 (non rempli), on ne calcule pas
-    if val1 == 0 or val2 == 0:
-        return None, ""
-    
+    if val1 == 0 or val2 == 0: return None, ""
     ecart = abs(val1 - val2)
-    if ecart >= 5:
-        return False, f"⚠️ {nom_indice} Hétérogène (Écart {ecart})"
-    else:
-        return True, f"✅ {nom_indice} Homogène"
+    if ecart >= 5: return False, f"⚠️ {nom_indice} Hétérogène (Écart {ecart})"
+    else: return True, f"✅ {nom_indice} Homogène"
 
 def plot_radar_chart(indices_dict):
     labels = list(indices_dict.keys())
@@ -85,34 +79,51 @@ def create_docx(text_content, prenom, age_str):
     doc = Document()
     doc.add_heading(f'Compte Rendu WISC-V : {prenom}', 0)
     doc.add_paragraph(f"Âge au bilan : {age_str}")
-    
-    # Ajout du Disclaimer dans le Word
     p = doc.add_paragraph()
     runner = p.add_run("AVERTISSEMENT : Ce document est une base de travail. L'analyse clinique relève de la responsabilité du psychologue signataire.")
-    runner.bold = True
-    runner.italic = True
-    
+    runner.bold = True; runner.italic = True
     doc.add_paragraph(text_content)
     bio = io.BytesIO()
     doc.save(bio)
     return bio
 
-# --- SIDEBAR ---
+# --- SIDEBAR (AUTOMATIQUE) ---
 knowledge_base = ""
 total_chars = 0
-LIMIT_CHARS = 800000
+LIMIT_CHARS = 1000000 # Marge large pour Gemini 2.5/1.5
+
 with st.sidebar:
-    st.header("📚 Bibliothèque")
+    st.header("📚 Bibliothèque (Auto)")
+    
+    # Scan automatique du dossier
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
+    
     if local_files:
-        for f in local_files:
-            if st.checkbox(f"📄 {f}", value=False):
+        # Barre de progression ou indicateur simple
+        with st.spinner("Chargement des sources..."):
+            for f in local_files:
                 c = read_file(f, f)
                 knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
                 total_chars += len(c)
-    st.divider()
-    if total_chars > LIMIT_CHARS: st.error("🛑 Trop lourd !")
-    elif total_chars > 0: st.success("✅ Poids OK")
+        
+        # Affichage du statut
+        st.success(f"✅ **{len(local_files)} documents intégrés**")
+        
+        # Petit détail repliable si tu veux vérifier ce qui est chargé
+        with st.expander("Voir la liste des fichiers"):
+            for f in local_files:
+                st.caption(f"📄 {f}")
+                
+        # Vérification du poids
+        st.divider()
+        st.caption(f"Poids total : {total_chars} caractères")
+        if total_chars > LIMIT_CHARS:
+            st.error("⚠️ Attention : Volume critique. Supprimez des fichiers inutiles.")
+        else:
+            st.info("🟢 Capacité IA : OK")
+            
+    else:
+        st.warning("Aucun document trouvé dans le dossier.")
 
 # ==========================================
 # 1. IDENTITÉ
@@ -190,7 +201,6 @@ st.markdown("---")
 # ==========================================
 st.header("3. Psychométrie")
 
-# --- BLOC 1 : PROFIL DES NOTES STANDARDS ---
 st.subheader("A. Profil des Notes Standards")
 
 # Ligne 1 : SIM, VOC, INF, COM
@@ -225,7 +235,6 @@ with c3: bar = st.number_input("Barrage (BAR)", 0, 19, 0)
 
 st.markdown("---")
 
-# --- BLOC 2 : PROFIL DES NOTES COMPOSITES ---
 st.subheader("B. Profil des Notes Composites")
 
 # Calcul Sommes
@@ -233,64 +242,58 @@ somme_iag = sim + voc + cub + mat + bal
 somme_icc = memc + memi + sym + cod
 somme_inv = cub + puz + mat + bal + memi + cod
 
-# 1. Vérification Homogénéité interne des indices (Critère Grégoire: écart >= 5)
+# Vérification Homogénéité (Grégoire)
 valid_icv, txt_icv = check_homogeneite_indice(sim, voc, "ICV")
 valid_ivs, txt_ivs = check_homogeneite_indice(cub, puz, "IVS")
 valid_irf, txt_irf = check_homogeneite_indice(mat, bal, "IRF")
 valid_imt, txt_imt = check_homogeneite_indice(memc, memi, "IMT")
 valid_ivt, txt_ivt = check_homogeneite_indice(sym, cod, "IVT")
 
-# Liste des états pour le prompt
 etats_indices = [txt_icv, txt_ivs, txt_irf, txt_imt, txt_ivt]
 nb_indices_invalides = sum([1 for x in [valid_icv, valid_ivs, valid_irf, valid_imt, valid_ivt] if x is False])
 
-# Ligne QIT
+# QIT
 col_qit_label, col_qit_input, col_qit_status = st.columns([1, 1, 2])
-with col_qit_input:
-    qit = st.number_input("QIT (Total)", 0, 160, 0)
+with col_qit_input: qit = st.number_input("QIT (Total)", 0, 160, 0)
 
-# Ligne Indices Principaux
+# Indices Principaux
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1: 
-    icv = st.number_input("ICV", 0, 160, 0)
+    icv = st.number_input("ICV", 0, 160, 0); 
     if txt_icv: st.caption(txt_icv)
 with c2: 
-    ivs = st.number_input("IVS", 0, 160, 0)
+    ivs = st.number_input("IVS", 0, 160, 0); 
     if txt_ivs: st.caption(txt_ivs)
 with c3: 
-    irf = st.number_input("IRF", 0, 160, 0)
+    irf = st.number_input("IRF", 0, 160, 0); 
     if txt_irf: st.caption(txt_irf)
 with c4: 
-    imt = st.number_input("IMT", 0, 160, 0)
+    imt = st.number_input("IMT", 0, 160, 0); 
     if txt_imt: st.caption(txt_imt)
 with c5: 
-    ivt = st.number_input("IVT", 0, 160, 0)
+    ivt = st.number_input("IVT", 0, 160, 0); 
     if txt_ivt: st.caption(txt_ivt)
 
-# Calcul Homogénéité QIT
+# Calcul QIT
 with col_qit_status:
     indices_check = [icv, ivs, irf, imt, ivt]
     if all(i > 0 for i in indices_check):
         ecart_max = max(indices_check) - min(indices_check)
-        st.write("") # spacer
-        st.write("")
-        
-        # Règle 1 : Dispersion Inter-indices
+        st.write(""); st.write("")
         if ecart_max >= 23:
-            st.error(f"🔴 **QIT Invalide** (Dispersion {ecart_max} >= 23)")
+            st.error(f"🔴 **QIT Invalide** (Disp. {ecart_max})")
             homogeneite_txt = f"QIT NON INTERPRÉTABLE (Hétérogène, dispersion {ecart_max})"
         elif nb_indices_invalides >= 2:
-            st.warning(f"🟠 **QIT Fragile** ({nb_indices_invalides} indices hétérogènes)")
-            homogeneite_txt = f"QIT FRAGILE (Validité technique OK, mais {nb_indices_invalides} indices hétérogènes)"
+            st.warning(f"🟠 **QIT Fragile** ({nb_indices_invalides} ind. hétérogènes)")
+            homogeneite_txt = f"QIT FRAGILE ({nb_indices_invalides} indices hétérogènes)"
         else:
-            st.success(f"✅ **QIT Valide** (Dispersion {ecart_max})")
+            st.success(f"✅ **QIT Valide** (Disp. {ecart_max})")
             homogeneite_txt = "QIT Valide et Homogène"
     else:
-        st.info("Saisie incomplète")
-        homogeneite_txt = "Non calculé"
+        st.info("Saisie incomplète"); homogeneite_txt = "Non calculé"
 
-# Ligne Indices Complémentaires
-st.caption(f"Aide Calculs : IAG (Somme {somme_iag}) | ICC (Somme {somme_icc}) | INV (Somme {somme_inv})")
+# Indices Complémentaires
+st.caption(f"Aide Calculs : IAG ({somme_iag}) | ICC ({somme_icc}) | INV ({somme_inv})")
 c1, c2, c3 = st.columns(3)
 with c1: iag = st.number_input("IAG", 0, 160, 0)
 with c2: icc = st.number_input("ICC", 0, 160, 0)
@@ -318,10 +321,10 @@ with col_stats:
             diff = v - moyenne_perso
             if diff >= 10:
                 st.write(f"🟢 **{k}** : Point FORT (+{diff:.1f})")
-                txt_stats += f"- {k} ({v}): Point FORT Intra-individuel.\n"
+                txt_stats += f"- {k} ({v}): Point FORT Intra.\n"
             elif diff <= -10:
                 st.write(f"🔴 **{k}** : Point FAIBLE ({diff:.1f})")
-                txt_stats += f"- {k} ({v}): Point FAIBLE Intra-individuel.\n"
+                txt_stats += f"- {k} ({v}): Point FAIBLE Intra.\n"
     else: txt_stats = ""
 
 # --- GENERATION ---
@@ -334,9 +337,7 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
     contexte_langue = f"Utilisation du Créole : {creole}"
     observations_compilees = ", ".join(obs_cliniques) + ". " + obs_libre
     
-    # Compilation des infos de validité pour l'IA
-    infos_validite = f"VALIDITÉ DU QIT : {homogeneite_txt}.\n"
-    infos_validite += "VALIDITÉ DES INDICES (Critère Grégoire, écart >= 5) :\n"
+    infos_validite = f"VALIDITÉ QIT : {homogeneite_txt}.\nVALIDITÉ INDICES (Grégoire >= 5) :\n"
     for etat in etats_indices:
         if etat: infos_validite += f"- {etat}\n"
 
@@ -354,40 +355,20 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
             model = genai.GenerativeModel('gemini-2.5-flash')
             prompt = f"""
             Rôle: Expert Psychologue WISC-V (Contexte La Réunion).
-            
-            AVERTISSEMENT: Ceci est un outil d'aide. Rappeler que l'analyse doit être vérifiée.
-            
+            AVERTISSEMENT: Outil d'aide, à vérifier.
             CONTEXTE: {infos}
-            CONTEXTE LINGUISTIQUE: {contexte_langue}.
+            LANGUE: {contexte_langue}.
             OBSERVATIONS: {observations_compilees}
             ANAMNÈSE: {ana}
-            
-            RÉSULTATS & VALIDITÉ (CRITÈRES GRÉGOIRE):
-            {data}
-            
-            STATS INTRA:
-            Moyenne perso: {moyenne_perso if len(indices_valides)>0 else 'N/A'}
-            {txt_stats}
-            
+            RÉSULTATS: {data}
+            STATS INTRA: Moyenne perso: {moyenne_perso if len(indices_valides)>0 else 'N/A'}. {txt_stats}
             SOURCES: {knowledge_base}
             
-            CONSIGNE DE RÉDACTION:
-            
-            1. INTRODUCTION & VALIDITÉ :
-               - Commence par un avertissement clair sur la nature de l'outil.
-               - Analyse la validité du QIT (Dispersion > 23 ?).
-               - Analyse l'homogénéité interne des indices (Critère Grégoire: écart subtests >= 5). Si un indice est hétérogène, précise qu'il est difficilement interprétable.
-               - Si Créole dominant : Prudence sur l'ICV.
-            
-            2. ANALYSE INTER-INDIVIDUELLE (NORME):
-               - Situe les scores par rapport à la moyenne 100.
-            
-            3. ANALYSE INTRA-INDIVIDUELLE (PROFIL):
-               - Analyse les points forts/faibles relatifs.
-               - Croise avec la clinique.
-            
-            4. RECOMMANDATIONS:
-               - Pistes pédagogiques & Orientations.
+            CONSIGNE:
+            1. INTRODUCTION & VALIDITÉ (QIT, Indices, Créole).
+            2. INTER-INDIVIDUELLE (Norme).
+            3. INTRA-INDIVIDUELLE (Profil).
+            4. RECOMMANDATIONS.
             """
             
             res = model.generate_content(prompt)
