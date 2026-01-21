@@ -10,8 +10,8 @@ from docx import Document
 from datetime import date
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="WISC-V Cockpit", page_icon="🚀", layout="wide")
-st.title("🧠 Assistant WISC-V : Cockpit Complet")
+st.set_page_config(page_title="WISC-V Cockpit", page_icon="🎯", layout="wide")
+st.title("🧠 Assistant WISC-V : Analyse Expert")
 
 # --- CONNEXION ---
 try:
@@ -20,50 +20,37 @@ except:
     st.error("Clé API manquante.")
     st.stop()
 
-# --- FONCTION CALCUL AGE ---
+# --- FONCTIONS ---
 def calculer_age(d_naiss, d_bilan):
     try:
         if d_bilan < d_naiss: return 0, 0
         ans = d_bilan.year - d_naiss.year
         mois = d_bilan.month - d_naiss.month
         if d_bilan.day < d_naiss.day: mois -= 1
-        if mois < 0:
-            ans -= 1
-            mois += 12
+        if mois < 0: ans -= 1; mois += 12
         return ans, mois
-    except:
-        return 0, 0
+    except: return 0, 0
 
-# --- FONCTION GRAPHIQUE RADAR ---
 def plot_radar_chart(indices_dict):
-    # Filtrer les valeurs > 0
     labels = list(indices_dict.keys())
     values = list(indices_dict.values())
-    
-    # Si pas de données, on ne dessine rien
     if sum(values) == 0: return None
-
-    # Fermeture du cercle pour le graphique
     values += values[:1]
     angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
     angles += angles[:1]
-
     fig, ax = plt.subplots(figsize=(4, 4), subplot_kw=dict(polar=True))
-    ax.fill(angles, values, color='blue', alpha=0.25)
-    ax.plot(angles, values, color='blue', linewidth=2)
-    
-    # Labels
+    # Zone remplie
+    ax.fill(angles, values, color='#1f77b4', alpha=0.25)
+    ax.plot(angles, values, color='#1f77b4', linewidth=2, label='Enfant')
+    # Ligne Moyenne Normative (100)
+    ax.plot(np.linspace(0, 2*np.pi, 100), [100]*100, color='red', linestyle='--', linewidth=1, label='Norme (100)')
     ax.set_yticklabels([])
     ax.set_xticks(angles[:-1])
     ax.set_xticklabels(labels, fontsize=10)
-    
-    # Echelle fixe pour comparabilité (40 à 160)
     ax.set_ylim(40, 160)
-    ax.grid(True, color='grey', linestyle='--', alpha=0.5)
-    
+    ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1), fontsize='small')
     return fig
 
-# --- FONCTION LECTURE ---
 def read_file(file_obj, filename):
     text = ""
     try:
@@ -81,7 +68,6 @@ def read_file(file_obj, filename):
     except: pass
     return text
 
-# --- EXPORT WORD ---
 def create_docx(text_content, prenom, age_str):
     doc = Document()
     doc.add_heading(f'Compte Rendu WISC-V : {prenom}', 0)
@@ -95,7 +81,6 @@ def create_docx(text_content, prenom, age_str):
 knowledge_base = ""
 total_chars = 0
 LIMIT_CHARS = 800000
-
 with st.sidebar:
     st.header("📚 Bibliothèque")
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
@@ -109,8 +94,10 @@ with st.sidebar:
     if total_chars > LIMIT_CHARS: st.error("🛑 Trop lourd !")
     elif total_chars > 0: st.success("✅ Poids OK")
 
-# --- INTERFACE ---
-st.subheader("1. Identité & Chronologie")
+# ==========================================
+# 1. IDENTITÉ
+# ==========================================
+st.header("1. Identité & Chronologie")
 col_id1, col_id2, col_id3 = st.columns(3)
 
 with col_id1:
@@ -136,17 +123,51 @@ with col_id3:
     with cb_a: a_b = st.number_input("A", 2020, 2030, date.today().year, key="ab")
     try: d_test = date(a_b, m_b, j_b)
     except: d_test = date.today()
-    
     ans, mois = calculer_age(d_naiss, d_test)
     st.success(f"Âge : **{ans} ans et {mois} mois**")
 
-st.divider()
+st.markdown("---")
 
-# --- PARTIE SCORES ---
-col_scores, col_inputs = st.columns([1, 1])
+# ==========================================
+# 2. OBSERVATIONS CLINIQUES
+# ==========================================
+st.header("2. Observations Cliniques")
+col_check1, col_check2, col_check3 = st.columns(3)
+obs_cliniques = []
+
+with col_check1:
+    st.markdown("**Attitude**")
+    if st.checkbox("Anxiété de performance"): obs_cliniques.append("Anxiété de performance")
+    if st.checkbox("Opposition / Retrait"): obs_cliniques.append("Opposition ou retrait")
+    if st.checkbox("Agitation"): obs_cliniques.append("Agitation motrice")
+    if st.checkbox("Impulsivité"): obs_cliniques.append("Impulsivité")
+
+with col_check2:
+    st.markdown("**Cognition**")
+    if st.checkbox("Fatigabilité"): obs_cliniques.append("Fatigabilité rapide")
+    if st.checkbox("Défaut d'attention"): obs_cliniques.append("Défaut d'attention")
+    if st.checkbox("Besoin de relance"): obs_cliniques.append("Besoin de relance")
+    if st.checkbox("Verbalisation +++"): obs_cliniques.append("Verbalisation abondante")
+
+with col_check3:
+    st.markdown("**Graphisme**")
+    if st.checkbox("Crispation"): obs_cliniques.append("Crispation graphique")
+    if st.checkbox("Lenteur"): obs_cliniques.append("Lenteur graphique")
+    if st.checkbox("Autocritique"): obs_cliniques.append("Autocritique excessive")
+
+ana = st.text_area("Anamnèse", height=80, placeholder="Ex: Difficultés scolaires, suivi...")
+obs_libre = st.text_area("Autres observations", height=80)
+
+st.markdown("---")
+
+# ==========================================
+# 3. SCORES
+# ==========================================
+st.header("3. Scores & Psychométrie")
+col_scores, col_inputs = st.columns([1, 1.2])
 
 with col_scores:
-    st.subheader("2. Subtests (Notes Standard)")
+    st.subheader("Subtests")
     sc1, sc2 = st.columns(2)
     with sc1:
         sim = st.number_input("Similitudes", 0, 19, 0)
@@ -157,7 +178,7 @@ with col_scores:
         arit = st.number_input("Arithmétique", 0, 19, 0)
         cod = st.number_input("Code", 0, 19, 0)
     with sc2:
-        info = st.number_input("Information", 0, 19, 0)
+        info = st.number_input("Info", 0, 19, 0)
         comp = st.number_input("Compréhension", 0, 19, 0)
         puz = st.number_input("Puzzles", 0, 19, 0)
         memc = st.number_input("Mém. Chiffres", 0, 19, 0)
@@ -167,9 +188,7 @@ with col_scores:
         bar = st.number_input("Barrage", 0, 19, 0)
 
 with col_inputs:
-    st.subheader("3. Indices & Analyse")
-    
-    # Aides Calcul
+    st.subheader("Indices")
     somme_iag = sim + voc + cub + mat + bal
     somme_icc = memc + memi + sym + cod
     somme_inv = cub + puz + mat + bal + memi + cod
@@ -188,78 +207,40 @@ with col_inputs:
         icc = st.number_input("ICC", 0, 160, 0)
         inv = st.number_input("INV", 0, 160, 0)
 
-# --- VISUALISATION & STATISTIQUES (NOUVEAU) ---
+# --- STATS & GRAPH ---
 st.divider()
 col_graph, col_stats = st.columns([1, 1.5])
 
-# Dictionnaire des indices pour le graph
 indices_principaux = {"ICV": icv, "IVS": ivs, "IRF": irf, "IMT": imt, "IVT": ivt}
-# On retire les 0 pour les calculs
 indices_valides = {k: v for k, v in indices_principaux.items() if v > 0}
 
 with col_graph:
-    st.subheader("📊 Profil (Radar)")
+    st.subheader("📊 Profil vs Norme")
     if len(indices_valides) >= 3:
         fig = plot_radar_chart(indices_valides)
         if fig: st.pyplot(fig)
-    else:
-        st.info("Entrez au moins 3 indices pour voir le graphique.")
 
 with col_stats:
-    st.subheader("📈 Points Forts / Faibles (Perso)")
+    st.subheader("📈 Inter vs Intra")
     if len(indices_valides) > 0:
         moyenne_perso = sum(indices_valides.values()) / len(indices_valides)
-        st.markdown(f"**Moyenne de l'enfant : {moyenne_perso:.1f}**")
+        st.info(f"**Moyenne Normative = 100**\n**Moyenne Personnelle = {moyenne_perso:.1f}**")
         
         txt_stats = ""
         for k, v in indices_valides.items():
             diff = v - moyenne_perso
+            # Comparaison INTRA
             if diff >= 10:
-                st.success(f"🟢 **{k} ({v})** : Point FORT (+{diff:.1f})")
-                txt_stats += f"- {k} est un Point FORT personnel.\n"
+                st.write(f"🟢 **{k} ({v})** : Point FORT Personnel")
+                txt_stats += f"- {k} ({v}): Point FORT Intra-individuel.\n"
             elif diff <= -10:
-                st.error(f"🔴 **{k} ({v})** : Point FAIBLE ({diff:.1f})")
-                txt_stats += f"- {k} est un Point FAIBLE personnel.\n"
-            else:
-                st.markdown(f"⚪ {k} ({v}) : Homogène")
-    else:
-        txt_stats = ""
-
-# --- CLINIQUE (CHECKLIST) ---
-st.divider()
-st.subheader("4. Observations Cliniques (Checklist)")
-
-col_check1, col_check2, col_check3 = st.columns(3)
-obs_cliniques = []
-
-with col_check1:
-    st.markdown("**Attitude & Émotion**")
-    if st.checkbox("Anxiété de performance"): obs_cliniques.append("Anxiété de performance")
-    if st.checkbox("Opposition / Retrait"): obs_cliniques.append("Opposition ou retrait")
-    if st.checkbox("Agitation motrice"): obs_cliniques.append("Agitation motrice")
-    if st.checkbox("Impulsivité"): obs_cliniques.append("Impulsivité")
-
-with col_check2:
-    st.markdown("**Cognition**")
-    if st.checkbox("Fatigabilité rapide"): obs_cliniques.append("Fatigabilité rapide")
-    if st.checkbox("Défaut d'attention"): obs_cliniques.append("Défaut d'attention/Concentration")
-    if st.checkbox("Besoin de relance"): obs_cliniques.append("Besoin fréquent de relance")
-    if st.checkbox("Verbalisation abondante"): obs_cliniques.append("Verbalisation abondante")
-
-with col_check3:
-    st.markdown("**Outil / Graphisme**")
-    if st.checkbox("Crispation graphique"): obs_cliniques.append("Crispation graphique")
-    if st.checkbox("Lenteur graphique"): obs_cliniques.append("Lenteur graphique")
-    if st.checkbox("Autocritique excessive"): obs_cliniques.append("Autocritique excessive")
-    if st.checkbox("Gauchèrie visuelle"): obs_cliniques.append("Gêne visuo-motrice")
-
-st.markdown("---")
-# Zone texte libre pour ce qui n'est pas dans la liste
-ana = st.text_area("Anamnèse / Scolarité", height=100)
-obs_libre = st.text_area("Autres observations (Texte libre)", height=80)
+                st.write(f"🔴 **{k} ({v})** : Point FAIBLE Personnel")
+                txt_stats += f"- {k} ({v}): Point FAIBLE Intra-individuel.\n"
+    else: txt_stats = ""
 
 # --- GENERATION ---
-if st.button(f"✨ Lancer l'Analyse Complète", type="primary"):
+st.markdown("---")
+if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
     
     if total_chars > LIMIT_CHARS: st.error("Trop lourd !"); st.stop()
 
@@ -271,35 +252,46 @@ if st.button(f"✨ Lancer l'Analyse Complète", type="primary"):
         if v > 0: data += f"- Indice {k}: {v}\n"
     for k,v in {"IAG":iag, "ICC":icc, "INV":inv}.items():
         if v > 0: data += f"- Complémentaire {k}: {v}\n"
-        
     sub_map = {"Sim":sim, "Voc":voc, "Info":info, "Comp":comp, "Cub":cub, "Puz":puz, "Mat":mat, "Bal":bal, "Arit":arit, "MemC":memc, "MemI":memi, "Seq":seq, "Cod":cod, "Sym":sym, "Bar":bar}
     for k,v in sub_map.items():
         if v > 0: data += f"- {k}: {v}\n"
 
-    with st.spinner(f"Rédaction avec prise en compte du profil visuel et clinique..."):
+    with st.spinner(f"Rédaction en cours..."):
         try:
             model = genai.GenerativeModel('gemini-2.5-flash')
             prompt = f"""
-            Rôle: Expert WISC-V.
+            Rôle: Expert Psychologue WISC-V.
             CONTEXTE: {infos}
             ANAMNÈSE: {ana}
-            
-            OBSERVATIONS CLINIQUES (Crucial): {observations_compilees}
-            
+            OBSERVATIONS: {observations_compilees}
             RÉSULTATS:
             {data}
             
-            ANALYSE STATISTIQUE (A utiliser pour justifier):
-            Moyenne personnelle: {moyenne_perso if len(indices_valides)>0 else 'N/A'}
-            {txt_stats}
+            DONNÉES STATISTIQUES:
+            Moyenne personnelle = {moyenne_perso if len(indices_valides)>0 else 'N/A'}.
+            Détail Intra-individuel : {txt_stats}
             
             SOURCES: {knowledge_base}
             
-            CONSIGNE:
-            Rédige un compte-rendu complet (Partie III Interprétation + Partie IV Orientations).
-            1. Utilise l'analyse statistique fournie pour identifier formellement les points forts/faibles PERSONNELS.
-            2. Croise OBLIGATOIREMENT les items cochés dans les observations (ex: {observations_compilees}) avec les résultats.
-            3. Partie IV: Recommandations concrètes (Pédagogie + Orientation).
+            CONSIGNE DE RÉDACTION STRUCTURÉE:
+            
+            1. INTRODUCTION:
+               - Rappel contexte, âge exact.
+               - Analyse de l'homogénéité globale du QIT.
+            
+            2. ANALYSE INTER-INDIVIDUELLE (NORMATIVE):
+               - Compare les scores à la NORME (Moyenne 100, ET 15).
+               - Utilise les termes psychométriques (Moyen, Supérieur, Faible, etc.).
+               - Ne parle pas encore des forces relatives ici, juste du niveau par rapport aux autres enfants.
+            
+            3. ANALYSE INTRA-INDIVIDUELLE (PERSONNELLE):
+               - Compare les scores de l'enfant À LUI-MÊME (par rapport à sa moyenne personnelle de {moyenne_perso if len(indices_valides)>0 else 'N/A'}).
+               - Identifie ses points forts et faibles relatifs (même si tout est faible, qu'est-ce qui est le "moins pire" ?).
+               - Utilise les indices complémentaires (IAG/ICC/INV) pour affiner.
+            
+            4. SYNTHÈSE & RECOMMANDATIONS:
+               - Croisement avec la clinique (Observations).
+               - Pistes pédagogiques et orientations.
             """
             
             res = model.generate_content(prompt)
