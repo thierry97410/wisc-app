@@ -10,8 +10,8 @@ from docx import Document
 from datetime import date
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="WISC-V Cockpit", page_icon="🎯", layout="wide")
-st.title("🧠 Assistant WISC-V : Analyse Expert")
+st.set_page_config(page_title="WISC-V Réunion", page_icon="🇷🇪", layout="wide")
+st.title("🧠 Assistant WISC-V : Expert & Contextualisé")
 
 # --- CONNEXION ---
 try:
@@ -39,10 +39,8 @@ def plot_radar_chart(indices_dict):
     angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
     angles += angles[:1]
     fig, ax = plt.subplots(figsize=(4, 4), subplot_kw=dict(polar=True))
-    # Zone remplie
     ax.fill(angles, values, color='#1f77b4', alpha=0.25)
     ax.plot(angles, values, color='#1f77b4', linewidth=2, label='Enfant')
-    # Ligne Moyenne Normative (100)
     ax.plot(np.linspace(0, 2*np.pi, 100), [100]*100, color='red', linestyle='--', linewidth=1, label='Norme (100)')
     ax.set_yticklabels([])
     ax.set_xticks(angles[:-1])
@@ -129,9 +127,9 @@ with col_id3:
 st.markdown("---")
 
 # ==========================================
-# 2. OBSERVATIONS CLINIQUES
+# 2. OBSERVATIONS & CONTEXTE (Modifié)
 # ==========================================
-st.header("2. Observations Cliniques")
+st.header("2. Observations Cliniques & Langue")
 col_check1, col_check2, col_check3 = st.columns(3)
 obs_cliniques = []
 
@@ -143,19 +141,26 @@ with col_check1:
     if st.checkbox("Impulsivité"): obs_cliniques.append("Impulsivité")
 
 with col_check2:
-    st.markdown("**Cognition**")
+    st.markdown("**Cognition & Communication**")
     if st.checkbox("Fatigabilité"): obs_cliniques.append("Fatigabilité rapide")
     if st.checkbox("Défaut d'attention"): obs_cliniques.append("Défaut d'attention")
     if st.checkbox("Besoin de relance"): obs_cliniques.append("Besoin de relance")
-    if st.checkbox("Verbalisation +++"): obs_cliniques.append("Verbalisation abondante")
+    st.markdown("---")
+    # Ajout des deux extrêmes verbaux
+    if st.checkbox("Verbalisation +++ (Abondante)"): obs_cliniques.append("Verbalisation abondante/Logorrhée")
+    if st.checkbox("Verbalisation --- (Pauvre/Mutisme)"): obs_cliniques.append("Verbalisation pauvre, voire mutisme")
 
 with col_check3:
     st.markdown("**Graphisme**")
     if st.checkbox("Crispation"): obs_cliniques.append("Crispation graphique")
     if st.checkbox("Lenteur"): obs_cliniques.append("Lenteur graphique")
     if st.checkbox("Autocritique"): obs_cliniques.append("Autocritique excessive")
+    st.markdown("---")
+    # Ajout Créole ici ou en dessous ? Le mettre ici est visuel.
+    st.markdown("🗣️ **Langue / Créole**")
+    creole = st.radio("Usage du Créole", ["-- (Non/Peu)", "+- (Moyen)", "++ (Dominant)"], index=0, label_visibility="collapsed")
 
-ana = st.text_area("Anamnèse", height=80, placeholder="Ex: Difficultés scolaires, suivi...")
+ana = st.text_area("Anamnèse", height=80, placeholder="Contexte familial, motif de la consultation...")
 obs_libre = st.text_area("Autres observations", height=80)
 
 st.markdown("---")
@@ -207,10 +212,9 @@ with col_inputs:
         icc = st.number_input("ICC", 0, 160, 0)
         inv = st.number_input("INV", 0, 160, 0)
 
-# --- STATS & GRAPH ---
+# --- STATS ---
 st.divider()
 col_graph, col_stats = st.columns([1, 1.5])
-
 indices_principaux = {"ICV": icv, "IVS": ivs, "IRF": irf, "IMT": imt, "IVT": ivt}
 indices_valides = {k: v for k, v in indices_principaux.items() if v > 0}
 
@@ -221,20 +225,18 @@ with col_graph:
         if fig: st.pyplot(fig)
 
 with col_stats:
-    st.subheader("📈 Inter vs Intra")
+    st.subheader("📈 Analyse Intra-individuelle")
     if len(indices_valides) > 0:
         moyenne_perso = sum(indices_valides.values()) / len(indices_valides)
-        st.info(f"**Moyenne Normative = 100**\n**Moyenne Personnelle = {moyenne_perso:.1f}**")
-        
+        st.info(f"Moyenne Personnelle = {moyenne_perso:.1f} (Norme = 100)")
         txt_stats = ""
         for k, v in indices_valides.items():
             diff = v - moyenne_perso
-            # Comparaison INTRA
             if diff >= 10:
-                st.write(f"🟢 **{k} ({v})** : Point FORT Personnel")
+                st.write(f"🟢 **{k}** : Point FORT (+{diff:.1f})")
                 txt_stats += f"- {k} ({v}): Point FORT Intra-individuel.\n"
             elif diff <= -10:
-                st.write(f"🔴 **{k} ({v})** : Point FAIBLE Personnel")
+                st.write(f"🔴 **{k}** : Point FAIBLE ({diff:.1f})")
                 txt_stats += f"- {k} ({v}): Point FAIBLE Intra-individuel.\n"
     else: txt_stats = ""
 
@@ -245,6 +247,7 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
     if total_chars > LIMIT_CHARS: st.error("Trop lourd !"); st.stop()
 
     infos = f"Enfant: {prenom}, {sexe}. Age: {ans} ans {mois} mois. Latéralité: {lateralite}."
+    contexte_langue = f"Utilisation du Créole : {creole}"
     observations_compilees = ", ".join(obs_cliniques) + ". " + obs_libre
     
     data = "SCORES:\n"
@@ -256,42 +259,43 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
     for k,v in sub_map.items():
         if v > 0: data += f"- {k}: {v}\n"
 
-    with st.spinner(f"Rédaction en cours..."):
+    with st.spinner(f"Rédaction contextuelle en cours..."):
         try:
             model = genai.GenerativeModel('gemini-2.5-flash')
             prompt = f"""
-            Rôle: Expert Psychologue WISC-V.
+            Rôle: Expert Psychologue WISC-V (Contexte La Réunion).
             CONTEXTE: {infos}
-            ANAMNÈSE: {ana}
+            CONTEXTE LINGUISTIQUE: {contexte_langue} (Crucial pour l'ICV).
             OBSERVATIONS: {observations_compilees}
+            ANAMNÈSE: {ana}
+            
             RÉSULTATS:
             {data}
             
-            DONNÉES STATISTIQUES:
-            Moyenne personnelle = {moyenne_perso if len(indices_valides)>0 else 'N/A'}.
-            Détail Intra-individuel : {txt_stats}
+            STATS INTRA:
+            Moyenne perso: {moyenne_perso if len(indices_valides)>0 else 'N/A'}
+            {txt_stats}
             
             SOURCES: {knowledge_base}
             
-            CONSIGNE DE RÉDACTION STRUCTURÉE:
+            CONSIGNE DE RÉDACTION:
             
-            1. INTRODUCTION:
-               - Rappel contexte, âge exact.
-               - Analyse de l'homogénéité globale du QIT.
+            1. INTRODUCTION & VALIDITÉ DU BILAN :
+               - Analyse l'homogénéité du QIT.
+               - IMPORTANT : Si le Créole est "++ (Dominant)" ou "+- (Moyen)", discute de la validité de l'ICV (Verbal). Si l'ICV est faible, souligne le biais culturel/linguistique possible et suggère de se fier davantage à l'IVS/IRF ou l'INV.
             
-            2. ANALYSE INTER-INDIVIDUELLE (NORMATIVE):
-               - Compare les scores à la NORME (Moyenne 100, ET 15).
-               - Utilise les termes psychométriques (Moyen, Supérieur, Faible, etc.).
-               - Ne parle pas encore des forces relatives ici, juste du niveau par rapport aux autres enfants.
+            2. ANALYSE INTER-INDIVIDUELLE (NORME):
+               - Situe les scores par rapport à la moyenne 100.
             
-            3. ANALYSE INTRA-INDIVIDUELLE (PERSONNELLE):
-               - Compare les scores de l'enfant À LUI-MÊME (par rapport à sa moyenne personnelle de {moyenne_perso if len(indices_valides)>0 else 'N/A'}).
-               - Identifie ses points forts et faibles relatifs (même si tout est faible, qu'est-ce qui est le "moins pire" ?).
-               - Utilise les indices complémentaires (IAG/ICC/INV) pour affiner.
+            3. ANALYSE INTRA-INDIVIDUELLE (PROFIL):
+               - Analyse les points forts/faibles relatifs de l'enfant.
+               - Croise avec la clinique :
+                 * Si "Verbalisation ---" est coché : lie le mutisme/retrait aux résultats verbaux (inhibition ?).
+                 * Si "Verbalisation +++" est coché : lie au style cognitif.
             
-            4. SYNTHÈSE & RECOMMANDATIONS:
-               - Croisement avec la clinique (Observations).
-               - Pistes pédagogiques et orientations.
+            4. RECOMMANDATIONS:
+               - Pistes pédagogiques (ex: supports visuels si Créole dominant).
+               - Orientations (ULIS, SEGPA...).
             """
             
             res = model.generate_content(prompt)
