@@ -209,7 +209,7 @@ with c3: bar = st.number_input("Barrage (BAR)", 0, 19, 0)
 
 st.markdown("---")
 
-st.subheader("B. Profil des Notes Composites & Percentiles")
+st.subheader("B. Profil des Notes Composites (Scores, Percentiles & IC 95%)")
 
 somme_iag = sim + voc + cub + mat + bal
 somme_icc = memc + memi + sym + cod
@@ -225,58 +225,108 @@ valid_ivt, txt_ivt = check_homogeneite_indice(sym, cod, "IVT")
 etats_indices = [txt_icv, txt_ivs, txt_irf, txt_imt, txt_ivt]
 nb_indices_invalides = sum([1 for x in [valid_icv, valid_ivs, valid_irf, valid_imt, valid_ivt] if x is False])
 
-# QIT
-col_qit_label, col_qit_input, col_qit_perc, col_qit_status = st.columns([1, 1, 1, 2])
-with col_qit_input: qit = st.number_input("QIT (Total)", 0, 160, 0)
-with col_qit_perc: perc_qit = st.number_input("Perc. QIT", 0.0, 100.0, 0.0)
+# QIT - Ligne isolée pour clarté
+col_qit1, col_qit2, col_qit3, col_qit4, col_qit5 = st.columns(5)
+with col_qit1: qit = st.number_input("QIT (Total)", 0, 160, 0)
+with col_qit2: perc_qit = st.number_input("Perc. QIT", 0.0, 100.0, 0.0)
+with col_qit3: qit_bas = st.number_input("IC Bas QIT", 0, 160, 0)
+with col_qit4: qit_haut = st.number_input("IC Haut QIT", 0, 160, 0)
 
-# Indices Principaux avec Percentiles
+# Calcul Validité QIT (Affichage)
+with col_qit5:
+    indices_check = [icv, ivs, irf, imt, ivt] # Note: vars pas encore def, on déplace le calcul plus bas
+    st.write("") # Placeholder, on affichera le statut après la saisie des indices
+
+# Indices Principaux (5 colonnes)
 c1, c2, c3, c4, c5 = st.columns(5)
+
+# ICV
 with c1: 
-    icv = st.number_input("ICV", 0, 160, 0)
-    perc_icv = st.number_input("Perc. ICV", 0.0, 100.0, 0.0)
+    st.markdown("**ICV**")
+    icv = st.number_input("Score ICV", 0, 160, 0, label_visibility="collapsed")
+    perc_icv = st.number_input("Perc ICV", 0.0, 100.0, 0.0, label_visibility="collapsed", placeholder="%")
+    st.caption("Intervalle Confiance (Bas / Haut)")
+    icv_bas = st.number_input("ICV Bas", 0, 160, 0, label_visibility="collapsed")
+    icv_haut = st.number_input("ICV Haut", 0, 160, 0, label_visibility="collapsed")
     if txt_icv: st.caption(txt_icv)
+
+# IVS
 with c2: 
-    ivs = st.number_input("IVS", 0, 160, 0)
-    perc_ivs = st.number_input("Perc. IVS", 0.0, 100.0, 0.0)
+    st.markdown("**IVS**")
+    ivs = st.number_input("Score IVS", 0, 160, 0, label_visibility="collapsed")
+    perc_ivs = st.number_input("Perc IVS", 0.0, 100.0, 0.0, label_visibility="collapsed")
+    st.caption("Intervalle Confiance")
+    ivs_bas = st.number_input("IVS Bas", 0, 160, 0, label_visibility="collapsed")
+    ivs_haut = st.number_input("IVS Haut", 0, 160, 0, label_visibility="collapsed")
     if txt_ivs: st.caption(txt_ivs)
+
+# IRF
 with c3: 
-    irf = st.number_input("IRF", 0, 160, 0)
-    perc_irf = st.number_input("Perc. IRF", 0.0, 100.0, 0.0)
+    st.markdown("**IRF**")
+    irf = st.number_input("Score IRF", 0, 160, 0, label_visibility="collapsed")
+    perc_irf = st.number_input("Perc IRF", 0.0, 100.0, 0.0, label_visibility="collapsed")
+    st.caption("Intervalle Confiance")
+    irf_bas = st.number_input("IRF Bas", 0, 160, 0, label_visibility="collapsed")
+    irf_haut = st.number_input("IRF Haut", 0, 160, 0, label_visibility="collapsed")
     if txt_irf: st.caption(txt_irf)
+
+# IMT
 with c4: 
-    imt = st.number_input("IMT", 0, 160, 0)
-    perc_imt = st.number_input("Perc. IMT", 0.0, 100.0, 0.0)
+    st.markdown("**IMT**")
+    imt = st.number_input("Score IMT", 0, 160, 0, label_visibility="collapsed")
+    perc_imt = st.number_input("Perc IMT", 0.0, 100.0, 0.0, label_visibility="collapsed")
+    st.caption("Intervalle Confiance")
+    imt_bas = st.number_input("IMT Bas", 0, 160, 0, label_visibility="collapsed")
+    imt_haut = st.number_input("IMT Haut", 0, 160, 0, label_visibility="collapsed")
     if txt_imt: st.caption(txt_imt)
+
+# IVT
 with c5: 
-    ivt = st.number_input("IVT", 0, 160, 0)
-    perc_ivt = st.number_input("Perc. IVT", 0.0, 100.0, 0.0)
+    st.markdown("**IVT**")
+    ivt = st.number_input("Score IVT", 0, 160, 0, label_visibility="collapsed")
+    perc_ivt = st.number_input("Perc IVT", 0.0, 100.0, 0.0, label_visibility="collapsed")
+    st.caption("Intervalle Confiance")
+    ivt_bas = st.number_input("IVT Bas", 0, 160, 0, label_visibility="collapsed")
+    ivt_haut = st.number_input("IVT Haut", 0, 160, 0, label_visibility="collapsed")
     if txt_ivt: st.caption(txt_ivt)
 
-# Calcul Validité QIT
-with col_qit_status:
+# Calcul Validité QIT (Mise à jour visuelle)
+with col_qit5:
     indices_check = [icv, ivs, irf, imt, ivt]
     if all(i > 0 for i in indices_check):
         ecart_max = max(indices_check) - min(indices_check)
-        st.write(""); st.write("")
         if ecart_max >= 23:
-            st.error(f"🔴 **QIT Invalide** (Disp. {ecart_max})")
+            st.error(f"🔴 **Invalide** (Disp. {ecart_max})")
             homogeneite_txt = f"QIT NON INTERPRÉTABLE (Hétérogène, dispersion {ecart_max})"
         elif nb_indices_invalides >= 2:
-            st.warning(f"🟠 **QIT Fragile** ({nb_indices_invalides} ind. hétérogènes)")
+            st.warning(f"🟠 **Fragile**")
             homogeneite_txt = f"QIT FRAGILE ({nb_indices_invalides} indices hétérogènes)"
         else:
-            st.success(f"✅ **QIT Valide** (Disp. {ecart_max})")
+            st.success(f"✅ **Homogène**")
             homogeneite_txt = "QIT Valide et Homogène"
     else:
         st.info("Saisie incomplète"); homogeneite_txt = "Non calculé"
 
+st.markdown("---")
+
 # Complémentaires
 st.caption(f"Calculs : IAG ({somme_iag}) | ICC ({somme_icc}) | INV ({somme_inv})")
 c1, c2, c3 = st.columns(3)
-with c1: iag = st.number_input("IAG", 0, 160, 0)
-with c2: icc = st.number_input("ICC", 0, 160, 0)
-with c3: inv = st.number_input("INV", 0, 160, 0)
+with c1: 
+    st.markdown("**IAG**")
+    iag = st.number_input("Score IAG", 0, 160, 0, label_visibility="collapsed")
+    iag_bas = st.number_input("IAG Bas", 0, 160, 0, label_visibility="collapsed")
+    iag_haut = st.number_input("IAG Haut", 0, 160, 0, label_visibility="collapsed")
+with c2: 
+    st.markdown("**ICC**")
+    icc = st.number_input("Score ICC", 0, 160, 0, label_visibility="collapsed")
+    icc_bas = st.number_input("ICC Bas", 0, 160, 0, label_visibility="collapsed")
+    icc_haut = st.number_input("ICC Haut", 0, 160, 0, label_visibility="collapsed")
+with c3: 
+    st.markdown("**INV**")
+    inv = st.number_input("Score INV", 0, 160, 0, label_visibility="collapsed")
+    inv_bas = st.number_input("INV Bas", 0, 160, 0, label_visibility="collapsed")
+    inv_haut = st.number_input("INV Haut", 0, 160, 0, label_visibility="collapsed")
 
 # --- STATS & GRAPH ---
 st.divider()
@@ -293,17 +343,23 @@ with col_graph:
 with col_stats:
     st.subheader("📈 Analyse Intra-individuelle")
     if len(indices_valides) > 0:
-        moyenne_perso = sum(indices_valides.values()) / len(indices_valides)
-        st.info(f"Moyenne Personnelle = {moyenne_perso:.1f} (Norme = 100)")
-        txt_stats = ""
+        valeurs = list(indices_valides.values())
+        moyenne_perso = np.mean(valeurs)
+        ecart_type_perso = np.std(valeurs)
+        
+        st.info(f"**Moyenne Personnelle : {moyenne_perso:.1f}**\n**Écart-Type Personnel : {ecart_type_perso:.1f}**\n*(Mesure de la dispersion interne)*")
+        
+        txt_stats = f"Moyenne Perso: {moyenne_perso:.1f}, Ecart-Type Perso: {ecart_type_perso:.1f}."
         for k, v in indices_valides.items():
             diff = v - moyenne_perso
             if diff >= 10:
-                st.write(f"🟢 **{k}** : Point FORT (+{diff:.1f})")
-                txt_stats += f"- {k} ({v}): Point FORT Intra.\n"
+                st.write(f"🟢 **{k} ({v})** : Force Relative (+{diff:.1f})")
+                txt_stats += f"- {k} ({v}): Force Relative (>{moyenne_perso:.1f}). "
             elif diff <= -10:
-                st.write(f"🔴 **{k}** : Point FAIBLE ({diff:.1f})")
-                txt_stats += f"- {k} ({v}): Point FAIBLE Intra.\n"
+                st.write(f"🔴 **{k} ({v})** : Faiblesse Relative ({diff:.1f})")
+                txt_stats += f"- {k} ({v}): Faiblesse Relative (<{moyenne_perso:.1f}). "
+            else:
+                 st.caption(f"⚪ {k} ({v}) : Zone Moyenne Personnelle")
     else: txt_stats = ""
 
 # --- GENERATION ---
@@ -318,23 +374,23 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
     for etat in etats_indices:
         if etat: infos_validite += f"- {etat}\n"
 
-    # Construction du bloc de résultats avec Percentiles et correction bug QIT
+    # Construction des Scores COMPLETS avec IC
     data = f"{infos_validite}\nSCORES PRINCIPAUX:\n"
-    # IMPORTANT: On force l'affichage du QIT et de son rang percentile ici
-    if qit > 0:
-        data += f"- QIT (Total): {qit} (Rang Percentile: {perc_qit})\n"
+    if qit > 0: 
+        data += f"- QIT (Total): {qit} (Percentile: {perc_qit}). Intervalle de Confiance (95%): {qit_bas}-{qit_haut}\n"
     
-    data += "\nINDICES (Note / Rang Percentile):\n"
-    if icv > 0: data += f"- ICV: {icv} (Perc: {perc_icv})\n"
-    if ivs > 0: data += f"- IVS: {ivs} (Perc: {perc_ivs})\n"
-    if irf > 0: data += f"- IRF: {irf} (Perc: {perc_irf})\n"
-    if imt > 0: data += f"- IMT: {imt} (Perc: {perc_imt})\n"
-    if ivt > 0: data += f"- IVT: {ivt} (Perc: {perc_ivt})\n"
+    data += "\nINDICES (Note / Percentile / IC 95%):\n"
+    if icv > 0: data += f"- ICV: {icv} (Perc: {perc_icv}, IC: {icv_bas}-{icv_haut})\n"
+    if ivs > 0: data += f"- IVS: {ivs} (Perc: {perc_ivs}, IC: {ivs_bas}-{ivs_haut})\n"
+    if irf > 0: data += f"- IRF: {irf} (Perc: {perc_irf}, IC: {irf_bas}-{irf_haut})\n"
+    if imt > 0: data += f"- IMT: {imt} (Perc: {perc_imt}, IC: {imt_bas}-{imt_haut})\n"
+    if ivt > 0: data += f"- IVT: {ivt} (Perc: {perc_ivt}, IC: {ivt_bas}-{ivt_haut})\n"
 
-    data += "\nINDICES COMPLÉMENTAIRES:\n"
-    for k,v in {"IAG":iag, "ICC":icc, "INV":inv}.items():
-        if v > 0: data += f"- {k}: {v}\n"
-        
+    data += "\nINDICES COMPLÉMENTAIRES (Note / IC 95%):\n"
+    if iag > 0: data += f"- IAG: {iag} (IC: {iag_bas}-{iag_haut})\n"
+    if icc > 0: data += f"- ICC: {icc} (IC: {icc_bas}-{icc_haut})\n"
+    if inv > 0: data += f"- INV: {inv} (IC: {inv_bas}-{inv_haut})\n"
+
     sub_map = {"Sim":sim, "Voc":voc, "Info":info, "Comp":comp, "Cub":cub, "Puz":puz, "Mat":mat, "Bal":bal, "Arit":arit, "MemC":memc, "MemI":memi, "Seq":seq, "Cod":cod, "Sym":sym, "Bar":bar}
     data += "\nSUBTESTS:\n"
     for k,v in sub_map.items():
@@ -348,8 +404,8 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
             AVERTISSEMENT: Outil d'aide, analyse à vérifier par le psy.
             
             CONTEXTE PSYCHOMÉTRIQUE:
-            - Tous les scores doivent être interprétés avec un **Intervalle de Confiance (IC) de 95%**. Mentionne-le dans l'introduction.
-            - Utilise les Rangs Percentiles fournis pour situer l'enfant par rapport à sa classe d'âge.
+            - **Rigueur Statistique**: Utilise systématiquement les **Intervalles de Confiance (IC 95%)** fournis pour nuancer les scores.
+            - Exemple de formulation attendue: "Le QIT est de 100 (rang percentile 50). Il y a 95% de chances que son vrai niveau se situe dans l'intervalle compris entre [Bas] et [Haut]."
             
             CONTEXTE ENFANT: {infos}
             LANGUE: {contexte_langue}.
@@ -359,14 +415,26 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
             RÉSULTATS & VALIDITÉ:
             {data}
             
-            STATS INTRA: Moyenne perso: {moyenne_perso if len(indices_valides)>0 else 'N/A'}. {txt_stats}
+            STATISTIQUES INTRA-INDIVIDUELLES (IPSATIVE):
+            - Moyenne Personnelle : {moyenne_perso if len(indices_valides)>0 else 'N/A'}
+            - Écart-Type Personnel : {ecart_type_perso if len(indices_valides)>0 else 'N/A'}
+            - Détail Forces/Faiblesses : {txt_stats}
+            
             SOURCES: {knowledge_base}
             
-            CONSIGNE DE RÉDACTION:
-            1. INTRODUCTION & VALIDITÉ (QIT, Indices, Créole, Mention IC 95%).
-            2. ANALYSE INTER-INDIVIDUELLE (Norme & Percentiles).
-            3. ANALYSE INTRA-INDIVIDUELLE (Profil).
-            4. RECOMMANDATIONS (Pédagogie & Orientation).
+            CONSIGNE DE RÉDACTION STRICTE:
+            1. INTRODUCTION & VALIDITÉ :
+               - Analyse QIT + Homogénéité.
+               - Mentionne l'intervalle de confiance du QIT dès l'intro.
+            
+            2. ANALYSE INTER-INDIVIDUELLE (NORMATIVE) :
+               - Pour chaque indice, cite la note, le percentile ET l'intervalle de confiance.
+            
+            3. ANALYSE INTRA-INDIVIDUELLE (PERSONNELLE) :
+               - Compare à la MOYENNE PERSONNELLE ({moyenne_perso if len(indices_valides)>0 else 'N/A'}).
+               - Utilise l'écart-type personnel.
+            
+            4. RECOMMANDATIONS.
             """
             
             res = model.generate_content(prompt)
