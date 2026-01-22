@@ -42,10 +42,7 @@ try:
 except:
     st.error("Clé API manquante."); st.stop()
 
-# --- INITIALISATION VARIABLES (SCORES + DATES) ---
-# On initialise tout ici pour éviter le conflit "Default value vs Session State"
-
-# 1. Scores
+# --- INITIALISATION VARIABLES ---
 vars_scores = [
     'sim', 'voc', 'info', 'comp', 'cub', 'puz', 'mat', 'bal', 'arit', 
     'memc', 'memi', 'seq', 'cod', 'sym', 'bar',
@@ -62,14 +59,13 @@ vars_scores = [
 for var in vars_scores:
     if var not in st.session_state: st.session_state[var] = 0.0 if 'perc' in var else 0
 
-# 2. Dates (Initialisation intelligente)
+# Dates par défaut (via session state pour éviter conflit)
 if 'jn' not in st.session_state: st.session_state['jn'] = 1
 if 'mn' not in st.session_state: st.session_state['mn'] = 1
-if 'an' not in st.session_state: st.session_state['an'] = 2015 # Valeur par défaut Année Naissance
-
+if 'an' not in st.session_state: st.session_state['an'] = 2015
 if 'jb' not in st.session_state: st.session_state['jb'] = date.today().day
 if 'mb' not in st.session_state: st.session_state['mb'] = date.today().month
-if 'ab' not in st.session_state: st.session_state['ab'] = date.today().year # Valeur par défaut Année Bilan
+if 'ab' not in st.session_state: st.session_state['ab'] = date.today().year
 
 # --- FONCTIONS ---
 def calculer_age(d_naiss, d_bilan):
@@ -152,55 +148,58 @@ with st.sidebar:
     st.header("📥 Import Q-GLOBAL")
     uploaded_qglobal = st.file_uploader("Rapport PDF", type=['pdf', 'txt'])
     
-    # Message d'état import
+    # Message état Import
     if 'import_status' in st.session_state:
         status = st.session_state['import_status']
         if status['success']:
             st.success(status['msg'])
-            if status['missing']:
-                st.warning(f"⚠️ Manquant (mis à 0) :\n" + ", ".join(status['missing']))
+            if status['missing']: st.warning(f"⚠️ Manquant (mis à 0) :\n" + ", ".join(status['missing']))
         else: st.error(status['msg'])
 
     if uploaded_qglobal and st.button("🚀 Extraire Données + Dates"):
         with st.spinner("Analyse IA en cours..."):
             raw = read_file(uploaded_qglobal, uploaded_qglobal.name)
             data_ex = extract_qglobal_data(raw)
-            missing = []
-            count = 0
+            missing = []; count = 0
             if data_ex:
                 for k, v in data_ex.items():
-                    # DATES
+                    # Dates
                     if k == 'date_naissance' and v:
                         try: d=v.split('/'); st.session_state['jn']=int(d[0]); st.session_state['mn']=int(d[1]); st.session_state['an']=int(d[2]); count+=1
                         except: pass
                     elif k == 'date_passation' and v:
                         try: d=v.split('/'); st.session_state['jb']=int(d[0]); st.session_state['mb']=int(d[1]); st.session_state['ab']=int(d[2]); count+=1
                         except: pass
-                    # SCORES
+                    # Scores
                     elif k in st.session_state:
                         try:
                             if v is None or v == "": val=0; missing.append(k)
                             else: val=float(v)
                             if val==0 and k not in missing: missing.append(k)
-                            
                             if 'perc' in k: st.session_state[k]=val
                             else: st.session_state[k]=int(val)
                             count+=1
                         except: st.session_state[k]=0; missing.append(k)
-                
                 st.session_state['import_status'] = {'success': True, 'msg': f"{count} champs importés.", 'missing': missing}
                 st.rerun()
-            else: 
-                st.session_state['import_status'] = {'success': False, 'msg': "Échec extraction IA.", 'missing': []}
+            else: st.session_state['import_status'] = {'success': False, 'msg': "Échec extraction IA.", 'missing': []}
 
     st.divider()
-    st.header("📚 Bibliothèque (Auto)")
+    st.header("📚 Bibliothèque")
+    # ICI : On liste les fichiers et on laisse l'utilisateur cocher/décocher
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
+    
     if local_files:
-        with st.spinner("Chargement sources..."):
-            for f in local_files: c = read_file(f, f); knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
-        st.success(f"✅ {len(local_files)} docs actifs")
-    else: st.warning("Pas de PDF trouvés.")
+        for f in local_files:
+            # value=True signifie "Coché par défaut"
+            if st.checkbox(f"📄 {f}", value=True, key=f):
+                c = read_file(f, f)
+                knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
+        
+        # Petit indicateur de volume
+        st.caption(f"Contexte chargé : {len(knowledge_base)} caractères")
+    else:
+        st.warning("Aucun document PDF trouvé.")
 
 # --- INTERFACE ---
 st.header("1. Identité")
@@ -210,7 +209,6 @@ with c1: prenom = st.text_input("Prénom", placeholder="Ex: Lucas"); sexe = st.r
 with c2: 
     st.markdown("**Naissance**")
     cj, cm, ca = st.columns([1,1,1.5])
-    # CORRECTION ICI : On retire la valeur par défaut explicite (ex: 1, 31, 1) car gérée par session_state
     with cj: jn = st.number_input("J", 1, 31, key="jn")
     with cm: mn = st.number_input("M", 1, 12, key="mn")
     with ca: an = st.number_input("A", 2000, 2030, key="an")
@@ -219,7 +217,6 @@ with c2:
 with c3:
     st.markdown("**Bilan**")
     cj, cm, ca = st.columns([1,1,1.5])
-    # IDEM ICI
     with cj: jb = st.number_input("J", 1, 31, key="jb")
     with cm: mb = st.number_input("M", 1, 12, key="mb")
     with ca: ab = st.number_input("A", 2020, 2030, key="ab")
@@ -246,11 +243,13 @@ with c2:
     if st.checkbox("Verbal +++"): obs.append("Logorrhée")
     if st.checkbox("Verbal ---"): obs.append("Mutisme/Pauvreté")
 with c3:
-    st.markdown("**Langue/Graphisme**")
+    st.markdown("**Graphisme**")
     if st.checkbox("Crispation"): obs.append("Crispation")
     if st.checkbox("Lenteur graph."): obs.append("Lenteur graph.")
     st.markdown("---")
-    creole = st.radio("Créole", ["--", "+-", "++"], horizontal=True, label_visibility="collapsed")
+    # ICI : Réintroduction explicite du bloc Créole
+    st.markdown("🗣️ **Langue / Créole**")
+    creole = st.radio("Usage", ["-- (Non/Peu)", "+- (Moyen)", "++ (Dominant)"], index=0, label_visibility="collapsed")
 
 ana = st.text_area("Anamnèse", height=70, placeholder="Motif, histoire...")
 obs_libre = st.text_area("Observations", height=70)
@@ -292,7 +291,7 @@ vivt, tivt = check_homogeneite_indice(sym, cod, "IVT")
 etats = [ticv, tivs, tirf, timt, tivt]
 nb_inv = sum([1 for x in [vicv, vivs, virf, vimt, vivt] if x is False])
 
-# QIT - ICI ON DÉFINIT LES COLONNES QIT DE FAÇON UNIQUE
+# QIT
 col_qit1, col_qit2, col_qit3, col_qit4, col_qit5 = st.columns(5)
 with col_qit1: qit = st.number_input("QIT", 0, 160, key="qit")
 with col_qit2: perc_qit = st.number_input("Perc", 0.0, 100.0, key="perc_qit")
@@ -332,7 +331,7 @@ with c5:
     ivt_haut = st.number_input("IH_IVT", 0, key="ivt_haut", label_visibility="collapsed")
     if tivt: st.caption(tivt)
 
-# Validité QIT (MAINTENANT DANS LA BONNE COLONNE)
+# Validité QIT
 with col_qit5:
     chk = [icv, ivs, irf, imt, ivt]
     if all(i > 0 for i in chk):
