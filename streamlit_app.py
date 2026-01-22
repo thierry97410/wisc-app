@@ -59,7 +59,7 @@ vars_scores = [
 for var in vars_scores:
     if var not in st.session_state: st.session_state[var] = 0.0 if 'perc' in var else 0
 
-# Dates par défaut (via session state pour éviter conflit)
+# Dates par défaut
 if 'jn' not in st.session_state: st.session_state['jn'] = 1
 if 'mn' not in st.session_state: st.session_state['mn'] = 1
 if 'an' not in st.session_state: st.session_state['an'] = 2015
@@ -121,8 +121,8 @@ def extract_qglobal_data(text_content):
         IC 95% (Bas/Haut): qit_bas, qit_haut, icv_bas, icv_haut... (etc pour tous les indices).
         
         DATES (Format JJ/MM/AAAA) :
-        - date_naissance (ex: 12/05/2015)
-        - date_passation (ex: 24/10/2024)
+        - date_naissance
+        - date_passation
         
         TEXTE: {text_content[:9000]}
         Renvoie UNIQUEMENT un JSON valide.
@@ -148,7 +148,6 @@ with st.sidebar:
     st.header("📥 Import Q-GLOBAL")
     uploaded_qglobal = st.file_uploader("Rapport PDF", type=['pdf', 'txt'])
     
-    # Message état Import
     if 'import_status' in st.session_state:
         status = st.session_state['import_status']
         if status['success']:
@@ -156,7 +155,7 @@ with st.sidebar:
             if status['missing']: st.warning(f"⚠️ Manquant (mis à 0) :\n" + ", ".join(status['missing']))
         else: st.error(status['msg'])
 
-    if uploaded_qglobal and st.button("🚀 Extraire Données + Dates"):
+    if uploaded_qglobal and st.button("🚀 Extraire Données"):
         with st.spinner("Analyse IA en cours..."):
             raw = read_file(uploaded_qglobal, uploaded_qglobal.name)
             data_ex = extract_qglobal_data(raw)
@@ -186,20 +185,14 @@ with st.sidebar:
 
     st.divider()
     st.header("📚 Bibliothèque")
-    # ICI : On liste les fichiers et on laisse l'utilisateur cocher/décocher
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
-    
     if local_files:
         for f in local_files:
-            # value=True signifie "Coché par défaut"
             if st.checkbox(f"📄 {f}", value=True, key=f):
                 c = read_file(f, f)
                 knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
-        
-        # Petit indicateur de volume
-        st.caption(f"Contexte chargé : {len(knowledge_base)} caractères")
-    else:
-        st.warning("Aucun document PDF trouvé.")
+        st.caption(f"Contexte : {len(knowledge_base)} chars")
+    else: st.warning("Pas de PDF trouvés.")
 
 # --- INTERFACE ---
 st.header("1. Identité")
@@ -247,7 +240,6 @@ with c3:
     if st.checkbox("Crispation"): obs.append("Crispation")
     if st.checkbox("Lenteur graph."): obs.append("Lenteur graph.")
     st.markdown("---")
-    # ICI : Réintroduction explicite du bloc Créole
     st.markdown("🗣️ **Langue / Créole**")
     creole = st.radio("Usage", ["-- (Non/Peu)", "+- (Moyen)", "++ (Dominant)"], index=0, label_visibility="collapsed")
 
@@ -395,23 +387,24 @@ if st.button("✨ GÉNÉRER L'ANALYSE FONCTIONNELLE", type="primary"):
             - Stats Intra: {intra_txt}
             - Sources: {knowledge_base}
             
-            CONSIGNE DE RÉDACTION (CRUCIALE) :
+            SÉCURITÉ DONNÉES:
+            - **IMPORTANT**: Tout score à 0 indique une DONNÉE MANQUANTE ou NON PASSÉE. Ne jamais l'interpréter comme un niveau nul. Ignore-le.
+            
+            CONSIGNE DE RÉDACTION :
             
             1. INTRODUCTION : 
                - Valide le QIT (IC 95% obligatoire) et l'homogénéité.
                - Si Créole ++ : Mentionne l'impact culturel sur le verbal.
             
             2. ANALYSE INTER-INDIVIDUELLE (NORMATIVE) :
-               - ⛔ STOP aux descriptions linéaires ("L'ICV est à X, l'IVS est à Y..."). C'est interdit.
-               - ✅ REGROUPE les indices par niveaux (ex: "Les sphères verbales et visuelles sont solides, contrairement à la vitesse...").
-               - ✅ SYNTHÈSE OBLIGATOIRE : Pour chaque point saillant (Fort ou Faible), explique l'IMPACT CONCRET.
-                 -> Ex: "Ce déficit en Mémoire de Travail impactera le calcul mental et la double tâche en classe."
-                 -> Ex: "Ses ressources visuelles l'aideront à s'orienter et en géométrie."
+               - ⛔ Pas de descriptions linéaires.
+               - ✅ Regroupe les indices par sphères.
+               - ✅ SYNTHÈSE FONCTIONNELLE : Pour chaque point saillant, explique l'IMPACT CONCRET (Scolaire/Vie Quotidienne).
+                 -> Ex: "Le déficit en MdT (82) pénalisera le calcul mental."
             
             3. ANALYSE INTRA-INDIVIDUELLE (PERSONNELLE) :
-               - Compare à la moyenne personnelle ({moy}).
-               - Identifie les décrochages.
-               - ✅ LIE À LA CLINIQUE : "Cette chute en Vitesse corrobore l'agitation/fatigabilité observée."
+               - Compare à la moyenne personnelle ({moy if valid_ind else 'N/A'}).
+               - Lie aux observations cliniques.
             
             4. RECOMMANDATIONS (Pratiques & Scolaires).
             """
