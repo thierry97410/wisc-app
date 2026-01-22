@@ -3,6 +3,7 @@ import google.generativeai as genai
 import os
 import io
 import json
+import re
 import numpy as np
 import matplotlib.pyplot as plt
 from io import StringIO
@@ -104,6 +105,7 @@ def extract_qglobal_data(text_content):
         model = genai.GenerativeModel('gemini-2.5-flash')
         prompt = f"""
         Extrais les scores WISC-V du texte ci-dessous en JSON.
+        IMPORTANT: Si une valeur est manquante ou illisible, mets 0. Ne mets JAMAIS 'null' ou de texte.
         Variables: sim, voc, info, comp, cub, puz, mat, bal, arit, memc, memi, seq, cod, sym, bar
         Indices: qit, icv, ivs, irf, imt, ivt, iag, icc, inv
         Percentiles: perc_qit, perc_icv, perc_ivs, perc_irf, perc_imt, perc_ivt
@@ -138,7 +140,18 @@ with st.sidebar:
             if data_ex:
                 c = 0
                 for k, v in data_ex.items():
-                    if k in st.session_state: st.session_state[k] = float(v) if 'perc' in k else int(v); c += 1
+                    if k in st.session_state:
+                        # --- BLINDAGE ANTI-CRASH ---
+                        try:
+                            if v is None: val = 0
+                            else: val = float(v) # On tente de convertir en nombre
+                            
+                            if 'perc' in k: st.session_state[k] = val
+                            else: st.session_state[k] = int(val)
+                            c += 1
+                        except:
+                            # Si ça plante, on met 0 par sécurité
+                            st.session_state[k] = 0
                 st.success(f"{c} valeurs importées."); st.rerun()
             else: st.error("Échec extraction.")
     
