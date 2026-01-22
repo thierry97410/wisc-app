@@ -13,7 +13,6 @@ from datetime import date, datetime
 # ==========================================
 # 0. ADMINISTRATION
 # ==========================================
-# Mettre à True si tu veux activer le blocage pour ton collègue
 RESTRICTION_ACTIVE = False
 DATE_EXPIRATION = date(2025, 12, 31) 
 MOT_DE_PASSE = "WISC-PRO"
@@ -239,12 +238,12 @@ vivt, tivt = check_homogeneite_indice(sym, cod, "IVT")
 etats = [ticv, tivs, tirf, timt, tivt]
 nb_inv = sum([1 for x in [vicv, vivs, virf, vimt, vivt] if x is False])
 
-# QIT
-c1, c2, c3, c4, c5 = st.columns(5)
-with c1: qit = st.number_input("QIT", 0, 160, key="qit")
-with c2: perc_qit = st.number_input("Perc", 0.0, 100.0, key="perc_qit")
-with c3: qit_bas = st.number_input("IC Bas", 0, 160, key="qit_bas")
-with c4: qit_haut = st.number_input("IC Haut", 0, 160, key="qit_haut")
+# QIT - ICI ON DÉFINIT LES COLONNES QIT DE FAÇON UNIQUE
+col_qit1, col_qit2, col_qit3, col_qit4, col_qit5 = st.columns(5)
+with col_qit1: qit = st.number_input("QIT", 0, 160, key="qit")
+with col_qit2: perc_qit = st.number_input("Perc", 0.0, 100.0, key="perc_qit")
+with col_qit3: qit_bas = st.number_input("IC Bas", 0, 160, key="qit_bas")
+with col_qit4: qit_haut = st.number_input("IC Haut", 0, 160, key="qit_haut")
 
 # Indices
 c1, c2, c3, c4, c5 = st.columns(5)
@@ -279,7 +278,7 @@ with c5:
     ivt_haut = st.number_input("IH_IVT", 0, key="ivt_haut", label_visibility="collapsed")
     if tivt: st.caption(tivt)
 
-# Validité QIT
+# Validité QIT (MAINTENANT DANS LA BONNE COLONNE)
 with col_qit5:
     chk = [icv, ivs, irf, imt, ivt]
     if all(i > 0 for i in chk):
