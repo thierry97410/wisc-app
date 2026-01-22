@@ -209,7 +209,7 @@ with c3: bar = st.number_input("Barrage (BAR)", 0, 19, 0)
 
 st.markdown("---")
 
-st.subheader("B. Profil des Notes Composites")
+st.subheader("B. Profil des Notes Composites & Percentiles")
 
 somme_iag = sim + voc + cub + mat + bal
 somme_icc = memc + memi + sym + cod
@@ -226,25 +226,31 @@ etats_indices = [txt_icv, txt_ivs, txt_irf, txt_imt, txt_ivt]
 nb_indices_invalides = sum([1 for x in [valid_icv, valid_ivs, valid_irf, valid_imt, valid_ivt] if x is False])
 
 # QIT
-col_qit_label, col_qit_input, col_qit_status = st.columns([1, 1, 2])
+col_qit_label, col_qit_input, col_qit_perc, col_qit_status = st.columns([1, 1, 1, 2])
 with col_qit_input: qit = st.number_input("QIT (Total)", 0, 160, 0)
+with col_qit_perc: perc_qit = st.number_input("Perc. QIT", 0.0, 100.0, 0.0)
 
-# Indices Principaux
+# Indices Principaux avec Percentiles
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1: 
     icv = st.number_input("ICV", 0, 160, 0)
+    perc_icv = st.number_input("Perc. ICV", 0.0, 100.0, 0.0)
     if txt_icv: st.caption(txt_icv)
 with c2: 
     ivs = st.number_input("IVS", 0, 160, 0)
+    perc_ivs = st.number_input("Perc. IVS", 0.0, 100.0, 0.0)
     if txt_ivs: st.caption(txt_ivs)
 with c3: 
     irf = st.number_input("IRF", 0, 160, 0)
+    perc_irf = st.number_input("Perc. IRF", 0.0, 100.0, 0.0)
     if txt_irf: st.caption(txt_irf)
 with c4: 
     imt = st.number_input("IMT", 0, 160, 0)
+    perc_imt = st.number_input("Perc. IMT", 0.0, 100.0, 0.0)
     if txt_imt: st.caption(txt_imt)
 with c5: 
     ivt = st.number_input("IVT", 0, 160, 0)
+    perc_ivt = st.number_input("Perc. IVT", 0.0, 100.0, 0.0)
     if txt_ivt: st.caption(txt_ivt)
 
 # Calcul Validité QIT
@@ -312,23 +318,40 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
     for etat in etats_indices:
         if etat: infos_validite += f"- {etat}\n"
 
-    data = f"{infos_validite}\nSCORES:\n"
-    for k,v in indices_principaux.items():
-        if v > 0: data += f"- Indice {k}: {v}\n"
+    # Construction du bloc de résultats avec Percentiles et correction bug QIT
+    data = f"{infos_validite}\nSCORES PRINCIPAUX:\n"
+    # IMPORTANT: On force l'affichage du QIT et de son rang percentile ici
+    if qit > 0:
+        data += f"- QIT (Total): {qit} (Rang Percentile: {perc_qit})\n"
+    
+    data += "\nINDICES (Note / Rang Percentile):\n"
+    if icv > 0: data += f"- ICV: {icv} (Perc: {perc_icv})\n"
+    if ivs > 0: data += f"- IVS: {ivs} (Perc: {perc_ivs})\n"
+    if irf > 0: data += f"- IRF: {irf} (Perc: {perc_irf})\n"
+    if imt > 0: data += f"- IMT: {imt} (Perc: {perc_imt})\n"
+    if ivt > 0: data += f"- IVT: {ivt} (Perc: {perc_ivt})\n"
+
+    data += "\nINDICES COMPLÉMENTAIRES:\n"
     for k,v in {"IAG":iag, "ICC":icc, "INV":inv}.items():
-        if v > 0: data += f"- Complémentaire {k}: {v}\n"
+        if v > 0: data += f"- {k}: {v}\n"
+        
     sub_map = {"Sim":sim, "Voc":voc, "Info":info, "Comp":comp, "Cub":cub, "Puz":puz, "Mat":mat, "Bal":bal, "Arit":arit, "MemC":memc, "MemI":memi, "Seq":seq, "Cod":cod, "Sym":sym, "Bar":bar}
+    data += "\nSUBTESTS:\n"
     for k,v in sub_map.items():
         if v > 0: data += f"- {k}: {v}\n"
 
-    with st.spinner(f"Rédaction de l'analyse avec critères de Grégoire..."):
+    with st.spinner(f"Rédaction de l'analyse expert (IC 95%)..."):
         try:
             model = genai.GenerativeModel('gemini-2.5-flash')
             prompt = f"""
             Rôle: Expert Psychologue WISC-V (Contexte La Réunion).
             AVERTISSEMENT: Outil d'aide, analyse à vérifier par le psy.
             
-            CONTEXTE: {infos}
+            CONTEXTE PSYCHOMÉTRIQUE:
+            - Tous les scores doivent être interprétés avec un **Intervalle de Confiance (IC) de 95%**. Mentionne-le dans l'introduction.
+            - Utilise les Rangs Percentiles fournis pour situer l'enfant par rapport à sa classe d'âge.
+            
+            CONTEXTE ENFANT: {infos}
             LANGUE: {contexte_langue}.
             OBSERVATIONS: {observations_compilees}
             ANAMNÈSE: {ana}
@@ -340,9 +363,9 @@ if st.button(f"✨ Lancer l'Analyse Expert", type="primary"):
             SOURCES: {knowledge_base}
             
             CONSIGNE DE RÉDACTION:
-            1. INTRODUCTION & VALIDITÉ (QIT, Indices, Créole).
-            2. INTER-INDIVIDUELLE (Norme).
-            3. INTRA-INDIVIDUELLE (Profil).
+            1. INTRODUCTION & VALIDITÉ (QIT, Indices, Créole, Mention IC 95%).
+            2. ANALYSE INTER-INDIVIDUELLE (Norme & Percentiles).
+            3. ANALYSE INTRA-INDIVIDUELLE (Profil).
             4. RECOMMANDATIONS (Pédagogie & Orientation).
             """
             
