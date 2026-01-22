@@ -209,13 +209,13 @@ with c3: bar = st.number_input("Barrage (BAR)", 0, 19, 0)
 
 st.markdown("---")
 
-st.subheader("B. Profil des Notes Composites (Scores, Percentiles & IC 95%)")
+st.subheader("B. Profil des Notes Composites & Percentiles")
 
 somme_iag = sim + voc + cub + mat + bal
 somme_icc = memc + memi + sym + cod
 somme_inv = cub + puz + mat + bal + memi + cod
 
-# Vérif Homogénéité (Grégoire)
+# Vérif Homogénéité Subtests (Grégoire)
 valid_icv, txt_icv = check_homogeneite_indice(sim, voc, "ICV")
 valid_ivs, txt_ivs = check_homogeneite_indice(cub, puz, "IVS")
 valid_irf, txt_irf = check_homogeneite_indice(mat, bal, "IRF")
@@ -225,17 +225,13 @@ valid_ivt, txt_ivt = check_homogeneite_indice(sym, cod, "IVT")
 etats_indices = [txt_icv, txt_ivs, txt_irf, txt_imt, txt_ivt]
 nb_indices_invalides = sum([1 for x in [valid_icv, valid_ivs, valid_irf, valid_imt, valid_ivt] if x is False])
 
-# QIT - Ligne isolée pour clarté
+# QIT - Layout
 col_qit1, col_qit2, col_qit3, col_qit4, col_qit5 = st.columns(5)
 with col_qit1: qit = st.number_input("QIT (Total)", 0, 160, 0)
 with col_qit2: perc_qit = st.number_input("Perc. QIT", 0.0, 100.0, 0.0)
 with col_qit3: qit_bas = st.number_input("IC Bas QIT", 0, 160, 0)
 with col_qit4: qit_haut = st.number_input("IC Haut QIT", 0, 160, 0)
-
-# Calcul Validité QIT (Affichage)
-with col_qit5:
-    indices_check = [icv, ivs, irf, imt, ivt] # Note: vars pas encore def, on déplace le calcul plus bas
-    st.write("") # Placeholder, on affichera le statut après la saisie des indices
+# col_qit5 est réservé pour l'affichage APRES la définition des indices
 
 # Indices Principaux (5 colonnes)
 c1, c2, c3, c4, c5 = st.columns(5)
@@ -244,8 +240,8 @@ c1, c2, c3, c4, c5 = st.columns(5)
 with c1: 
     st.markdown("**ICV**")
     icv = st.number_input("Score ICV", 0, 160, 0, label_visibility="collapsed")
-    perc_icv = st.number_input("Perc ICV", 0.0, 100.0, 0.0, label_visibility="collapsed", placeholder="%")
-    st.caption("Intervalle Confiance (Bas / Haut)")
+    perc_icv = st.number_input("Perc ICV", 0.0, 100.0, 0.0, label_visibility="collapsed")
+    st.caption("Intervalle Confiance")
     icv_bas = st.number_input("ICV Bas", 0, 160, 0, label_visibility="collapsed")
     icv_haut = st.number_input("ICV Haut", 0, 160, 0, label_visibility="collapsed")
     if txt_icv: st.caption(txt_icv)
@@ -290,7 +286,7 @@ with c5:
     ivt_haut = st.number_input("IVT Haut", 0, 160, 0, label_visibility="collapsed")
     if txt_ivt: st.caption(txt_ivt)
 
-# Calcul Validité QIT (Mise à jour visuelle)
+# --- CALCUL VALIDITÉ QIT (MAINTENANT QUE LES VARIABLES EXISTENT) ---
 with col_qit5:
     indices_check = [icv, ivs, irf, imt, ivt]
     if all(i > 0 for i in indices_check):
@@ -305,7 +301,7 @@ with col_qit5:
             st.success(f"✅ **Homogène**")
             homogeneite_txt = "QIT Valide et Homogène"
     else:
-        st.info("Saisie incomplète"); homogeneite_txt = "Non calculé"
+        st.info("Calcul Homogénéité..."); homogeneite_txt = "Non calculé"
 
 st.markdown("---")
 
