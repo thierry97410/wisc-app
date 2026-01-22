@@ -42,8 +42,11 @@ try:
 except:
     st.error("Clé API manquante."); st.stop()
 
-# --- INITIALISATION VARIABLES ---
-vars_to_init = [
+# --- INITIALISATION VARIABLES (SCORES + DATES) ---
+# On initialise tout ici pour éviter le conflit "Default value vs Session State"
+
+# 1. Scores
+vars_scores = [
     'sim', 'voc', 'info', 'comp', 'cub', 'puz', 'mat', 'bal', 'arit', 
     'memc', 'memi', 'seq', 'cod', 'sym', 'bar',
     'qit', 'perc_qit', 'qit_bas', 'qit_haut',
@@ -56,8 +59,17 @@ vars_to_init = [
     'icc', 'icc_bas', 'icc_haut',
     'inv', 'inv_bas', 'inv_haut'
 ]
-for var in vars_to_init:
+for var in vars_scores:
     if var not in st.session_state: st.session_state[var] = 0.0 if 'perc' in var else 0
+
+# 2. Dates (Initialisation intelligente)
+if 'jn' not in st.session_state: st.session_state['jn'] = 1
+if 'mn' not in st.session_state: st.session_state['mn'] = 1
+if 'an' not in st.session_state: st.session_state['an'] = 2015 # Valeur par défaut Année Naissance
+
+if 'jb' not in st.session_state: st.session_state['jb'] = date.today().day
+if 'mb' not in st.session_state: st.session_state['mb'] = date.today().month
+if 'ab' not in st.session_state: st.session_state['ab'] = date.today().year # Valeur par défaut Année Bilan
 
 # --- FONCTIONS ---
 def calculer_age(d_naiss, d_bilan):
@@ -140,24 +152,21 @@ with st.sidebar:
     st.header("📥 Import Q-GLOBAL")
     uploaded_qglobal = st.file_uploader("Rapport PDF", type=['pdf', 'txt'])
     
-    # Zone de message d'état de l'import (persistant)
+    # Message d'état import
     if 'import_status' in st.session_state:
         status = st.session_state['import_status']
         if status['success']:
             st.success(status['msg'])
             if status['missing']:
-                st.warning(f"⚠️ **Attention :** {len(status['missing'])} valeurs non trouvées (mises à 0) :\n" + ", ".join(status['missing']))
-        else:
-            st.error(status['msg'])
+                st.warning(f"⚠️ Manquant (mis à 0) :\n" + ", ".join(status['missing']))
+        else: st.error(status['msg'])
 
     if uploaded_qglobal and st.button("🚀 Extraire Données + Dates"):
         with st.spinner("Analyse IA en cours..."):
             raw = read_file(uploaded_qglobal, uploaded_qglobal.name)
             data_ex = extract_qglobal_data(raw)
-            
-            missing_fields = []
+            missing = []
             count = 0
-            
             if data_ex:
                 for k, v in data_ex.items():
                     # DATES
@@ -167,33 +176,19 @@ with st.sidebar:
                     elif k == 'date_passation' and v:
                         try: d=v.split('/'); st.session_state['jb']=int(d[0]); st.session_state['mb']=int(d[1]); st.session_state['ab']=int(d[2]); count+=1
                         except: pass
-                    
                     # SCORES
                     elif k in st.session_state:
                         try:
-                            if v is None or v == "": 
-                                val = 0
-                                missing_fields.append(k) # On note que c'est manquant
-                            else: 
-                                val = float(v)
+                            if v is None or v == "": val=0; missing.append(k)
+                            else: val=float(v)
+                            if val==0 and k not in missing: missing.append(k)
                             
-                            # Si la valeur est 0, on considère aussi que c'est potentiellement "manquant" ou à vérifier
-                            if val == 0:
-                                if k not in missing_fields: missing_fields.append(k)
-                            
-                            if 'perc' in k: st.session_state[k] = val
-                            else: st.session_state[k] = int(val)
-                            count += 1
-                        except: 
-                            st.session_state[k] = 0
-                            missing_fields.append(k)
+                            if 'perc' in k: st.session_state[k]=val
+                            else: st.session_state[k]=int(val)
+                            count+=1
+                        except: st.session_state[k]=0; missing.append(k)
                 
-                # Stockage du rapport d'import pour affichage
-                st.session_state['import_status'] = {
-                    'success': True,
-                    'msg': f"{count} champs traités.",
-                    'missing': missing_fields
-                }
+                st.session_state['import_status'] = {'success': True, 'msg': f"{count} champs importés.", 'missing': missing}
                 st.rerun()
             else: 
                 st.session_state['import_status'] = {'success': False, 'msg': "Échec extraction IA.", 'missing': []}
@@ -215,17 +210,19 @@ with c1: prenom = st.text_input("Prénom", placeholder="Ex: Lucas"); sexe = st.r
 with c2: 
     st.markdown("**Naissance**")
     cj, cm, ca = st.columns([1,1,1.5])
-    with cj: jn = st.number_input("J", 1, 31, 1, key="jn")
-    with cm: mn = st.number_input("M", 1, 12, 1, key="mn")
-    with ca: an = st.number_input("A", 2000, 2030, 2015, key="an")
+    # CORRECTION ICI : On retire la valeur par défaut explicite (ex: 1, 31, 1) car gérée par session_state
+    with cj: jn = st.number_input("J", 1, 31, key="jn")
+    with cm: mn = st.number_input("M", 1, 12, key="mn")
+    with ca: an = st.number_input("A", 2000, 2030, key="an")
     try: dn = date(an, mn, jn)
     except: dn = date.today()
 with c3:
     st.markdown("**Bilan**")
     cj, cm, ca = st.columns([1,1,1.5])
-    with cj: jb = st.number_input("J", 1, 31, date.today().day, key="jb")
-    with cm: mb = st.number_input("M", 1, 12, date.today().month, key="mb")
-    with ca: ab = st.number_input("A", 2020, 2030, date.today().year, key="ab")
+    # IDEM ICI
+    with cj: jb = st.number_input("J", 1, 31, key="jb")
+    with cm: mb = st.number_input("M", 1, 12, key="mb")
+    with ca: ab = st.number_input("A", 2020, 2030, key="ab")
     try: dt = date(ab, mb, jb)
     except: dt = date.today()
     ans, mois = calculer_age(dn, dt)
