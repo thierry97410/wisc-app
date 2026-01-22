@@ -2,6 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 import os
 import io
+import json
 import numpy as np
 import matplotlib.pyplot as plt
 from io import StringIO
@@ -22,6 +23,25 @@ try:
 except:
     st.error("Clé API manquante dans les secrets Streamlit.")
     st.stop()
+
+# --- INITIALISATION SESSION STATE (Mémoire pour l'import auto) ---
+# On doit initialiser toutes les variables à 0 pour pouvoir les pré-remplir
+vars_to_init = [
+    'sim', 'voc', 'info', 'comp', 'cub', 'puz', 'mat', 'bal', 'arit', 
+    'memc', 'memi', 'seq', 'cod', 'sym', 'bar',
+    'qit', 'perc_qit', 'qit_bas', 'qit_haut',
+    'icv', 'perc_icv', 'icv_bas', 'icv_haut',
+    'ivs', 'perc_ivs', 'ivs_bas', 'ivs_haut',
+    'irf', 'perc_irf', 'irf_bas', 'irf_haut',
+    'imt', 'perc_imt', 'imt_bas', 'imt_haut',
+    'ivt', 'perc_ivt', 'ivt_bas', 'ivt_haut',
+    'iag', 'iag_bas', 'iag_haut',
+    'icc', 'icc_bas', 'icc_haut',
+    'inv', 'inv_bas', 'inv_haut'
+]
+for var in vars_to_init:
+    if var not in st.session_state:
+        st.session_state[var] = 0.0 if 'perc' in var else 0
 
 # --- FONCTIONS UTILITAIRES ---
 def calculer_age(d_naiss, d_bilan):
@@ -75,6 +95,38 @@ def read_file(file_obj, filename):
     except: pass
     return text
 
+def extract_qglobal_data(text_content):
+    """Utilise Gemini pour parser le texte brut du PDF Q-GLOBAL"""
+    try:
+        model = genai.GenerativeModel('gemini-2.5-flash')
+        prompt = f"""
+        Tu es un assistant d'extraction de données. Voici le texte brut d'un rapport PDF WISC-V (Q-GLOBAL).
+        TA TÂCHE : Extraire les scores numériques et les renvoyer UNIQUEMENT au format JSON strict.
+        
+        Variables à extraire (si absentes, mettre 0) :
+        - Subtests (Notes Standard): sim, voc, info, comp, cub, puz, mat, bal, arit, memc, memi, seq, cod, sym, bar
+        - Indices (Note Composite): icv, ivs, irf, imt, ivt, qit, iag, icc, inv
+        - Percentiles (Rangs percentiles): perc_icv, perc_ivs, perc_irf, perc_imt, perc_ivt, perc_qit
+        - Intervalles de Confiance (IC 95% - Bas et Haut): icv_bas, icv_haut, ivs_bas, ivs_haut, etc...
+        
+        TEXTE DU RAPPORT :
+        {text_content[:8000]} (Tronqué si trop long)
+        
+        Exemple de format JSON attendu :
+        {{
+            "sim": 12, "voc": 10, "icv": 108, "perc_icv": 70, "icv_bas": 102, "icv_haut": 114, ...
+        }}
+        Renvoie SEULEMENT le JSON, rien d'autre.
+        """
+        response = model.generate_content(prompt)
+        json_str = response.text.strip()
+        if "```json" in json_str:
+            json_str = json_str.split("```json")[1].split("```")[0]
+        return json.loads(json_str)
+    except Exception as e:
+        st.error(f"Erreur d'extraction IA : {e}")
+        return None
+
 def create_docx(text_content, prenom, age_str):
     doc = Document()
     doc.add_heading(f'Compte Rendu WISC-V : {prenom}', 0)
@@ -87,9 +139,35 @@ def create_docx(text_content, prenom, age_str):
     doc.save(bio)
     return bio
 
-# --- SIDEBAR (CHARGEMENT AUTO) ---
+# --- SIDEBAR (BIBLIOTHÈQUE + IMPORT Q-GLOBAL) ---
 knowledge_base = ""
 with st.sidebar:
+    st.header("📥 Import Q-GLOBAL (Optionnel)")
+    uploaded_qglobal = st.file_uploader("Verser un rapport (PDF/TXT)", type=['pdf', 'txt'])
+    
+    if uploaded_qglobal is not None:
+        if st.button("🚀 Extraire les données"):
+            with st.spinner("Lecture et extraction par l'IA..."):
+                raw_text = read_file(uploaded_qglobal, uploaded_qglobal.name)
+                data_extracted = extract_qglobal_data(raw_text)
+                
+                if data_extracted:
+                    # Mise à jour du session_state
+                    count = 0
+                    for k, v in data_extracted.items():
+                        if k in st.session_state:
+                            # On s'assure du type (int ou float)
+                            if 'perc' in k:
+                                st.session_state[k] = float(v)
+                            else:
+                                st.session_state[k] = int(v)
+                            count += 1
+                    st.success(f"Succès ! {count} valeurs importées.")
+                    st.rerun() # Rafraîchir la page pour afficher les valeurs
+                else:
+                    st.error("Impossible d'extraire les données.")
+
+    st.divider()
     st.header("📚 Bibliothèque (Auto)")
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
     if local_files:
@@ -98,8 +176,6 @@ with st.sidebar:
                 c = read_file(f, f)
                 knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
         st.success(f"✅ {len(local_files)} documents actifs")
-        with st.expander("Voir détails"):
-            for f in local_files: st.caption(f"📄 {f}")
     else:
         st.warning("Aucun document PDF trouvé.")
 
@@ -175,7 +251,7 @@ obs_libre = st.text_area("Autres observations", height=80)
 st.markdown("---")
 
 # ==========================================
-# 3. PSYCHOMÉTRIE
+# 3. PSYCHOMÉTRIE (AVEC PRE-REMPLISSAGE)
 # ==========================================
 st.header("3. Psychométrie")
 
@@ -183,29 +259,29 @@ st.subheader("A. Profil des Notes Standards")
 
 # Ligne 1
 c1, c2, c3, c4 = st.columns(4)
-with c1: sim = st.number_input("Similitudes (SIM)", 0, 19, 0)
-with c2: voc = st.number_input("Vocabulaire (VOC)", 0, 19, 0)
-with c3: info = st.number_input("Information (INF)", 0, 19, 0)
-with c4: comp = st.number_input("Compréhension (COM)", 0, 19, 0)
+with c1: sim = st.number_input("Similitudes (SIM)", 0, 19, key="sim")
+with c2: voc = st.number_input("Vocabulaire (VOC)", 0, 19, key="voc")
+with c3: info = st.number_input("Information (INF)", 0, 19, key="info")
+with c4: comp = st.number_input("Compréhension (COM)", 0, 19, key="comp")
 # Ligne 2
 c1, c2 = st.columns(2)
-with c1: cub = st.number_input("Cubes (CUB)", 0, 19, 0)
-with c2: puz = st.number_input("Puzzles (PUZ)", 0, 19, 0)
+with c1: cub = st.number_input("Cubes (CUB)", 0, 19, key="cub")
+with c2: puz = st.number_input("Puzzles (PUZ)", 0, 19, key="puz")
 # Ligne 3
 c1, c2, c3 = st.columns(3)
-with c1: mat = st.number_input("Matrices (MAT)", 0, 19, 0)
-with c2: bal = st.number_input("Balances (BAL)", 0, 19, 0)
-with c3: arit = st.number_input("Arithmétique (ARI)", 0, 19, 0)
+with c1: mat = st.number_input("Matrices (MAT)", 0, 19, key="mat")
+with c2: bal = st.number_input("Balances (BAL)", 0, 19, key="bal")
+with c3: arit = st.number_input("Arithmétique (ARI)", 0, 19, key="arit")
 # Ligne 4
 c1, c2, c3 = st.columns(3)
-with c1: memc = st.number_input("Mém. Chiffres (MCH)", 0, 19, 0)
-with c2: memi = st.number_input("Mém. Images (MIM)", 0, 19, 0)
-with c3: seq = st.number_input("Séquence L-C (SLC)", 0, 19, 0)
+with c1: memc = st.number_input("Mém. Chiffres (MCH)", 0, 19, key="memc")
+with c2: memi = st.number_input("Mém. Images (MIM)", 0, 19, key="memi")
+with c3: seq = st.number_input("Séquence L-C (SLC)", 0, 19, key="seq")
 # Ligne 5
 c1, c2, c3 = st.columns(3)
-with c1: cod = st.number_input("Code (COD)", 0, 19, 0)
-with c2: sym = st.number_input("Symboles (SYM)", 0, 19, 0)
-with c3: bar = st.number_input("Barrage (BAR)", 0, 19, 0)
+with c1: cod = st.number_input("Code (COD)", 0, 19, key="cod")
+with c2: sym = st.number_input("Symboles (SYM)", 0, 19, key="sym")
+with c3: bar = st.number_input("Barrage (BAR)", 0, 19, key="bar")
 
 st.markdown("---")
 
@@ -215,7 +291,7 @@ somme_iag = sim + voc + cub + mat + bal
 somme_icc = memc + memi + sym + cod
 somme_inv = cub + puz + mat + bal + memi + cod
 
-# Vérif Homogénéité Subtests (Grégoire)
+# Vérif Homogénéité (Grégoire)
 valid_icv, txt_icv = check_homogeneite_indice(sim, voc, "ICV")
 valid_ivs, txt_ivs = check_homogeneite_indice(cub, puz, "IVS")
 valid_irf, txt_irf = check_homogeneite_indice(mat, bal, "IRF")
@@ -227,11 +303,10 @@ nb_indices_invalides = sum([1 for x in [valid_icv, valid_ivs, valid_irf, valid_i
 
 # QIT - Layout
 col_qit1, col_qit2, col_qit3, col_qit4, col_qit5 = st.columns(5)
-with col_qit1: qit = st.number_input("QIT (Total)", 0, 160, 0)
-with col_qit2: perc_qit = st.number_input("Perc. QIT", 0.0, 100.0, 0.0)
-with col_qit3: qit_bas = st.number_input("IC Bas QIT", 0, 160, 0)
-with col_qit4: qit_haut = st.number_input("IC Haut QIT", 0, 160, 0)
-# col_qit5 est réservé pour l'affichage APRES la définition des indices
+with col_qit1: qit = st.number_input("QIT (Total)", 0, 160, key="qit")
+with col_qit2: perc_qit = st.number_input("Perc. QIT", 0.0, 100.0, key="perc_qit")
+with col_qit3: qit_bas = st.number_input("IC Bas QIT", 0, 160, key="qit_bas")
+with col_qit4: qit_haut = st.number_input("IC Haut QIT", 0, 160, key="qit_haut")
 
 # Indices Principaux (5 colonnes)
 c1, c2, c3, c4, c5 = st.columns(5)
@@ -239,54 +314,54 @@ c1, c2, c3, c4, c5 = st.columns(5)
 # ICV
 with c1: 
     st.markdown("**ICV**")
-    icv = st.number_input("Score ICV", 0, 160, 0, label_visibility="collapsed")
-    perc_icv = st.number_input("Perc ICV", 0.0, 100.0, 0.0, label_visibility="collapsed")
+    icv = st.number_input("Score ICV", 0, 160, key="icv", label_visibility="collapsed")
+    perc_icv = st.number_input("Perc ICV", 0.0, 100.0, key="perc_icv", label_visibility="collapsed")
     st.caption("Intervalle Confiance")
-    icv_bas = st.number_input("ICV Bas", 0, 160, 0, label_visibility="collapsed")
-    icv_haut = st.number_input("ICV Haut", 0, 160, 0, label_visibility="collapsed")
+    icv_bas = st.number_input("ICV Bas", 0, 160, key="icv_bas", label_visibility="collapsed")
+    icv_haut = st.number_input("ICV Haut", 0, 160, key="icv_haut", label_visibility="collapsed")
     if txt_icv: st.caption(txt_icv)
 
 # IVS
 with c2: 
     st.markdown("**IVS**")
-    ivs = st.number_input("Score IVS", 0, 160, 0, label_visibility="collapsed")
-    perc_ivs = st.number_input("Perc IVS", 0.0, 100.0, 0.0, label_visibility="collapsed")
+    ivs = st.number_input("Score IVS", 0, 160, key="ivs", label_visibility="collapsed")
+    perc_ivs = st.number_input("Perc IVS", 0.0, 100.0, key="perc_ivs", label_visibility="collapsed")
     st.caption("Intervalle Confiance")
-    ivs_bas = st.number_input("IVS Bas", 0, 160, 0, label_visibility="collapsed")
-    ivs_haut = st.number_input("IVS Haut", 0, 160, 0, label_visibility="collapsed")
+    ivs_bas = st.number_input("IVS Bas", 0, 160, key="ivs_bas", label_visibility="collapsed")
+    ivs_haut = st.number_input("IVS Haut", 0, 160, key="ivs_haut", label_visibility="collapsed")
     if txt_ivs: st.caption(txt_ivs)
 
 # IRF
 with c3: 
     st.markdown("**IRF**")
-    irf = st.number_input("Score IRF", 0, 160, 0, label_visibility="collapsed")
-    perc_irf = st.number_input("Perc IRF", 0.0, 100.0, 0.0, label_visibility="collapsed")
+    irf = st.number_input("Score IRF", 0, 160, key="irf", label_visibility="collapsed")
+    perc_irf = st.number_input("Perc IRF", 0.0, 100.0, key="perc_irf", label_visibility="collapsed")
     st.caption("Intervalle Confiance")
-    irf_bas = st.number_input("IRF Bas", 0, 160, 0, label_visibility="collapsed")
-    irf_haut = st.number_input("IRF Haut", 0, 160, 0, label_visibility="collapsed")
+    irf_bas = st.number_input("IRF Bas", 0, 160, key="irf_bas", label_visibility="collapsed")
+    irf_haut = st.number_input("IRF Haut", 0, 160, key="irf_haut", label_visibility="collapsed")
     if txt_irf: st.caption(txt_irf)
 
 # IMT
 with c4: 
     st.markdown("**IMT**")
-    imt = st.number_input("Score IMT", 0, 160, 0, label_visibility="collapsed")
-    perc_imt = st.number_input("Perc IMT", 0.0, 100.0, 0.0, label_visibility="collapsed")
+    imt = st.number_input("Score IMT", 0, 160, key="imt", label_visibility="collapsed")
+    perc_imt = st.number_input("Perc IMT", 0.0, 100.0, key="perc_imt", label_visibility="collapsed")
     st.caption("Intervalle Confiance")
-    imt_bas = st.number_input("IMT Bas", 0, 160, 0, label_visibility="collapsed")
-    imt_haut = st.number_input("IMT Haut", 0, 160, 0, label_visibility="collapsed")
+    imt_bas = st.number_input("IMT Bas", 0, 160, key="imt_bas", label_visibility="collapsed")
+    imt_haut = st.number_input("IMT Haut", 0, 160, key="imt_haut", label_visibility="collapsed")
     if txt_imt: st.caption(txt_imt)
 
 # IVT
 with c5: 
     st.markdown("**IVT**")
-    ivt = st.number_input("Score IVT", 0, 160, 0, label_visibility="collapsed")
-    perc_ivt = st.number_input("Perc IVT", 0.0, 100.0, 0.0, label_visibility="collapsed")
+    ivt = st.number_input("Score IVT", 0, 160, key="ivt", label_visibility="collapsed")
+    perc_ivt = st.number_input("Perc IVT", 0.0, 100.0, key="perc_ivt", label_visibility="collapsed")
     st.caption("Intervalle Confiance")
-    ivt_bas = st.number_input("IVT Bas", 0, 160, 0, label_visibility="collapsed")
-    ivt_haut = st.number_input("IVT Haut", 0, 160, 0, label_visibility="collapsed")
+    ivt_bas = st.number_input("IVT Bas", 0, 160, key="ivt_bas", label_visibility="collapsed")
+    ivt_haut = st.number_input("IVT Haut", 0, 160, key="ivt_haut", label_visibility="collapsed")
     if txt_ivt: st.caption(txt_ivt)
 
-# --- CALCUL VALIDITÉ QIT (MAINTENANT QUE LES VARIABLES EXISTENT) ---
+# Calcul Validité QIT
 with col_qit5:
     indices_check = [icv, ivs, irf, imt, ivt]
     if all(i > 0 for i in indices_check):
@@ -310,19 +385,19 @@ st.caption(f"Calculs : IAG ({somme_iag}) | ICC ({somme_icc}) | INV ({somme_inv})
 c1, c2, c3 = st.columns(3)
 with c1: 
     st.markdown("**IAG**")
-    iag = st.number_input("Score IAG", 0, 160, 0, label_visibility="collapsed")
-    iag_bas = st.number_input("IAG Bas", 0, 160, 0, label_visibility="collapsed")
-    iag_haut = st.number_input("IAG Haut", 0, 160, 0, label_visibility="collapsed")
+    iag = st.number_input("Score IAG", 0, 160, key="iag", label_visibility="collapsed")
+    iag_bas = st.number_input("IAG Bas", 0, 160, key="iag_bas", label_visibility="collapsed")
+    iag_haut = st.number_input("IAG Haut", 0, 160, key="iag_haut", label_visibility="collapsed")
 with c2: 
     st.markdown("**ICC**")
-    icc = st.number_input("Score ICC", 0, 160, 0, label_visibility="collapsed")
-    icc_bas = st.number_input("ICC Bas", 0, 160, 0, label_visibility="collapsed")
-    icc_haut = st.number_input("ICC Haut", 0, 160, 0, label_visibility="collapsed")
+    icc = st.number_input("Score ICC", 0, 160, key="icc", label_visibility="collapsed")
+    icc_bas = st.number_input("ICC Bas", 0, 160, key="icc_bas", label_visibility="collapsed")
+    icc_haut = st.number_input("ICC Haut", 0, 160, key="icc_haut", label_visibility="collapsed")
 with c3: 
     st.markdown("**INV**")
-    inv = st.number_input("Score INV", 0, 160, 0, label_visibility="collapsed")
-    inv_bas = st.number_input("INV Bas", 0, 160, 0, label_visibility="collapsed")
-    inv_haut = st.number_input("INV Haut", 0, 160, 0, label_visibility="collapsed")
+    inv = st.number_input("Score INV", 0, 160, key="inv", label_visibility="collapsed")
+    inv_bas = st.number_input("INV Bas", 0, 160, key="inv_bas", label_visibility="collapsed")
+    inv_haut = st.number_input("INV Haut", 0, 160, key="inv_haut", label_visibility="collapsed")
 
 # --- STATS & GRAPH ---
 st.divider()
