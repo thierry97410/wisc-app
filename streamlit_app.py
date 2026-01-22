@@ -104,12 +104,18 @@ def extract_qglobal_data(text_content):
     try:
         model = genai.GenerativeModel('gemini-2.5-flash')
         prompt = f"""
-        Extrais les scores WISC-V du texte ci-dessous en JSON.
-        IMPORTANT: Si une valeur est manquante ou illisible, mets 0. Ne mets JAMAIS 'null' ou de texte.
-        Variables: sim, voc, info, comp, cub, puz, mat, bal, arit, memc, memi, seq, cod, sym, bar
+        Extrais les données WISC-V du texte ci-dessous en JSON.
+        IMPORTANT: Si une valeur est manquante, mets 0 (ou "" pour les dates).
+        
+        Variables Scores: sim, voc, info, comp, cub, puz, mat, bal, arit, memc, memi, seq, cod, sym, bar
         Indices: qit, icv, ivs, irf, imt, ivt, iag, icc, inv
         Percentiles: perc_qit, perc_icv, perc_ivs, perc_irf, perc_imt, perc_ivt
         IC 95% (Bas/Haut): qit_bas, qit_haut, icv_bas, icv_haut... (etc pour tous les indices).
+        
+        DATES (Format JJ/MM/AAAA) :
+        - date_naissance (ex: 12/05/2015)
+        - date_passation (ex: 24/10/2024)
+        
         TEXTE: {text_content[:9000]}
         Renvoie UNIQUEMENT un JSON valide.
         """
@@ -133,28 +139,65 @@ knowledge_base = ""
 with st.sidebar:
     st.header("📥 Import Q-GLOBAL")
     uploaded_qglobal = st.file_uploader("Rapport PDF", type=['pdf', 'txt'])
-    if uploaded_qglobal and st.button("🚀 Extraire"):
-        with st.spinner("Analyse IA..."):
+    
+    # Zone de message d'état de l'import (persistant)
+    if 'import_status' in st.session_state:
+        status = st.session_state['import_status']
+        if status['success']:
+            st.success(status['msg'])
+            if status['missing']:
+                st.warning(f"⚠️ **Attention :** {len(status['missing'])} valeurs non trouvées (mises à 0) :\n" + ", ".join(status['missing']))
+        else:
+            st.error(status['msg'])
+
+    if uploaded_qglobal and st.button("🚀 Extraire Données + Dates"):
+        with st.spinner("Analyse IA en cours..."):
             raw = read_file(uploaded_qglobal, uploaded_qglobal.name)
             data_ex = extract_qglobal_data(raw)
+            
+            missing_fields = []
+            count = 0
+            
             if data_ex:
-                c = 0
                 for k, v in data_ex.items():
-                    if k in st.session_state:
-                        # --- BLINDAGE ANTI-CRASH ---
+                    # DATES
+                    if k == 'date_naissance' and v:
+                        try: d=v.split('/'); st.session_state['jn']=int(d[0]); st.session_state['mn']=int(d[1]); st.session_state['an']=int(d[2]); count+=1
+                        except: pass
+                    elif k == 'date_passation' and v:
+                        try: d=v.split('/'); st.session_state['jb']=int(d[0]); st.session_state['mb']=int(d[1]); st.session_state['ab']=int(d[2]); count+=1
+                        except: pass
+                    
+                    # SCORES
+                    elif k in st.session_state:
                         try:
-                            if v is None: val = 0
-                            else: val = float(v) # On tente de convertir en nombre
+                            if v is None or v == "": 
+                                val = 0
+                                missing_fields.append(k) # On note que c'est manquant
+                            else: 
+                                val = float(v)
+                            
+                            # Si la valeur est 0, on considère aussi que c'est potentiellement "manquant" ou à vérifier
+                            if val == 0:
+                                if k not in missing_fields: missing_fields.append(k)
                             
                             if 'perc' in k: st.session_state[k] = val
                             else: st.session_state[k] = int(val)
-                            c += 1
-                        except:
-                            # Si ça plante, on met 0 par sécurité
+                            count += 1
+                        except: 
                             st.session_state[k] = 0
-                st.success(f"{c} valeurs importées."); st.rerun()
-            else: st.error("Échec extraction.")
-    
+                            missing_fields.append(k)
+                
+                # Stockage du rapport d'import pour affichage
+                st.session_state['import_status'] = {
+                    'success': True,
+                    'msg': f"{count} champs traités.",
+                    'missing': missing_fields
+                }
+                st.rerun()
+            else: 
+                st.session_state['import_status'] = {'success': False, 'msg': "Échec extraction IA.", 'missing': []}
+
     st.divider()
     st.header("📚 Bibliothèque (Auto)")
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
@@ -168,6 +211,7 @@ with st.sidebar:
 st.header("1. Identité")
 c1, c2, c3 = st.columns(3)
 with c1: prenom = st.text_input("Prénom", placeholder="Ex: Lucas"); sexe = st.radio("Sexe", ["Garçon", "Fille"], horizontal=True); lateralite = st.radio("Latéralité", ["Droitier", "Gaucher"], horizontal=True)
+
 with c2: 
     st.markdown("**Naissance**")
     cj, cm, ca = st.columns([1,1,1.5])
