@@ -379,6 +379,10 @@ if st.button("✨ GÉNÉRER L'ANALYSE FONCTIONNELLE", type="primary"):
             Rôle: Expert Psychologue WISC-V.
             OBJECTIF: Produire une analyse **ÉCOLOGIQUE** et **FONCTIONNELLE**.
             
+            CONTEXTE THÉORIQUE :
+            - Référentiel : Utilise exclusivement les critères du **DSM-5** (ou DSM-5-TR) et de la **CIM-11**.
+            - INTERDICTION : Ne jamais faire référence au DSM-IV ou à des classifications obsolètes.
+            
             DONNÉES:
             - Enfant: {infos}
             - Obs: {obs_txt}
