@@ -42,6 +42,38 @@ try:
 except:
     st.error("Clé API manquante."); st.stop()
 
+# --- GESTION DU RESET (Uploader Key) ---
+if 'uploader_key' not in st.session_state: st.session_state.uploader_key = 0
+
+def reset_all():
+    """Fonction pour tout remettre à zéro"""
+    # On vide les variables de session spécifiques
+    keys_to_clear = [
+        'sim', 'voc', 'info', 'comp', 'cub', 'puz', 'mat', 'bal', 'arit', 
+        'memc', 'memi', 'seq', 'cod', 'sym', 'bar',
+        'qit', 'perc_qit', 'qit_bas', 'qit_haut',
+        'icv', 'perc_icv', 'icv_bas', 'icv_haut',
+        'ivs', 'perc_ivs', 'ivs_bas', 'ivs_haut',
+        'irf', 'perc_irf', 'irf_bas', 'irf_haut',
+        'imt', 'perc_imt', 'imt_bas', 'imt_haut',
+        'ivt', 'perc_ivt', 'ivt_bas', 'ivt_haut',
+        'iag', 'iag_bas', 'iag_haut',
+        'icc', 'icc_bas', 'icc_haut',
+        'inv', 'inv_bas', 'inv_haut',
+        'import_status'
+    ]
+    for key in keys_to_clear:
+        if key in st.session_state:
+            del st.session_state[key]
+    
+    # On remet les dates par défaut
+    st.session_state['jn'] = 1; st.session_state['mn'] = 1; st.session_state['an'] = 2015
+    st.session_state['jb'] = date.today().day; st.session_state['mb'] = date.today().month; st.session_state['ab'] = date.today().year
+    
+    # On change la clé de l'uploader pour le vider visuellement
+    st.session_state.uploader_key += 1
+    st.rerun()
+
 # --- INITIALISATION VARIABLES ---
 vars_scores = [
     'sim', 'voc', 'info', 'comp', 'cub', 'puz', 'mat', 'bal', 'arit', 
@@ -145,8 +177,17 @@ def create_docx(text_content, prenom, age_str):
 # --- SIDEBAR ---
 knowledge_base = ""
 with st.sidebar:
+    st.header("⚙️ Configuration")
+    
+    # Sélecteur de Ton (Nouveauté)
+    style_redac = st.radio("Destinataire / Style", 
+                           ["Expert / MDPH (Technique)", "Parents / Enseignants (Pédagogique)"],
+                           index=0)
+    
+    st.divider()
     st.header("📥 Import Q-GLOBAL")
-    uploaded_qglobal = st.file_uploader("Rapport PDF", type=['pdf', 'txt'])
+    # Utilisation de la clé dynamique pour permettre le reset
+    uploaded_qglobal = st.file_uploader("Rapport PDF", type=['pdf', 'txt'], key=f"uploader_{st.session_state.uploader_key}")
     
     if 'import_status' in st.session_state:
         status = st.session_state['import_status']
@@ -193,6 +234,11 @@ with st.sidebar:
                 knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
         st.caption(f"Contexte : {len(knowledge_base)} chars")
     else: st.warning("Pas de PDF trouvés.")
+    
+    st.divider()
+    # BOUTON RESET
+    if st.button("🗑️ Nouvelle Analyse (Reset)", type="secondary"):
+        reset_all()
 
 # --- INTERFACE ---
 st.header("1. Identité")
@@ -378,6 +424,8 @@ if st.button("✨ GÉNÉRER L'ANALYSE FONCTIONNELLE", type="primary"):
             prompt = f"""
             Rôle: Expert Psychologue WISC-V.
             OBJECTIF: Produire une analyse **ÉCOLOGIQUE** et **FONCTIONNELLE**.
+            
+            DESTINATAIRE: {style_redac} (Adapte le ton et le vocabulaire).
             
             CONTEXTE THÉORIQUE :
             - Référentiel : Utilise exclusivement les critères du **DSM-5** (ou DSM-5-TR) et de la **CIM-11**.
