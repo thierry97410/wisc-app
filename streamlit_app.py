@@ -47,7 +47,6 @@ if 'uploader_key' not in st.session_state: st.session_state.uploader_key = 0
 
 def reset_all():
     """Fonction pour tout remettre à zéro"""
-    # On vide les variables de session spécifiques
     keys_to_clear = [
         'sim', 'voc', 'info', 'comp', 'cub', 'puz', 'mat', 'bal', 'arit', 
         'memc', 'memi', 'seq', 'cod', 'sym', 'bar',
@@ -66,11 +65,10 @@ def reset_all():
         if key in st.session_state:
             del st.session_state[key]
     
-    # On remet les dates par défaut
+    # Reset dates
     st.session_state['jn'] = 1; st.session_state['mn'] = 1; st.session_state['an'] = 2015
     st.session_state['jb'] = date.today().day; st.session_state['mb'] = date.today().month; st.session_state['ab'] = date.today().year
     
-    # On change la clé de l'uploader pour le vider visuellement
     st.session_state.uploader_key += 1
     st.rerun()
 
@@ -179,14 +177,12 @@ knowledge_base = ""
 with st.sidebar:
     st.header("⚙️ Configuration")
     
-    # Sélecteur de Ton (Nouveauté)
     style_redac = st.radio("Destinataire / Style", 
                            ["Expert / MDPH (Technique)", "Parents / Enseignants (Pédagogique)"],
                            index=0)
     
     st.divider()
     st.header("📥 Import Q-GLOBAL")
-    # Utilisation de la clé dynamique pour permettre le reset
     uploaded_qglobal = st.file_uploader("Rapport PDF", type=['pdf', 'txt'], key=f"uploader_{st.session_state.uploader_key}")
     
     if 'import_status' in st.session_state:
@@ -236,7 +232,6 @@ with st.sidebar:
     else: st.warning("Pas de PDF trouvés.")
     
     st.divider()
-    # BOUTON RESET
     if st.button("🗑️ Nouvelle Analyse (Reset)", type="secondary"):
         reset_all()
 
@@ -380,6 +375,15 @@ with col_qit5:
     else: st.info("..."); h_txt = "N/A"
 
 st.markdown("---")
+
+# --- AJOUT: CALCUL AUTOMATIQUE DES SOMMES POUR AIDE VISUELLE ---
+somme_iag = sim + voc + cub + mat + bal
+somme_icc = memc + memi + sym + cod
+somme_inv = cub + puz + mat + bal + memi + cod
+
+st.markdown("##### C. Indices Complémentaires")
+st.caption(f"🧮 **Aide calcul (Somme Notes Standard) :** IAG = **{somme_iag}** | ICC = **{somme_icc}** | INV = **{somme_inv}**")
+
 c1, c2, c3 = st.columns(3)
 with c1: st.markdown("**IAG**"); iag = st.number_input("IAG", 0, key="iag"); iag_bas = st.number_input("IB_IAG", 0, key="iag_bas", label_visibility="collapsed"); iag_haut = st.number_input("IH_IAG", 0, key="iag_haut", label_visibility="collapsed")
 with c2: st.markdown("**ICC**"); icc = st.number_input("ICC", 0, key="icc"); icc_bas = st.number_input("IB_ICC", 0, key="icc_bas", label_visibility="collapsed"); icc_haut = st.number_input("IH_ICC", 0, key="icc_haut", label_visibility="collapsed")
@@ -413,6 +417,7 @@ if st.button("✨ GÉNÉRER L'ANALYSE FONCTIONNELLE", type="primary"):
     data = f"QIT: {qit} (Perc: {perc_qit}, IC: {qit_bas}-{qit_haut}). Validité: {h_txt}.\n"
     data += f"Indices (Val/Perc/IC): ICV {icv}/{perc_icv}/{icv_bas}-{icv_haut}, IVS {ivs}/{perc_ivs}/{ivs_bas}-{ivs_haut}, "
     data += f"IRF {irf}/{perc_irf}/{irf_bas}-{irf_haut}, IMT {imt}/{perc_imt}/{imt_bas}-{imt_haut}, IVT {ivt}/{perc_ivt}/{ivt_bas}-{ivt_haut}.\n"
+    data += f"Indices Compl. (Score/IC): IAG {iag}/{iag_bas}-{iag_haut}, ICC {icc}/{icc_bas}-{icc_haut}, INV {inv}/{inv_bas}-{inv_haut}.\n"
     data += f"Subtests: Sim {sim}, Voc {voc}, Cub {cub}, Mat {mat}, MemC {memc}, Cod {cod}...\n"
     
     for e in etats: 
