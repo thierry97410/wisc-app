@@ -141,8 +141,8 @@ def extract_qglobal_data(text_content):
         Extrais les données WISC-V du texte ci-dessous en JSON.
         IMPORTANT: Si une valeur est manquante, mets 0 (ou "" pour les dates).
         
-        Variables Scores (Note Standard 1-19): sim, voc, info, comp, cub, puz, mat, bal, arit, memc, memi, seq, cod, sym, bar
-        Indices (Note Composite): qit, icv, ivs, irf, imt, ivt, iag, icc, inv
+        Variables Scores: sim, voc, info, comp, cub, puz, mat, bal, arit, memc, memi, seq, cod, sym, bar
+        Indices: qit, icv, ivs, irf, imt, ivt, iag, icc, inv
         Percentiles: perc_qit, perc_icv, perc_ivs, perc_irf, perc_imt, perc_ivt
         IC 95% (Bas/Haut): qit_bas, qit_haut, icv_bas, icv_haut... (etc pour tous les indices).
         
