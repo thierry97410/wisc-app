@@ -141,8 +141,8 @@ def extract_qglobal_data(text_content):
         Extrais les données WISC-V du texte ci-dessous en JSON.
         IMPORTANT: Si une valeur est manquante, mets 0 (ou "" pour les dates).
         
-        Variables Scores: sim, voc, info, comp, cub, puz, mat, bal, arit, memc, memi, seq, cod, sym, bar
-        Indices: qit, icv, ivs, irf, imt, ivt, iag, icc, inv
+        Variables Scores (Note Standard 1-19): sim, voc, info, comp, cub, puz, mat, bal, arit, memc, memi, seq, cod, sym, bar
+        Indices (Note Composite): qit, icv, ivs, irf, imt, ivt, iag, icc, inv
         Percentiles: perc_qit, perc_icv, perc_ivs, perc_irf, perc_imt, perc_ivt
         IC 95% (Bas/Haut): qit_bas, qit_haut, icv_bas, icv_haut... (etc pour tous les indices).
         
@@ -363,13 +363,18 @@ with col_qit5:
     else: st.info("..."); h_txt = "N/A"
 
 st.markdown("---")
-# --- CALCUL SOMMES POUR AIDE ---
-somme_iag = sim + voc + cub + mat + bal
-somme_icc = memc + memi + sym + cod
-somme_inv = cub + puz + mat + bal + memi + cod
-
+# --- CALCUL SOMMES POUR AIDE (Avec Sécurité 0) ---
 st.markdown("##### C. Indices Complémentaires")
-st.caption(f"🧮 **Aide calcul (Somme Notes Standard) :** IAG = **{somme_iag}** | ICC = **{somme_icc}** | INV = **{somme_inv}**")
+
+def safe_sum(values):
+    if all(v > 0 for v in values): return sum(values)
+    return "Incomplet"
+
+s_iag = safe_sum([sim, voc, cub, mat, bal])
+s_icc = safe_sum([memc, memi, sym, cod])
+s_inv = safe_sum([cub, puz, mat, bal, memi, cod])
+
+st.caption(f"🧮 **Aide calcul (Somme Notes Standard) :** IAG = **{s_iag}** | ICC = **{s_icc}** | INV = **{s_inv}**")
 
 c1, c2, c3 = st.columns(3)
 with c1: st.markdown("**IAG**"); iag = st.number_input("IAG", 0, key="iag"); iag_bas = st.number_input("IB_IAG", 0, key="iag_bas", label_visibility="collapsed"); iag_haut = st.number_input("IH_IAG", 0, key="iag_haut", label_visibility="collapsed")
@@ -400,12 +405,41 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
     infos = f"{prenom}, {sexe}, {ans} ans. Latéralité: {lateralite}. Créole: {creole}."
     obs_txt = ", ".join(obs) + ". " + obs_libre
     
-    # Construction Data
-    data = f"QIT: {qit} (Perc: {perc_qit}, IC: {qit_bas}-{qit_haut}).\n"
-    data += f"Indices (Val/Perc/IC): ICV {icv}/{perc_icv}/{icv_bas}-{icv_haut}, IVS {ivs}/{perc_ivs}/{ivs_bas}-{ivs_haut}, "
-    data += f"IRF {irf}/{perc_irf}/{irf_bas}-{irf_haut}, IMT {imt}/{perc_imt}/{imt_bas}-{imt_haut}, IVT {ivt}/{perc_ivt}/{ivt_bas}-{ivt_haut}.\n"
-    data += f"Indices Compl. (Score/IC): IAG {iag}/{iag_bas}-{iag_haut}, ICC {icc}/{icc_bas}-{icc_haut}, INV {inv}/{inv_bas}-{inv_haut}.\n"
-    data += f"Subtests (Notes Standard): Sim {sim}, Voc {voc}, Info {info}, Comp {comp}, Cub {cub}, Puz {puz}, Mat {mat}, Bal {bal}, Arit {arit}, MemC {memc}, MemI {memi}, Seq {seq}, Cod {cod}, Sym {sym}, Bar {bar}.\n"
+    # Construction Data (FILTRAGE RADICAL DES ZÉROS)
+    if qit > 0:
+        data = f"QIT: {qit} (Perc: {perc_qit}, IC: {qit_bas}-{qit_haut}). Validité: {h_txt}.\n"
+    else:
+        data = "QIT: Non calculé / Non administré.\n"
+
+    # 2. Indices Principaux
+    data += "Indices Administrés: "
+    indices_data = []
+    if icv > 0: indices_data.append(f"ICV {icv} (Perc {perc_icv}, IC {icv_bas}-{icv_haut})")
+    if ivs > 0: indices_data.append(f"IVS {ivs} (Perc {perc_ivs}, IC {ivs_bas}-{ivs_haut})")
+    if irf > 0: indices_data.append(f"IRF {irf} (Perc {perc_irf}, IC {irf_bas}-{irf_haut})")
+    if imt > 0: indices_data.append(f"IMT {imt} (Perc {perc_imt}, IC {imt_bas}-{imt_haut})")
+    if ivt > 0: indices_data.append(f"IVT {ivt} (Perc {perc_ivt}, IC {ivt_bas}-{ivt_haut})")
+    data += ", ".join(indices_data) + ".\n"
+
+    # 3. Indices Complémentaires
+    data += "Indices Complémentaires: "
+    compl_data = []
+    if iag > 0: compl_data.append(f"IAG {iag} (IC {iag_bas}-{iag_haut})")
+    if icc > 0: compl_data.append(f"ICC {icc} (IC {icc_bas}-{icc_haut})")
+    if inv > 0: compl_data.append(f"INV {inv} (IC {inv_bas}-{inv_haut})")
+    data += ", ".join(compl_data) + ".\n"
+
+    # 4. Subtests (Le plus important : ne pas envoyer les 0)
+    data += "Subtests (Notes Standard): "
+    subs_map = {
+        "Sim": sim, "Voc": voc, "Info": info, "Comp": comp,
+        "Cub": cub, "Puz": puz, "Mat": mat, "Bal": bal,
+        "Arit": arit, "MemC": memc, "MemI": memi, "Seq": seq,
+        "Cod": cod, "Sym": sym, "Bar": bar
+    }
+    # On garde seulement ceux > 0
+    valid_subs = [f"{k} {v}" for k, v in subs_map.items() if v > 0]
+    data += ", ".join(valid_subs) + "."
     
     with st.spinner("Analyse approfondie (Clinique & Métrique)..."):
         try:
@@ -434,7 +468,7 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
             STRUCTURE DU COMPTE RENDU :
             
             1. VALIDITÉ DES INDICES GLOBAUX (Étape Terriot/Ozenne)
-               - Calculer et vérifier l'homogénéité du QIT (moyenne des 7 subtests).
+               - Calculer et vérifier l'homogénéité du QIT (moyenne des 7 subtests obligatoires : CUB, SIM, MAT, MCH, COD, VOC, BAL).
                - Si QIT invalide, basculer sur IAG / ICC / INV. Expliquer le choix cliniquement (ex: "Le QIT est non représentatif en raison du trouble attentionnel impactant la MdT...").
             
             2. ANALYSE DES FONCTIONS (Indices & Subtests)
@@ -444,6 +478,12 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
                  * Interpréter les stratégies (ex: essai-erreur, verbalisation, impulsivité).
                  * Lier les résultats aux observations (fatigabilité, anxiété, opposition).
                  * Contexte : Prendre en compte le Créole pour l'ICV.
+               - SITUER LES SCORES (Subtests) selon les seuils :
+                 * < 4 : Très faible
+                 * 4-6 : Faible
+                 * 7-13 : Moyen
+                 * 14-16 : Élevé
+                 * > 16 : Très élevé
             
             3. SYNTHÈSE DIAGNOSTIQUE & FONCTIONNELLE
                - Croiser l'anamnèse (plainte initiale) avec les résultats.
