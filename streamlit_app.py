@@ -105,10 +105,9 @@ def calculer_age(d_naiss, d_bilan):
     except: return 0, 0
 
 def check_homogeneite_indice(val1, val2, nom_indice):
-    # Méthode simple pour l'affichage visuel, l'IA fera l'analyse fine Terriot/Ozenne
     if val1 == 0 or val2 == 0: return None, ""
     ecart = abs(val1 - val2)
-    if ecart >= 4: return False, f"⚠️ {nom_indice} Hétérogène (Écart {ecart})" # Seuil abaissé par précaution
+    if ecart >= 4: return False, f"⚠️ {nom_indice} Hétérogène (Écart {ecart})" 
     else: return True, f"✅ {nom_indice} Homogène"
 
 def plot_radar_chart(indices_dict):
@@ -172,7 +171,7 @@ knowledge_base = ""
 with st.sidebar:
     st.header("⚙️ Configuration")
     style_redac = st.radio("Destinataire / Style", 
-                           ["Expert / MDPH (Technique)", "Parents / Enseignants (Pédagogique)"], index=0)
+                           ["Expert / MDPH (Technique & Clinique)", "Parents / École (Pédagogique)"], index=0)
     
     st.divider()
     st.header("📥 Import Q-GLOBAL")
@@ -192,14 +191,12 @@ with st.sidebar:
             missing = []; count = 0
             if data_ex:
                 for k, v in data_ex.items():
-                    # Dates
                     if k == 'date_naissance' and v:
                         try: d=v.split('/'); st.session_state['jn']=int(d[0]); st.session_state['mn']=int(d[1]); st.session_state['an']=int(d[2]); count+=1
                         except: pass
                     elif k == 'date_passation' and v:
                         try: d=v.split('/'); st.session_state['jb']=int(d[0]); st.session_state['mb']=int(d[1]); st.session_state['ab']=int(d[2]); count+=1
                         except: pass
-                    # Scores
                     elif k in st.session_state:
                         try:
                             if v is None or v == "": val=0; missing.append(k)
@@ -307,7 +304,7 @@ with c3: bar = st.number_input("BAR", 0, 19, key="bar")
 st.markdown("---")
 st.subheader("B. Indices (Note / Perc. / IC)")
 
-# Homogénéité (Vérif basique pour affichage, l'IA fera le check avancé)
+# Homogénéité
 vicv, ticv = check_homogeneite_indice(sim, voc, "ICV")
 vivs, tivs = check_homogeneite_indice(cub, puz, "IVS")
 virf, tirf = check_homogeneite_indice(mat, bal, "IRF")
@@ -410,12 +407,12 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
     data += f"Indices Compl. (Score/IC): IAG {iag}/{iag_bas}-{iag_haut}, ICC {icc}/{icc_bas}-{icc_haut}, INV {inv}/{inv_bas}-{inv_haut}.\n"
     data += f"Subtests (Notes Standard): Sim {sim}, Voc {voc}, Info {info}, Comp {comp}, Cub {cub}, Puz {puz}, Mat {mat}, Bal {bal}, Arit {arit}, MemC {memc}, MemI {memi}, Seq {seq}, Cod {cod}, Sym {sym}, Bar {bar}.\n"
     
-    with st.spinner("Analyse approfondie selon méthodologie Terriot & Ozenne..."):
+    with st.spinner("Analyse approfondie (Clinique & Métrique)..."):
         try:
             model = genai.GenerativeModel('gemini-2.5-flash')
             prompt = f"""
             Rôle: Expert Psychologue WISC-V.
-            OBJECTIF: Produire une analyse clinique rigoureuse basée sur la méthode Terriot & Ozenne.
+            OBJECTIF: Produire une analyse **ÉQUILIBRÉE** entre la rigueur métrique (Terriot & Ozenne) et la finesse CLINIQUE.
             
             DESTINATAIRE: {style_redac}.
             CONTEXTE THÉORIQUE: DSM-5, CIM-11 (Interdiction DSM-IV).
@@ -428,34 +425,35 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
             - Stats Intra: {intra_txt}
             - Sources: {knowledge_base}
             
-            MÉTHODOLOGIE D'ANALYSE OBLIGATOIRE (Suivre ces étapes):
+            CONSIGNE DE RÉDACTION HYBRIDE (Métrique + Clinique) :
             
-            1. VALIDITÉ DES INDICES GLOBAUX (Étape clé)
-               a) QIT: Calculer la moyenne des 7 subtests obligatoires (CUB, SIM, MAT, MCH, COD, VOC, BAL).
-                  - Vérifier l'écart de chaque subtest à cette moyenne.
-                  - Si 0, 1 ou 2 subtests s'écartent significativement, le QIT est HOMOGÈNE -> Interpréter le QIT.
-                  - Sinon (3+ écarts) -> QIT HÉTÉROGÈNE -> Passer à l'IAG.
-               b) IAG (si QIT invalide): Calculer moyenne des 5 subtests (SIM, VOC, CUB, MAT, BAL).
-                  - Si max 2 subtests s'écartent de la moyenne -> IAG HOMOGÈNE -> Interpréter IAG.
-               c) ICC (Indice Compétence Cognitive): Vérifier homogénéité (Moyenne MCH, MIM, COD, SYM). Max 2 écarts.
-                  - Comparer ICC vs IAG si pertinent.
-               d) INV (Non Verbal): Vérifier homogénéité (Moyenne 6 subtests). Max 3 écarts.
+            Règle d'Or : NE JAMAIS justifier un résultat uniquement par le chiffre. Toujours lier le chiffre à l'observation clinique.
+            Exemple à éviter : "Le Code est chuté à 6."
+            Exemple attendu : "La faiblesse en Code (6) objective la lenteur graphique et la fatigabilité observées en fin de bilan."
             
-            2. ANALYSE DES INDICES (Homogénéité Interne)
-               - Pour chaque indice (ICV, IVS, IRF, IMT, IVT), comparer le subtest le plus fort et le plus faible.
-               - Si la différence est < seuil critique (approx 3-4 points), l'indice est HOMOGÈNE et interprétable.
-               - Sinon, l'indice est HÉTÉROGÈNE (ne pas interpréter le score global, décrire les composantes).
+            STRUCTURE DU COMPTE RENDU :
             
-            3. ANALYSE CLINIQUE & FONCTIONNELLE
-               - Inter-individuelle: Situer les scores (Très faible <4, Faible 4-6, Moyen 7-13, Fort 14-16, Très fort >16).
-               - Intra-individuelle: Identifier forces/faiblesses relatives par rapport à la moyenne du sujet.
-               - SYNTHÈSE: Lier ces résultats aux observations (fatigabilité, attention, langage) et à l'anamnèse.
-               - Expliquer l'impact concret sur la scolarité et la vie quotidienne.
+            1. VALIDITÉ DES INDICES GLOBAUX (Étape Terriot/Ozenne)
+               - Calculer et vérifier l'homogénéité du QIT (moyenne des 7 subtests).
+               - Si QIT invalide, basculer sur IAG / ICC / INV. Expliquer le choix cliniquement (ex: "Le QIT est non représentatif en raison du trouble attentionnel impactant la MdT...").
+            
+            2. ANALYSE DES FONCTIONS (Indices & Subtests)
+               Pour chaque sphère (Verbal, Visuo-spatial, Raisonnement, Mémoire, Vitesse) :
+               - Analyse Métrique : Homogénéité interne (Diff Max-Min au sein de l'indice).
+               - Analyse Clinique :
+                 * Interpréter les stratégies (ex: essai-erreur, verbalisation, impulsivité).
+                 * Lier les résultats aux observations (fatigabilité, anxiété, opposition).
+                 * Contexte : Prendre en compte le Créole pour l'ICV.
+            
+            3. SYNTHÈSE DIAGNOSTIQUE & FONCTIONNELLE
+               - Croiser l'anamnèse (plainte initiale) avec les résultats.
+               - Formuler des hypothèses (TDAH ? TSA ? Haut Potentiel ? Trouble Dys ?).
+               - Expliquer l'impact concret sur la scolarité et le quotidien (ex: "Ce profil explique pourquoi les devoirs durent 2h...").
             
             4. RECOMMANDATIONS
-               - Pistes pédagogiques et aménagements concrets.
+               - Pistes concrètes pour l'école et la maison.
             
-            Rédige le compte-rendu final en suivant cette structure logique.
+            Rédige le bilan final avec cette double exigence de rigueur chiffrée et de sens clinique.
             """
             
             res = model.generate_content(prompt)
