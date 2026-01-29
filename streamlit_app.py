@@ -42,11 +42,10 @@ try:
 except:
     st.error("Clé API manquante."); st.stop()
 
-# --- GESTION DU RESET (Uploader Key) ---
+# --- GESTION DU RESET ---
 if 'uploader_key' not in st.session_state: st.session_state.uploader_key = 0
 
 def reset_all():
-    """Fonction pour tout remettre à zéro"""
     keys_to_clear = [
         'sim', 'voc', 'info', 'comp', 'cub', 'puz', 'mat', 'bal', 'arit', 
         'memc', 'memi', 'seq', 'cod', 'sym', 'bar',
@@ -62,13 +61,10 @@ def reset_all():
         'import_status'
     ]
     for key in keys_to_clear:
-        if key in st.session_state:
-            del st.session_state[key]
+        if key in st.session_state: del st.session_state[key]
     
-    # Reset dates
     st.session_state['jn'] = 1; st.session_state['mn'] = 1; st.session_state['an'] = 2015
     st.session_state['jb'] = date.today().day; st.session_state['mb'] = date.today().month; st.session_state['ab'] = date.today().year
-    
     st.session_state.uploader_key += 1
     st.rerun()
 
@@ -109,9 +105,10 @@ def calculer_age(d_naiss, d_bilan):
     except: return 0, 0
 
 def check_homogeneite_indice(val1, val2, nom_indice):
+    # Méthode simple pour l'affichage visuel, l'IA fera l'analyse fine Terriot/Ozenne
     if val1 == 0 or val2 == 0: return None, ""
     ecart = abs(val1 - val2)
-    if ecart >= 5: return False, f"⚠️ {nom_indice} Hétérogène (Écart {ecart})"
+    if ecart >= 4: return False, f"⚠️ {nom_indice} Hétérogène (Écart {ecart})" # Seuil abaissé par précaution
     else: return True, f"✅ {nom_indice} Homogène"
 
 def plot_radar_chart(indices_dict):
@@ -150,9 +147,7 @@ def extract_qglobal_data(text_content):
         Percentiles: perc_qit, perc_icv, perc_ivs, perc_irf, perc_imt, perc_ivt
         IC 95% (Bas/Haut): qit_bas, qit_haut, icv_bas, icv_haut... (etc pour tous les indices).
         
-        DATES (Format JJ/MM/AAAA) :
-        - date_naissance
-        - date_passation
+        DATES (Format JJ/MM/AAAA) : date_naissance, date_passation
         
         TEXTE: {text_content[:9000]}
         Renvoie UNIQUEMENT un JSON valide.
@@ -176,10 +171,8 @@ def create_docx(text_content, prenom, age_str):
 knowledge_base = ""
 with st.sidebar:
     st.header("⚙️ Configuration")
-    
     style_redac = st.radio("Destinataire / Style", 
-                           ["Expert / MDPH (Technique)", "Parents / Enseignants (Pédagogique)"],
-                           index=0)
+                           ["Expert / MDPH (Technique)", "Parents / Enseignants (Pédagogique)"], index=0)
     
     st.divider()
     st.header("📥 Import Q-GLOBAL")
@@ -232,8 +225,7 @@ with st.sidebar:
     else: st.warning("Pas de PDF trouvés.")
     
     st.divider()
-    if st.button("🗑️ Nouvelle Analyse (Reset)", type="secondary"):
-        reset_all()
+    if st.button("🗑️ Nouvelle Analyse (Reset)", type="secondary"): reset_all()
 
 # --- INTERFACE ---
 st.header("1. Identité")
@@ -315,7 +307,7 @@ with c3: bar = st.number_input("BAR", 0, 19, key="bar")
 st.markdown("---")
 st.subheader("B. Indices (Note / Perc. / IC)")
 
-# Homogénéité
+# Homogénéité (Vérif basique pour affichage, l'IA fera le check avancé)
 vicv, ticv = check_homogeneite_indice(sim, voc, "ICV")
 vivs, tivs = check_homogeneite_indice(cub, puz, "IVS")
 virf, tirf = check_homogeneite_indice(mat, bal, "IRF")
@@ -364,7 +356,6 @@ with c5:
     ivt_haut = st.number_input("IH_IVT", 0, key="ivt_haut", label_visibility="collapsed")
     if tivt: st.caption(tivt)
 
-# Validité QIT
 with col_qit5:
     chk = [icv, ivs, irf, imt, ivt]
     if all(i > 0 for i in chk):
@@ -375,8 +366,7 @@ with col_qit5:
     else: st.info("..."); h_txt = "N/A"
 
 st.markdown("---")
-
-# --- AJOUT: CALCUL AUTOMATIQUE DES SOMMES POUR AIDE VISUELLE ---
+# --- CALCUL SOMMES POUR AIDE ---
 somme_iag = sim + voc + cub + mat + bal
 somme_icc = memc + memi + sym + cod
 somme_inv = cub + puz + mat + bal + memi + cod
@@ -409,34 +399,28 @@ with c2:
     else: intra_txt = ""
 
 st.markdown("---")
-if st.button("✨ GÉNÉRER L'ANALYSE FONCTIONNELLE", type="primary"):
+if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="primary"):
     infos = f"{prenom}, {sexe}, {ans} ans. Latéralité: {lateralite}. Créole: {creole}."
     obs_txt = ", ".join(obs) + ". " + obs_libre
     
     # Construction Data
-    data = f"QIT: {qit} (Perc: {perc_qit}, IC: {qit_bas}-{qit_haut}). Validité: {h_txt}.\n"
+    data = f"QIT: {qit} (Perc: {perc_qit}, IC: {qit_bas}-{qit_haut}).\n"
     data += f"Indices (Val/Perc/IC): ICV {icv}/{perc_icv}/{icv_bas}-{icv_haut}, IVS {ivs}/{perc_ivs}/{ivs_bas}-{ivs_haut}, "
     data += f"IRF {irf}/{perc_irf}/{irf_bas}-{irf_haut}, IMT {imt}/{perc_imt}/{imt_bas}-{imt_haut}, IVT {ivt}/{perc_ivt}/{ivt_bas}-{ivt_haut}.\n"
     data += f"Indices Compl. (Score/IC): IAG {iag}/{iag_bas}-{iag_haut}, ICC {icc}/{icc_bas}-{icc_haut}, INV {inv}/{inv_bas}-{inv_haut}.\n"
-    data += f"Subtests: Sim {sim}, Voc {voc}, Cub {cub}, Mat {mat}, MemC {memc}, Cod {cod}...\n"
+    data += f"Subtests (Notes Standard): Sim {sim}, Voc {voc}, Info {info}, Comp {comp}, Cub {cub}, Puz {puz}, Mat {mat}, Bal {bal}, Arit {arit}, MemC {memc}, MemI {memi}, Seq {seq}, Cod {cod}, Sym {sym}, Bar {bar}.\n"
     
-    for e in etats: 
-        if e: data += f"Homogénéité: {e}\n"
-
-    with st.spinner("Rédaction orientée 'Impact Vie Quotidienne'..."):
+    with st.spinner("Analyse approfondie selon méthodologie Terriot & Ozenne..."):
         try:
             model = genai.GenerativeModel('gemini-2.5-flash')
             prompt = f"""
             Rôle: Expert Psychologue WISC-V.
-            OBJECTIF: Produire une analyse **ÉCOLOGIQUE** et **FONCTIONNELLE**.
+            OBJECTIF: Produire une analyse clinique rigoureuse basée sur la méthode Terriot & Ozenne.
             
-            DESTINATAIRE: {style_redac} (Adapte le ton et le vocabulaire).
+            DESTINATAIRE: {style_redac}.
+            CONTEXTE THÉORIQUE: DSM-5, CIM-11 (Interdiction DSM-IV).
             
-            CONTEXTE THÉORIQUE :
-            - Référentiel : Utilise exclusivement les critères du **DSM-5** (ou DSM-5-TR) et de la **CIM-11**.
-            - INTERDICTION : Ne jamais faire référence au DSM-IV ou à des classifications obsolètes.
-            
-            DONNÉES:
+            DONNÉES ENTRÉE:
             - Enfant: {infos}
             - Obs: {obs_txt}
             - Anamnèse: {ana}
@@ -444,26 +428,34 @@ if st.button("✨ GÉNÉRER L'ANALYSE FONCTIONNELLE", type="primary"):
             - Stats Intra: {intra_txt}
             - Sources: {knowledge_base}
             
-            SÉCURITÉ DONNÉES:
-            - **IMPORTANT**: Tout score à 0 indique une DONNÉE MANQUANTE ou NON PASSÉE. Ne jamais l'interpréter comme un niveau nul. Ignore-le.
+            MÉTHODOLOGIE D'ANALYSE OBLIGATOIRE (Suivre ces étapes):
             
-            CONSIGNE DE RÉDACTION :
+            1. VALIDITÉ DES INDICES GLOBAUX (Étape clé)
+               a) QIT: Calculer la moyenne des 7 subtests obligatoires (CUB, SIM, MAT, MCH, COD, VOC, BAL).
+                  - Vérifier l'écart de chaque subtest à cette moyenne.
+                  - Si 0, 1 ou 2 subtests s'écartent significativement, le QIT est HOMOGÈNE -> Interpréter le QIT.
+                  - Sinon (3+ écarts) -> QIT HÉTÉROGÈNE -> Passer à l'IAG.
+               b) IAG (si QIT invalide): Calculer moyenne des 5 subtests (SIM, VOC, CUB, MAT, BAL).
+                  - Si max 2 subtests s'écartent de la moyenne -> IAG HOMOGÈNE -> Interpréter IAG.
+               c) ICC (Indice Compétence Cognitive): Vérifier homogénéité (Moyenne MCH, MIM, COD, SYM). Max 2 écarts.
+                  - Comparer ICC vs IAG si pertinent.
+               d) INV (Non Verbal): Vérifier homogénéité (Moyenne 6 subtests). Max 3 écarts.
             
-            1. INTRODUCTION : 
-               - Valide le QIT (IC 95% obligatoire) et l'homogénéité.
-               - Si Créole ++ : Mentionne l'impact culturel sur le verbal.
+            2. ANALYSE DES INDICES (Homogénéité Interne)
+               - Pour chaque indice (ICV, IVS, IRF, IMT, IVT), comparer le subtest le plus fort et le plus faible.
+               - Si la différence est < seuil critique (approx 3-4 points), l'indice est HOMOGÈNE et interprétable.
+               - Sinon, l'indice est HÉTÉROGÈNE (ne pas interpréter le score global, décrire les composantes).
             
-            2. ANALYSE INTER-INDIVIDUELLE (NORMATIVE) :
-               - ⛔ Pas de descriptions linéaires.
-               - ✅ Regroupe les indices par sphères.
-               - ✅ SYNTHÈSE FONCTIONNELLE : Pour chaque point saillant, explique l'IMPACT CONCRET (Scolaire/Vie Quotidienne).
-                 -> Ex: "Le déficit en MdT (82) pénalisera le calcul mental."
+            3. ANALYSE CLINIQUE & FONCTIONNELLE
+               - Inter-individuelle: Situer les scores (Très faible <4, Faible 4-6, Moyen 7-13, Fort 14-16, Très fort >16).
+               - Intra-individuelle: Identifier forces/faiblesses relatives par rapport à la moyenne du sujet.
+               - SYNTHÈSE: Lier ces résultats aux observations (fatigabilité, attention, langage) et à l'anamnèse.
+               - Expliquer l'impact concret sur la scolarité et la vie quotidienne.
             
-            3. ANALYSE INTRA-INDIVIDUELLE (PERSONNELLE) :
-               - Compare à la moyenne personnelle ({moy if valid_ind else 'N/A'}).
-               - Lie aux observations cliniques.
+            4. RECOMMANDATIONS
+               - Pistes pédagogiques et aménagements concrets.
             
-            4. RECOMMANDATIONS (Pratiques & Scolaires).
+            Rédige le compte-rendu final en suivant cette structure logique.
             """
             
             res = model.generate_content(prompt)
