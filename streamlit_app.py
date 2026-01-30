@@ -219,6 +219,10 @@ with st.sidebar:
                 c = read_file(f, f)
                 knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
         st.caption(f"Contexte : {len(knowledge_base)} chars")
+        
+        # DEBUG VISUEL (Pour Thierry)
+        with st.expander("👀 Vérifier le contenu lu par l'IA"):
+            st.text(knowledge_base[:3000] + "...") # Affiche les 3000 premiers caractères
     else: st.warning("Pas de PDF trouvés.")
     
     st.divider()
@@ -460,6 +464,8 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
             - Sources: {knowledge_base}
             
             CONSIGNE DE RÉDACTION HYBRIDE (Métrique + Clinique) :
+            
+            PRIORITÉ ABSOLUE : Consulte les documents fournis dans 'SOURCES' (notamment Terriot/Ozenne/Grégoire). Si une méthodologie spécifique y est détaillée pour calculer l'homogénéité ou la validité, tu DOIS l'appliquer à la place de ta méthodologie par défaut.
             
             Règle d'Or : NE JAMAIS justifier un résultat uniquement par le chiffre. Toujours lier le chiffre à l'observation clinique.
             Exemple à éviter : "Le Code est chuté à 6."
