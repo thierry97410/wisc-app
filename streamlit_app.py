@@ -211,14 +211,14 @@ with st.sidebar:
             else: st.session_state['import_status'] = {'success': False, 'msg': "Échec extraction IA.", 'missing': []}
 
     st.divider()
-    st.header("📚 Bibliothèque (Grégoire/Ozenne/...)")
+    st.header("📚 Bibliothèque")
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
     if local_files:
         for f in local_files:
             if st.checkbox(f"📄 {f}", value=True, key=f):
                 c = read_file(f, f)
-                knowledge_base += f"\n--- SOURCE PRIORITAIRE: {f} ---\n{c}\n"
-        st.caption(f"Contexte chargé : {len(knowledge_base)} caractères")
+                knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
+        st.caption(f"Contexte : {len(knowledge_base)} chars")
         with st.expander("👀 Vérifier le contenu lu par l'IA"):
             st.text(knowledge_base[:3000] + "...") 
     else: st.warning("Pas de PDF trouvés.")
@@ -379,7 +379,7 @@ s_inv = safe_sum([cub, puz, mat, bal, memi, cod])
 st.caption(f"🧮 **Aide calcul (Somme Notes Standard) :** IAG = **{s_iag}** | ICC = **{s_icc}** | INV = **{s_inv}**")
 
 c1, c2, c3 = st.columns(3)
-with c1: st.markdown("**IAG**"); iag = st.number_input("IAG", 0, key="iag"); iag_bas = st.number_input("IB_IAG", 0, key="iag_bas", label_visibility="collapsed"); iag_haut = number_input("IH_IAG", 0, key="iag_haut", label_visibility="collapsed")
+with c1: st.markdown("**IAG**"); iag = st.number_input("IAG", 0, key="iag"); iag_bas = st.number_input("IB_IAG", 0, key="iag_bas", label_visibility="collapsed"); iag_haut = st.number_input("IH_IAG", 0, key="iag_haut", label_visibility="collapsed")
 with c2: st.markdown("**ICC**"); icc = st.number_input("ICC", 0, key="icc"); icc_bas = st.number_input("IB_ICC", 0, key="icc_bas", label_visibility="collapsed"); icc_haut = st.number_input("IH_ICC", 0, key="icc_haut", label_visibility="collapsed")
 with c3: st.markdown("**INV**"); inv = st.number_input("INV", 0, key="inv"); inv_bas = st.number_input("IB_INV", 0, key="inv_bas", label_visibility="collapsed"); inv_haut = st.number_input("IH_INV", 0, key="inv_haut", label_visibility="collapsed")
 
