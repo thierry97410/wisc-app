@@ -141,8 +141,8 @@ def extract_qglobal_data(text_content):
         Extrais les données WISC-V du texte ci-dessous en JSON.
         IMPORTANT: Si une valeur est manquante, mets 0 (ou "" pour les dates).
         
-        Variables Scores: sim, voc, info, comp, cub, puz, mat, bal, arit, memc, memi, seq, cod, sym, bar
-        Indices: qit, icv, ivs, irf, imt, ivt, iag, icc, inv
+        Variables Scores (Note Standard 1-19): sim, voc, info, comp, cub, puz, mat, bal, arit, memc, memi, seq, cod, sym, bar
+        Indices (Note Composite): qit, icv, ivs, irf, imt, ivt, iag, icc, inv
         Percentiles: perc_qit, perc_icv, perc_ivs, perc_irf, perc_imt, perc_ivt
         IC 95% (Bas/Haut): qit_bas, qit_haut, icv_bas, icv_haut... (etc pour tous les indices).
         
@@ -219,10 +219,6 @@ with st.sidebar:
                 c = read_file(f, f)
                 knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
         st.caption(f"Contexte : {len(knowledge_base)} chars")
-        
-        # DEBUG VISUEL (Pour Thierry)
-        with st.expander("👀 Vérifier le contenu lu par l'IA"):
-            st.text(knowledge_base[:3000] + "...") # Affiche les 3000 premiers caractères
     else: st.warning("Pas de PDF trouvés.")
     
     st.divider()
@@ -465,8 +461,6 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
             
             CONSIGNE DE RÉDACTION HYBRIDE (Métrique + Clinique) :
             
-            PRIORITÉ ABSOLUE : Consulte les documents fournis dans 'SOURCES' (notamment Terriot/Ozenne/Grégoire). Si une méthodologie spécifique y est détaillée pour calculer l'homogénéité ou la validité, tu DOIS l'appliquer à la place de ta méthodologie par défaut.
-            
             Règle d'Or : NE JAMAIS justifier un résultat uniquement par le chiffre. Toujours lier le chiffre à l'observation clinique.
             Exemple à éviter : "Le Code est chuté à 6."
             Exemple attendu : "La faiblesse en Code (6) objective la lenteur graphique et la fatigabilité observées en fin de bilan."
@@ -477,13 +471,15 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
                - Calculer et vérifier l'homogénéité du QIT (moyenne des 7 subtests obligatoires : CUB, SIM, MAT, MCH, COD, VOC, BAL).
                - Si QIT invalide, basculer sur IAG / ICC / INV. Expliquer le choix cliniquement (ex: "Le QIT est non représentatif en raison du trouble attentionnel impactant la MdT...").
             
-            2. ANALYSE DES FONCTIONS (Indices & Subtests)
-               Pour chaque sphère (Verbal, Visuo-spatial, Raisonnement, Mémoire, Vitesse) :
-               - Analyse Métrique : Homogénéité interne (Diff Max-Min au sein de l'indice).
-               - Analyse Clinique :
-                 * Interpréter les stratégies (ex: essai-erreur, verbalisation, impulsivité).
-                 * Lier les résultats aux observations (fatigabilité, anxiété, opposition).
-                 * Contexte : Prendre en compte le Créole pour l'ICV.
+            2. ANALYSE INTER-INDIVIDUELLE (NORMATIVE) -> FOCUS INDICES
+               - C'est ici et UNIQUEMENT ici que tu parles des INDICES (QIT, ICV, IVS, etc.).
+               - Compare les Indices à la norme (100).
+               - N'évoque PAS les subtests dans cette partie.
+            
+            3. ANALYSE INTRA-INDIVIDUELLE (IPSATIVE) -> FOCUS SUBTESTS
+               - C'est ici et UNIQUEMENT ici que tu analyses les SUBTESTS (Cubes, Similitudes...).
+               - Compare chaque subtest à la MOYENNE PERSONNELLE de l'enfant ({moy if valid_ind else 'N/A'}).
+               - Identifie les points forts et faibles relatifs.
                - SITUER LES SCORES (Subtests) selon les seuils :
                  * < 4 : Très faible
                  * 4-6 : Faible
@@ -491,12 +487,12 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
                  * 14-16 : Élevé
                  * > 16 : Très élevé
             
-            3. SYNTHÈSE DIAGNOSTIQUE & FONCTIONNELLE
+            4. SYNTHÈSE DIAGNOSTIQUE & FONCTIONNELLE
                - Croiser l'anamnèse (plainte initiale) avec les résultats.
                - Formuler des hypothèses (TDAH ? TSA ? Haut Potentiel ? Trouble Dys ?).
                - Expliquer l'impact concret sur la scolarité et le quotidien (ex: "Ce profil explique pourquoi les devoirs durent 2h...").
             
-            4. RECOMMANDATIONS
+            5. RECOMMANDATIONS
                - Pistes concrètes pour l'école et la maison.
             
             Rédige le bilan final avec cette double exigence de rigueur chiffrée et de sens clinique.
