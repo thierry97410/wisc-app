@@ -217,7 +217,7 @@ with st.sidebar:
         for f in local_files:
             if st.checkbox(f"📄 {f}", value=True, key=f):
                 c = read_file(f, f)
-                knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
+                knowledge_base += f"\n--- SOURCE PRIORITAIRE: {f} ---\n{c}\n"
         st.caption(f"Contexte : {len(knowledge_base)} chars")
         with st.expander("👀 Vérifier le contenu lu par l'IA"):
             st.text(knowledge_base[:3000] + "...") 
@@ -481,11 +481,21 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
                - Parles des INDICES (QIT, ICV, etc.) par rapport à la norme (100).
                - INTERDICTION de parler des subtests ici.
                - Analyse la dispersion des indices (profil harmonique ou disharmonique ?).
+               
+               *** 📍 SYNTHÈSE NORMATIVE & FONCTIONNELLE (Crucial) *** :
+               - Rédige un paragraphe de synthèse robuste ici.
+               - Résume l'efficience globale.
+               - Quel est l'impact de ce profil global sur la vie quotidienne et scolaire (fatigabilité, autonomie, complexité) ? Argumente.
             
             3. ANALYSE INTRA-INDIVIDUELLE (IPSATIVE) -> FOCUS SUBTESTS
                - Analyses les SUBTESTS (Cubes, Similitudes...) par rapport à la moyenne de l'enfant ({moy if valid_ind else 'N/A'}).
                - Utilise les seuils de la bibliothèque (<4 Très faible, etc.).
                - Lier chaque résultat à une hypothèse cognitive/clinique. Pourquoi a-t-il réussi/échoué ? (Planification ? Attention ? Vitesse ?).
+               
+               *** 📍 SYNTHÈSE CLINIQUE & PROCESSUELLE (Crucial) *** :
+               - Rédige un paragraphe de synthèse robuste ici.
+               - Résume les forces et faiblesses spécifiques.
+               - Fais le lien explicite avec les symptômes observés (ex: l'anxiété explique-t-elle la chute en mémoire de travail ?). Argumente.
             
             4. SYNTHÈSE DIAGNOSTIQUE & RECOMMANDATIONS
                - Croiser avec l'anamnèse.
