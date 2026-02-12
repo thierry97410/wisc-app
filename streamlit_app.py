@@ -463,8 +463,14 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
             </BIBLIOTHEQUE_REFERENCE>
             
             CONSIGNE CRUCIALE DE HIERARCHIE :
-            1. Pour la MÉTHODOLOGIE (calculs, validité, homogénéité), tu DOIS suivre scrupuleusement le contenu de <BIBLIOTHEQUE_REFERENCE> (notamment Grégoire, Ozenne). Ce contenu prévaut sur tes connaissances générales.
+            1. Pour la MÉTHODOLOGIE (calculs, validité, homogénéité), tu DOIS suivre scrupuleusement le contenu de <BIBLIOTHEQUE_REFERENCE> (notamment Grégoire, Ozenne).
             2. Pour le VOCABULAIRE DIAGNOSTIQUE en conclusion, utilise le DSM-5 / CIM-11.
+            
+            OBJECTIF QUALITATIF :
+            Ne te contente pas de lister les scores. Tu dois EXPLIQUER et INTERPRÉTER.
+            - Utilise des connecteurs logiques : "ce qui suggère que...", "probablement en raison de...", "ce résultat contraste avec...".
+            - Formule des HYPOTHÈSES sur les mécanismes cognitifs sous-jacents (ex: déficit d'encodage vs déficit de récupération).
+            - Analyse les ÉCARTS : Si l'ICV est > IVS, qu'est-ce que ça implique concrètement ?
             
             STRUCTURE DU COMPTE RENDU :
             
@@ -474,18 +480,19 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
             2. ANALYSE INTER-INDIVIDUELLE (NORMATIVE) -> FOCUS INDICES UNIQUEMENT
                - Parles des INDICES (QIT, ICV, etc.) par rapport à la norme (100).
                - INTERDICTION de parler des subtests ici.
+               - Analyse la dispersion des indices (profil harmonique ou disharmonique ?).
             
             3. ANALYSE INTRA-INDIVIDUELLE (IPSATIVE) -> FOCUS SUBTESTS
                - Analyses les SUBTESTS (Cubes, Similitudes...) par rapport à la moyenne de l'enfant ({moy if valid_ind else 'N/A'}).
                - Utilise les seuils de la bibliothèque (<4 Très faible, etc.).
-               - Lier chaque résultat à une hypothèse cognitive/clinique.
+               - Lier chaque résultat à une hypothèse cognitive/clinique. Pourquoi a-t-il réussi/échoué ? (Planification ? Attention ? Vitesse ?).
             
             4. SYNTHÈSE DIAGNOSTIQUE & RECOMMANDATIONS
                - Croiser avec l'anamnèse.
                - Hypothèses (TDAH, TSA, etc.).
                - Conseils pratiques.
             
-            Rédige le bilan.
+            Rédige le bilan final avec un ton professionnel, argumenté et clinique.
             """
             
             res = model.generate_content(prompt)
