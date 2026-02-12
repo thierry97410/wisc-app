@@ -211,14 +211,16 @@ with st.sidebar:
             else: st.session_state['import_status'] = {'success': False, 'msg': "Échec extraction IA.", 'missing': []}
 
     st.divider()
-    st.header("📚 Bibliothèque")
+    st.header("📚 Bibliothèque (Grégoire/Ozenne/...)")
     local_files = [f for f in os.listdir('.') if f.lower().endswith(('.pdf', '.txt')) and f not in ["requirements.txt", "app.py"]]
     if local_files:
         for f in local_files:
             if st.checkbox(f"📄 {f}", value=True, key=f):
                 c = read_file(f, f)
-                knowledge_base += f"\n--- SOURCE: {f} ---\n{c}\n"
-        st.caption(f"Contexte : {len(knowledge_base)} chars")
+                knowledge_base += f"\n--- SOURCE PRIORITAIRE: {f} ---\n{c}\n"
+        st.caption(f"Contexte chargé : {len(knowledge_base)} caractères")
+        with st.expander("👀 Vérifier le contenu lu par l'IA"):
+            st.text(knowledge_base[:3000] + "...") 
     else: st.warning("Pas de PDF trouvés.")
     
     st.divider()
@@ -377,7 +379,7 @@ s_inv = safe_sum([cub, puz, mat, bal, memi, cod])
 st.caption(f"🧮 **Aide calcul (Somme Notes Standard) :** IAG = **{s_iag}** | ICC = **{s_icc}** | INV = **{s_inv}**")
 
 c1, c2, c3 = st.columns(3)
-with c1: st.markdown("**IAG**"); iag = st.number_input("IAG", 0, key="iag"); iag_bas = st.number_input("IB_IAG", 0, key="iag_bas", label_visibility="collapsed"); iag_haut = st.number_input("IH_IAG", 0, key="iag_haut", label_visibility="collapsed")
+with c1: st.markdown("**IAG**"); iag = st.number_input("IAG", 0, key="iag"); iag_bas = st.number_input("IB_IAG", 0, key="iag_bas", label_visibility="collapsed"); iag_haut = number_input("IH_IAG", 0, key="iag_haut", label_visibility="collapsed")
 with c2: st.markdown("**ICC**"); icc = st.number_input("ICC", 0, key="icc"); icc_bas = st.number_input("IB_ICC", 0, key="icc_bas", label_visibility="collapsed"); icc_haut = st.number_input("IH_ICC", 0, key="icc_haut", label_visibility="collapsed")
 with c3: st.markdown("**INV**"); inv = st.number_input("INV", 0, key="inv"); inv_bas = st.number_input("IB_INV", 0, key="inv_bas", label_visibility="collapsed"); inv_haut = st.number_input("IH_INV", 0, key="inv_haut", label_visibility="collapsed")
 
@@ -402,7 +404,7 @@ with c2:
 
 st.markdown("---")
 if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="primary"):
-    infos = f"{prenom}, {sexe}, {ans} ans. Latéralité: {lateralite}. Créole: {creole}."
+    infos = f"{prenom}, {sexe}, {ans} ans. Date Bilan: {st.session_state.jb}/{st.session_state.mb}/{st.session_state.ab}. Latéralité: {lateralite}. Créole: {creole}."
     obs_txt = ", ".join(obs) + ". " + obs_libre
     
     # Construction Data (FILTRAGE RADICAL DES ZÉROS)
@@ -446,10 +448,8 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
             model = genai.GenerativeModel('gemini-2.5-flash')
             prompt = f"""
             Rôle: Expert Psychologue WISC-V.
-            OBJECTIF: Produire une analyse **ÉQUILIBRÉE** entre la rigueur métrique (Terriot & Ozenne) et la finesse CLINIQUE.
             
             DESTINATAIRE: {style_redac}.
-            CONTEXTE THÉORIQUE: DSM-5, CIM-11 (Interdiction DSM-IV).
             
             DONNÉES ENTRÉE:
             - Enfant: {infos}
@@ -457,45 +457,35 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
             - Anamnèse: {ana}
             - Scores: {data}
             - Stats Intra: {intra_txt}
-            - Sources: {knowledge_base}
             
-            CONSIGNE DE RÉDACTION HYBRIDE (Métrique + Clinique) :
+            <BIBLIOTHEQUE_REFERENCE>
+            {knowledge_base}
+            </BIBLIOTHEQUE_REFERENCE>
             
-            Règle d'Or : NE JAMAIS justifier un résultat uniquement par le chiffre. Toujours lier le chiffre à l'observation clinique.
-            Exemple à éviter : "Le Code est chuté à 6."
-            Exemple attendu : "La faiblesse en Code (6) objective la lenteur graphique et la fatigabilité observées en fin de bilan."
+            CONSIGNE CRUCIALE DE HIERARCHIE :
+            1. Pour la MÉTHODOLOGIE (calculs, validité, homogénéité), tu DOIS suivre scrupuleusement le contenu de <BIBLIOTHEQUE_REFERENCE> (notamment Grégoire, Ozenne). Ce contenu prévaut sur tes connaissances générales.
+            2. Pour le VOCABULAIRE DIAGNOSTIQUE en conclusion, utilise le DSM-5 / CIM-11.
             
             STRUCTURE DU COMPTE RENDU :
             
-            1. VALIDITÉ DES INDICES GLOBAUX (Étape Terriot/Ozenne)
-               - Calculer et vérifier l'homogénéité du QIT (moyenne des 7 subtests obligatoires : CUB, SIM, MAT, MCH, COD, VOC, BAL).
-               - Si QIT invalide, basculer sur IAG / ICC / INV. Expliquer le choix cliniquement (ex: "Le QIT est non représentatif en raison du trouble attentionnel impactant la MdT...").
+            1. VALIDITÉ DES INDICES GLOBAUX (Suivre méthode Bibliothèque)
+               - Vérifier homogénéité QIT. Si invalide, passer à IAG/ICC/INV selon les critères de la bibliothèque.
             
-            2. ANALYSE INTER-INDIVIDUELLE (NORMATIVE) -> FOCUS INDICES
-               - C'est ici et UNIQUEMENT ici que tu parles des INDICES (QIT, ICV, IVS, etc.).
-               - Compare les Indices à la norme (100).
-               - N'évoque PAS les subtests dans cette partie.
+            2. ANALYSE INTER-INDIVIDUELLE (NORMATIVE) -> FOCUS INDICES UNIQUEMENT
+               - Parles des INDICES (QIT, ICV, etc.) par rapport à la norme (100).
+               - INTERDICTION de parler des subtests ici.
             
             3. ANALYSE INTRA-INDIVIDUELLE (IPSATIVE) -> FOCUS SUBTESTS
-               - C'est ici et UNIQUEMENT ici que tu analyses les SUBTESTS (Cubes, Similitudes...).
-               - Compare chaque subtest à la MOYENNE PERSONNELLE de l'enfant ({moy if valid_ind else 'N/A'}).
-               - Identifie les points forts et faibles relatifs.
-               - SITUER LES SCORES (Subtests) selon les seuils :
-                 * < 4 : Très faible
-                 * 4-6 : Faible
-                 * 7-13 : Moyen
-                 * 14-16 : Élevé
-                 * > 16 : Très élevé
+               - Analyses les SUBTESTS (Cubes, Similitudes...) par rapport à la moyenne de l'enfant ({moy if valid_ind else 'N/A'}).
+               - Utilise les seuils de la bibliothèque (<4 Très faible, etc.).
+               - Lier chaque résultat à une hypothèse cognitive/clinique.
             
-            4. SYNTHÈSE DIAGNOSTIQUE & FONCTIONNELLE
-               - Croiser l'anamnèse (plainte initiale) avec les résultats.
-               - Formuler des hypothèses (TDAH ? TSA ? Haut Potentiel ? Trouble Dys ?).
-               - Expliquer l'impact concret sur la scolarité et le quotidien (ex: "Ce profil explique pourquoi les devoirs durent 2h...").
+            4. SYNTHÈSE DIAGNOSTIQUE & RECOMMANDATIONS
+               - Croiser avec l'anamnèse.
+               - Hypothèses (TDAH, TSA, etc.).
+               - Conseils pratiques.
             
-            5. RECOMMANDATIONS
-               - Pistes concrètes pour l'école et la maison.
-            
-            Rédige le bilan final avec cette double exigence de rigueur chiffrée et de sens clinique.
+            Rédige le bilan.
             """
             
             res = model.generate_content(prompt)
