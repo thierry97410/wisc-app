@@ -111,21 +111,32 @@ h3, h4, h5 {
     color: rgba(245,242,238,0.85) !important;
     font-size: 0.88rem !important;
 }
-[data-testid="stSidebar"] [data-testid="stFileUploader"] {
-    background: rgba(255,255,255,0.08) !important;
-    border: 1px dashed rgba(201,168,76,0.6) !important;
+/* ---- File uploader sidebar : fix lisibilité complet ---- */
+[data-testid="stSidebar"] [data-testid="stFileUploader"],
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px dashed rgba(201,168,76,0.55) !important;
     border-radius: 8px !important;
     padding: 0.5rem !important;
 }
-[data-testid="stSidebar"] [data-testid="stFileUploader"] * {
+/* Forcer blanc crème sur TOUT le contenu textuel du dropzone */
+[data-testid="stSidebar"] [data-testid="stFileUploader"] *,
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] *,
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] *,
+[data-testid="stSidebar"] section[data-testid="stFileUploaderDropzone"] span,
+[data-testid="stSidebar"] section[data-testid="stFileUploaderDropzone"] small,
+[data-testid="stSidebar"] section[data-testid="stFileUploaderDropzone"] div,
+[data-testid="stSidebar"] section[data-testid="stFileUploaderDropzone"] p {
     color: var(--blanc-casse) !important;
+    background: transparent !important;
 }
-[data-testid="stSidebar"] [data-testid="stFileUploader"] small,
-[data-testid="stSidebar"] [data-testid="stFileUploader"] span {
-    color: rgba(245,242,238,0.7) !important;
-}
-[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] * {
-    color: var(--blanc-casse) !important;
+/* Bouton "Browse files" */
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button,
+[data-testid="stSidebar"] section[data-testid="stFileUploaderDropzone"] button {
+    background: rgba(201,168,76,0.15) !important;
+    border: 1px solid rgba(201,168,76,0.5) !important;
+    color: var(--or-clair) !important;
+    border-radius: 6px !important;
 }
 [data-testid="stSidebar"] .uploadedFileName {
     color: var(--or-clair) !important;
