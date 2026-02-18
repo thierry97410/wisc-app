@@ -442,12 +442,15 @@ def afficher_login():
         """, unsafe_allow_html=True)
 
 # Vérification de l'authentification
+# (Désactivé pour l'instant — décommenter quand multi-utilisateurs nécessaire)
 if 'authenticated' not in st.session_state:
-    st.session_state.authenticated = False
+    st.session_state.authenticated = True
+    st.session_state.user_nom = "Utilisateur"
+    st.session_state.user_role = "admin"
 
-if not st.session_state.authenticated:
-    afficher_login()
-    st.stop()
+# if not st.session_state.authenticated:
+#     afficher_login()
+#     st.stop()
 
 try:
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
