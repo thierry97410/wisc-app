@@ -10,13 +10,42 @@ from io import StringIO
 from pypdf import PdfReader
 from docx import Document
 from datetime import date, datetime
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import cm
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, HRFlowable, Table, TableStyle
+from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_JUSTIFY
 
 # ==========================================
-# 0. ADMINISTRATION
+# 0. ADMINISTRATION & UTILISATEURS
 # ==========================================
-RESTRICTION_ACTIVE = False
-DATE_EXPIRATION = date(2025, 12, 31)
-MOT_DE_PASSE = "WISC-PRO"
+# Pour ajouter un utilisateur :
+# 1. Génère un hash avec : import hashlib; hashlib.sha256("motdepasse".encode()).hexdigest()
+# 2. Ajoute une ligne dans UTILISATEURS ci-dessous
+#
+# Rôles disponibles : "admin" (accès complet) | "user" (accès standard)
+
+import hashlib
+
+def hash_mdp(mdp):
+    return hashlib.sha256(mdp.encode()).hexdigest()
+
+UTILISATEURS = {
+    "admin": {
+        "nom": "Administrateur",
+        "hash": hash_mdp("wisc-admin-2025"),   # ← Change ce mot de passe !
+        "role": "admin"
+    },
+    "psychologue1": {
+        "nom": "Dr. Dupont",
+        "hash": hash_mdp("motdepasse1"),        # ← Change ce mot de passe !
+        "role": "user"
+    },
+}
+
+DATE_EXPIRATION = date(2026, 12, 31)
+
 
 # ==========================================
 # 1. CONFIGURATION & SÉCURITÉ
@@ -343,23 +372,82 @@ st.markdown("""
 st.warning("⚠️ **AVERTISSEMENT :** Outil d'aide à la rédaction. L'analyse clinique reste la responsabilité du psychologue.")
 
 # ==========================================
-# 4. GESTION ACCÈS
+# 4. SYSTÈME D'AUTHENTIFICATION
 # ==========================================
-if RESTRICTION_ACTIVE:
-    if date.today() > DATE_EXPIRATION:
-        st.error("⛔ ACCÈS EXPIRÉ"); st.stop()
-    if "authenticated" not in st.session_state:
-        st.session_state.authenticated = False
-    if not st.session_state.authenticated:
-        st.markdown("### 🔒 Connexion requise")
-        input_pass = st.text_input("Mot de passe :", type="password")
-        if st.button("Valider", type="primary"):
-            if input_pass == MOT_DE_PASSE:
-                st.session_state.authenticated = True
-                st.rerun()
+def afficher_login():
+    """Affiche la page de connexion stylée."""
+    st.markdown("""
+    <div style="
+        max-width: 420px;
+        margin: 4rem auto;
+        background: white;
+        border-radius: 16px;
+        padding: 2.5rem 2rem;
+        border: 1px solid #E8E4DF;
+        border-top: 4px solid #C9A84C;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+        text-align: center;
+    ">
+        <div style="font-size:2.8rem; margin-bottom:0.5rem;">🧠</div>
+        <div style="
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1B3A5C;
+            margin-bottom: 0.2rem;
+        ">Assistant WISC-V</div>
+        <div style="
+            font-size: 0.72rem;
+            color: #C9A84C;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        ">Accès Professionnel Sécurisé</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col_vide1, col_form, col_vide2 = st.columns([1, 2, 1])
+    with col_form:
+        identifiant = st.text_input("👤 Identifiant", placeholder="Votre identifiant")
+        mot_de_passe = st.text_input("🔑 Mot de passe", type="password", placeholder="Votre mot de passe")
+
+        if st.button("Connexion", type="primary", use_container_width=True):
+            if identifiant in UTILISATEURS:
+                user = UTILISATEURS[identifiant]
+                if user["hash"] == hash_mdp(mot_de_passe):
+                    if date.today() > DATE_EXPIRATION:
+                        st.error("⛔ Accès expiré. Contactez l'administrateur.")
+                    else:
+                        st.session_state.authenticated = True
+                        st.session_state.user_id = identifiant
+                        st.session_state.user_nom = user["nom"]
+                        st.session_state.user_role = user["role"]
+                        st.rerun()
+                else:
+                    st.error("❌ Mot de passe incorrect.")
             else:
-                st.error("Mot de passe incorrect.")
-        st.stop()
+                st.error("❌ Identifiant introuvable.")
+
+        st.markdown("""
+        <div style="
+            text-align:center;
+            font-size:0.75rem;
+            color:#9CA3AF;
+            margin-top:1.5rem;
+        ">
+            Outil réservé aux psychologues habilités.<br>
+            Toute utilisation est tracée et soumise au secret professionnel.
+        </div>
+        """, unsafe_allow_html=True)
+
+# Vérification de l'authentification
+if 'authenticated' not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    afficher_login()
+    st.stop()
 
 try:
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
@@ -523,15 +611,144 @@ def create_docx(text_content, prenom, age_str):
     doc.save(bio)
     return bio
 
+def create_pdf(text_content, prenom, sexe, age_str, date_bilan_str):
+    """Génère un PDF clinique professionnel avec mise en page soignée."""
+    buf = io.BytesIO()
+
+    # Couleurs
+    BLEU_MARINE  = colors.HexColor('#1B3A5C')
+    BLEU_MOYEN   = colors.HexColor('#2D6A9F')
+    OR_MEDICAL   = colors.HexColor('#C9A84C')
+    GRIS_DOUX    = colors.HexColor('#E8E4DF')
+    GRIS_TEXTE   = colors.HexColor('#6B7280')
+    FOND_CLAIR   = colors.HexColor('#F5F2EE')
+
+    doc = SimpleDocTemplate(
+        buf,
+        pagesize=A4,
+        rightMargin=2*cm, leftMargin=2*cm,
+        topMargin=2.5*cm, bottomMargin=2.5*cm,
+        title=f"Bilan WISC-V - {prenom}",
+        author="Assistant WISC-V"
+    )
+
+    # Styles
+    styles = getSampleStyleSheet()
+
+    s_titre = ParagraphStyle('titre',
+        fontSize=18, textColor=BLEU_MARINE,
+        fontName='Helvetica-Bold', alignment=TA_LEFT,
+        spaceAfter=4)
+
+    s_sous_titre = ParagraphStyle('sous_titre',
+        fontSize=9, textColor=OR_MEDICAL,
+        fontName='Helvetica-Bold', alignment=TA_LEFT,
+        spaceAfter=16, letterSpacing=1.5)
+
+    s_section = ParagraphStyle('section',
+        fontSize=10, textColor=BLEU_MARINE,
+        fontName='Helvetica-Bold', alignment=TA_LEFT,
+        spaceBefore=14, spaceAfter=6,
+        borderPad=4)
+
+    s_corps = ParagraphStyle('corps',
+        fontSize=9.5, textColor=colors.HexColor('#1a2a3a'),
+        fontName='Helvetica', alignment=TA_JUSTIFY,
+        spaceAfter=8, leading=15)
+
+    s_avert = ParagraphStyle('avert',
+        fontSize=8, textColor=GRIS_TEXTE,
+        fontName='Helvetica-Oblique', alignment=TA_CENTER,
+        spaceAfter=6)
+
+    s_pied = ParagraphStyle('pied',
+        fontSize=7.5, textColor=GRIS_TEXTE,
+        fontName='Helvetica', alignment=TA_CENTER)
+
+    story = []
+
+    # --- En-tête ---
+    story.append(Paragraph("Assistant WISC-V", s_titre))
+    story.append(Paragraph("COMPTE RENDU PSYCHOMÉTRIQUE", s_sous_titre))
+    story.append(HRFlowable(width="100%", thickness=2, color=OR_MEDICAL, spaceAfter=12))
+
+    # --- Tableau identité ---
+    data_id = [
+        ["Prénom", prenom,          "Sexe",       sexe],
+        ["Âge au bilan", age_str,   "Date bilan", date_bilan_str],
+    ]
+    t = Table(data_id, colWidths=[3.5*cm, 6*cm, 3.5*cm, 6*cm])
+    t.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (0,-1), FOND_CLAIR),
+        ('BACKGROUND', (2,0), (2,-1), FOND_CLAIR),
+        ('TEXTCOLOR',  (0,0), (0,-1), BLEU_MARINE),
+        ('TEXTCOLOR',  (2,0), (2,-1), BLEU_MARINE),
+        ('FONTNAME',   (0,0), (0,-1), 'Helvetica-Bold'),
+        ('FONTNAME',   (2,0), (2,-1), 'Helvetica-Bold'),
+        ('FONTSIZE',   (0,0), (-1,-1), 9),
+        ('GRID',       (0,0), (-1,-1), 0.5, GRIS_DOUX),
+        ('PADDING',    (0,0), (-1,-1), 6),
+        ('ROWBACKGROUNDS', (0,0), (-1,-1), [colors.white, colors.white]),
+    ]))
+    story.append(t)
+    story.append(Spacer(1, 14))
+
+    # --- Avertissement ---
+    story.append(HRFlowable(width="100%", thickness=0.5, color=GRIS_DOUX))
+    story.append(Spacer(1, 6))
+    story.append(Paragraph(
+        "⚠ Document de travail confidentiel — L'analyse clinique et les conclusions restent "
+        "sous la responsabilité exclusive du psychologue.",
+        s_avert))
+    story.append(HRFlowable(width="100%", thickness=0.5, color=GRIS_DOUX))
+    story.append(Spacer(1, 14))
+
+    # --- Contenu de l'analyse ---
+    # Découper le texte en sections selon les titres markdown
+    lignes = text_content.split('\n')
+    for ligne in lignes:
+        ligne = ligne.strip()
+        if not ligne:
+            story.append(Spacer(1, 4))
+        elif ligne.startswith('## ') or ligne.startswith('# '):
+            titre_propre = ligne.lstrip('#').strip()
+            story.append(HRFlowable(width="100%", thickness=0.5, color=GRIS_DOUX, spaceBefore=8))
+            story.append(Paragraph(titre_propre.upper(), s_section))
+        elif ligne.startswith('### '):
+            titre_propre = ligne.lstrip('#').strip()
+            story.append(Paragraph(f"<b>{titre_propre}</b>", s_corps))
+        elif ligne.startswith('**') and ligne.endswith('**'):
+            story.append(Paragraph(f"<b>{ligne.strip('*')}</b>", s_corps))
+        elif ligne.startswith('- ') or ligne.startswith('* '):
+            story.append(Paragraph(f"• {ligne[2:]}", s_corps))
+        else:
+            # Nettoyer les astérisques markdown restants
+            ligne_clean = ligne.replace('**', '<b>', 1).replace('**', '</b>', 1)
+            story.append(Paragraph(ligne_clean, s_corps))
+
+    # --- Pied de page ---
+    story.append(Spacer(1, 20))
+    story.append(HRFlowable(width="100%", thickness=1, color=OR_MEDICAL))
+    story.append(Spacer(1, 6))
+    story.append(Paragraph(
+        f"Document généré le {date.today().strftime('%d/%m/%Y')} · Assistant WISC-V · "
+        "Confidentiel — Secret professionnel",
+        s_pied))
+
+    doc.build(story)
+    buf.seek(0)
+    return buf
+
 # ==========================================
 # 8. SIDEBAR
 # ==========================================
 knowledge_base = ""
 with st.sidebar:
-    st.markdown("""
+    # --- Utilisateur connecté ---
+    st.markdown(f"""
     <div style="
         text-align:center;
-        padding: 1rem 0 0.5rem 0;
+        padding: 1rem 0 0.8rem 0;
         border-bottom: 1px solid rgba(201,168,76,0.3);
         margin-bottom: 0.5rem;
     ">
@@ -544,8 +761,20 @@ with st.sidebar:
             font-weight:600;
             margin-top:4px;
         ">WISC-V · Assistant Pro</div>
+        <div style="
+            font-size:0.78rem;
+            color: rgba(245,242,238,0.7);
+            margin-top:8px;
+        ">👤 {st.session_state.get('user_nom', '')}
+        {'🔧' if st.session_state.get('user_role') == 'admin' else ''}
+        </div>
     </div>
     """, unsafe_allow_html=True)
+
+    if st.button("🚪 Déconnexion", use_container_width=True):
+        for key in list(st.session_state.keys()):
+            del st.session_state[key]
+        st.rerun()
 
     st.header("⚙️ Configuration")
     style_redac = st.radio(
@@ -1069,14 +1298,27 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT", type="primary"):
             st.markdown(analyse_texte)
             st.markdown("</div>", unsafe_allow_html=True)
 
-            # Export Word
-            f_word = create_docx(analyse_texte, prenom, f"{ans}a{mois}m")
-            st.download_button(
-                "📄 Télécharger le compte rendu (.docx)",
-                f_word,
-                f"Bilan_WISC5_{prenom}.docx",
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            )
+            # Export Word + PDF côte à côte
+            col_word, col_pdf = st.columns(2)
+            with col_word:
+                f_word = create_docx(analyse_texte, prenom, f"{ans}a{mois}m")
+                st.download_button(
+                    "📄 Télécharger (.docx)",
+                    f_word,
+                    f"Bilan_WISC5_{prenom}.docx",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    use_container_width=True
+                )
+            with col_pdf:
+                date_bilan_str = f"{st.session_state.jb:02d}/{st.session_state.mb:02d}/{st.session_state.ab}"
+                f_pdf = create_pdf(analyse_texte, prenom, sexe, f"{ans} ans {mois} mois", date_bilan_str)
+                st.download_button(
+                    "📋 Télécharger (.pdf)",
+                    f_pdf,
+                    f"Bilan_WISC5_{prenom}.pdf",
+                    "application/pdf",
+                    use_container_width=True
+                )
 
         except Exception as e:
             st.error(f"Erreur lors de la génération : {e}")
