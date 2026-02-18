@@ -112,10 +112,23 @@ h3, h4, h5 {
     font-size: 0.88rem !important;
 }
 [data-testid="stSidebar"] [data-testid="stFileUploader"] {
-    background: rgba(255,255,255,0.05) !important;
-    border: 1px dashed rgba(201,168,76,0.5) !important;
+    background: rgba(255,255,255,0.08) !important;
+    border: 1px dashed rgba(201,168,76,0.6) !important;
     border-radius: 8px !important;
     padding: 0.5rem !important;
+}
+[data-testid="stSidebar"] [data-testid="stFileUploader"] * {
+    color: var(--blanc-casse) !important;
+}
+[data-testid="stSidebar"] [data-testid="stFileUploader"] small,
+[data-testid="stSidebar"] [data-testid="stFileUploader"] span {
+    color: rgba(245,242,238,0.7) !important;
+}
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] * {
+    color: var(--blanc-casse) !important;
+}
+[data-testid="stSidebar"] .uploadedFileName {
+    color: var(--or-clair) !important;
 }
 [data-testid="stSidebar"] hr {
     border-color: rgba(201,168,76,0.25) !important;
@@ -311,7 +324,7 @@ st.markdown("""
             text-transform: uppercase;
             letter-spacing: 0.12em;
             margin-top: 3px;
-        ">Outil d'aide à l'analyse psychométrique · Méthode Terriot / Ozenne</div>
+        ">Outil d'aide à l'analyse psychométrique</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -348,23 +361,26 @@ except:
 # ==========================================
 if 'uploader_key' not in st.session_state:
     st.session_state.uploader_key = 0
+if 'reset_confirm' not in st.session_state:
+    st.session_state.reset_confirm = False
+
+ALL_SCORE_KEYS = [
+    'sim', 'voc', 'info', 'comp', 'cub', 'puz', 'mat', 'bal', 'arit',
+    'memc', 'memi', 'seq', 'cod', 'sym', 'bar',
+    'qit', 'perc_qit', 'qit_bas', 'qit_haut',
+    'icv', 'perc_icv', 'icv_bas', 'icv_haut',
+    'ivs', 'perc_ivs', 'ivs_bas', 'ivs_haut',
+    'irf', 'perc_irf', 'irf_bas', 'irf_haut',
+    'imt', 'perc_imt', 'imt_bas', 'imt_haut',
+    'ivt', 'perc_ivt', 'ivt_bas', 'ivt_haut',
+    'iag', 'iag_bas', 'iag_haut',
+    'icc', 'icc_bas', 'icc_haut',
+    'inv', 'inv_bas', 'inv_haut',
+    'import_status'
+]
 
 def reset_all():
-    keys_to_clear = [
-        'sim', 'voc', 'info', 'comp', 'cub', 'puz', 'mat', 'bal', 'arit',
-        'memc', 'memi', 'seq', 'cod', 'sym', 'bar',
-        'qit', 'perc_qit', 'qit_bas', 'qit_haut',
-        'icv', 'perc_icv', 'icv_bas', 'icv_haut',
-        'ivs', 'perc_ivs', 'ivs_bas', 'ivs_haut',
-        'irf', 'perc_irf', 'irf_bas', 'irf_haut',
-        'imt', 'perc_imt', 'imt_bas', 'imt_haut',
-        'ivt', 'perc_ivt', 'ivt_bas', 'ivt_haut',
-        'iag', 'iag_bas', 'iag_haut',
-        'icc', 'icc_bas', 'icc_haut',
-        'inv', 'inv_bas', 'inv_haut',
-        'import_status'
-    ]
-    for key in keys_to_clear:
+    for key in ALL_SCORE_KEYS:
         if key in st.session_state:
             del st.session_state[key]
     st.session_state['jn'] = 1; st.session_state['mn'] = 1; st.session_state['an'] = 2015
@@ -372,6 +388,7 @@ def reset_all():
     st.session_state['mb'] = date.today().month
     st.session_state['ab'] = date.today().year
     st.session_state.uploader_key += 1
+    st.session_state.reset_confirm = False
     st.rerun()
 
 # ==========================================
@@ -392,7 +409,7 @@ vars_scores = [
 ]
 for var in vars_scores:
     if var not in st.session_state:
-        st.session_state[var] = 0.0 if 'perc' in var else 0
+        st.session_state[var] = 0
 
 if 'jn' not in st.session_state: st.session_state['jn'] = 1
 if 'mn' not in st.session_state: st.session_state['mn'] = 1
@@ -614,8 +631,20 @@ with st.sidebar:
         st.warning("Pas de PDF trouvés.")
 
     st.divider()
-    if st.button("🗑️ Nouvelle Analyse (Reset)", type="secondary"):
-        reset_all()
+    if not st.session_state.reset_confirm:
+        if st.button("🗑️ Nouvelle Analyse (Reset)", type="secondary"):
+            st.session_state.reset_confirm = True
+            st.rerun()
+    else:
+        st.warning("⚠️ Toutes les données seront effacées. Confirmer ?")
+        col_oui, col_non = st.columns(2)
+        with col_oui:
+            if st.button("✅ Oui, effacer", type="primary"):
+                reset_all()
+        with col_non:
+            if st.button("❌ Annuler"):
+                st.session_state.reset_confirm = False
+                st.rerun()
 
 # ==========================================
 # 9. INTERFACE PRINCIPALE
@@ -701,7 +730,20 @@ with c3:
         label_visibility="collapsed"
     )
 
-ana = st.text_area("Anamnèse", height=70, placeholder="Motif, histoire du développement, antécédents...")
+st.markdown("**🎯 Motif de consultation**")
+motifs_col1, motifs_col2 = st.columns(2)
+motifs = []
+with motifs_col1:
+    if st.checkbox("Difficultés scolaires"): motifs.append("Difficultés scolaires")
+    if st.checkbox("Suspicion TDAH"): motifs.append("Suspicion TDAH")
+    if st.checkbox("Suspicion TSA"): motifs.append("Suspicion TSA")
+    if st.checkbox("Suspicion HPI / Douance"): motifs.append("Suspicion HPI/Douance")
+with motifs_col2:
+    if st.checkbox("Orientation MDPH / RQTH"): motifs.append("Orientation MDPH/RQTH")
+    if st.checkbox("Bilan de rééducation"): motifs.append("Bilan de rééducation")
+    if st.checkbox("Suivi psy / thérapeutique"): motifs.append("Suivi psy/thérapeutique")
+    if st.checkbox("Autre motif"): motifs.append("Autre (voir anamnèse)")
+st.markdown("---")
 obs_libre = st.text_area("Observations libres", height=70)
 
 st.markdown("</div>", unsafe_allow_html=True)
@@ -720,30 +762,42 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.subheader("A. Subtests (Notes Standard)")
+
+def couleur_note(val):
+    """Retourne une couleur selon la note standard."""
+    if val == 0: return ""
+    if val <= 6:   return "🔴"
+    if val <= 9:   return "🟠"
+    if val <= 12:  return "🟡"
+    if val <= 15:  return "🟢"
+    return "🔵"
+
 c1, c2, c3, c4 = st.columns(4)
-with c1: sim = st.number_input("SIM", 0, 19, key="sim")
-with c2: voc = st.number_input("VOC", 0, 19, key="voc")
-with c3: info = st.number_input("INF", 0, 19, key="info")
-with c4: comp = st.number_input("COM", 0, 19, key="comp")
+with c1: sim  = st.number_input(f"SIM {couleur_note(st.session_state.get('sim',0))}", 0, 19, key="sim")
+with c2: voc  = st.number_input(f"VOC {couleur_note(st.session_state.get('voc',0))}", 0, 19, key="voc")
+with c3: info = st.number_input(f"INF {couleur_note(st.session_state.get('info',0))}", 0, 19, key="info")
+with c4: comp = st.number_input(f"COM {couleur_note(st.session_state.get('comp',0))}", 0, 19, key="comp")
 
 c1, c2 = st.columns(2)
-with c1: cub = st.number_input("CUB", 0, 19, key="cub")
-with c2: puz = st.number_input("PUZ", 0, 19, key="puz")
+with c1: cub = st.number_input(f"CUB {couleur_note(st.session_state.get('cub',0))}", 0, 19, key="cub")
+with c2: puz = st.number_input(f"PUZ {couleur_note(st.session_state.get('puz',0))}", 0, 19, key="puz")
 
 c1, c2, c3 = st.columns(3)
-with c1: mat = st.number_input("MAT", 0, 19, key="mat")
-with c2: bal = st.number_input("BAL", 0, 19, key="bal")
-with c3: arit = st.number_input("ARI", 0, 19, key="arit")
+with c1: mat  = st.number_input(f"MAT {couleur_note(st.session_state.get('mat',0))}", 0, 19, key="mat")
+with c2: bal  = st.number_input(f"BAL {couleur_note(st.session_state.get('bal',0))}", 0, 19, key="bal")
+with c3: arit = st.number_input(f"ARI {couleur_note(st.session_state.get('arit',0))}", 0, 19, key="arit")
 
 c1, c2, c3 = st.columns(3)
-with c1: memc = st.number_input("MCH", 0, 19, key="memc")
-with c2: memi = st.number_input("MIM", 0, 19, key="memi")
-with c3: seq = st.number_input("SLC", 0, 19, key="seq")
+with c1: memc = st.number_input(f"MCH {couleur_note(st.session_state.get('memc',0))}", 0, 19, key="memc")
+with c2: memi = st.number_input(f"MIM {couleur_note(st.session_state.get('memi',0))}", 0, 19, key="memi")
+with c3: seq  = st.number_input(f"SLC {couleur_note(st.session_state.get('seq',0))}", 0, 19, key="seq")
 
 c1, c2, c3 = st.columns(3)
-with c1: cod = st.number_input("COD", 0, 19, key="cod")
-with c2: sym = st.number_input("SYM", 0, 19, key="sym")
-with c3: bar = st.number_input("BAR", 0, 19, key="bar")
+with c1: cod = st.number_input(f"COD {couleur_note(st.session_state.get('cod',0))}", 0, 19, key="cod")
+with c2: sym = st.number_input(f"SYM {couleur_note(st.session_state.get('sym',0))}", 0, 19, key="sym")
+with c3: bar = st.number_input(f"BAR {couleur_note(st.session_state.get('bar',0))}", 0, 19, key="bar")
+
+st.caption("🔴 ≤6 Très faible · 🟠 7-9 Faible · 🟡 10-12 Moyen · 🟢 13-15 Supérieur · 🔵 ≥16 Très supérieur")
 
 st.markdown("---")
 st.subheader("B. Indices (Note / Percentile / Intervalle de confiance)")
@@ -756,67 +810,69 @@ vimt, timt = check_homogeneite_indice(memc, memi, "IMT")
 vivt, tivt = check_homogeneite_indice(sym, cod, "IVT")
 nb_inv = sum([1 for x in [vicv, vivs, virf, vimt, vivt] if x is False])
 
-# QIT
-col_qit1, col_qit2, col_qit3, col_qit4, col_qit5 = st.columns(5)
-with col_qit1: qit = st.number_input("QIT", 0, 160, key="qit")
-with col_qit2: perc_qit = st.number_input("Perc", 0.0, 100.0, key="perc_qit")
-with col_qit3: qit_bas = st.number_input("IC Bas", 0, 160, key="qit_bas")
-with col_qit4: qit_haut = st.number_input("IC Haut", 0, 160, key="qit_haut")
-
-# Indices principaux
+# --- Indices principaux (en premier) ---
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
     st.markdown("**ICV**")
-    icv = st.number_input("S_ICV", 0, key="icv", label_visibility="collapsed")
-    perc_icv = st.number_input("P_ICV", 0.0, key="perc_icv", label_visibility="collapsed")
-    icv_bas = st.number_input("IB_ICV", 0, key="icv_bas", label_visibility="collapsed")
-    icv_haut = st.number_input("IH_ICV", 0, key="icv_haut", label_visibility="collapsed")
+    icv = st.number_input("Note ICV", 0, 160, key="icv", label_visibility="collapsed")
+    perc_icv = st.number_input("P_ICV", 0, 100, key="perc_icv", label_visibility="collapsed")
+    icv_bas = st.number_input("IC Bas ICV", 0, 160, key="icv_bas")
+    icv_haut = st.number_input("IC Haut ICV", 0, 160, key="icv_haut")
     if ticv: st.caption(ticv)
 with c2:
     st.markdown("**IVS**")
-    ivs = st.number_input("S_IVS", 0, key="ivs", label_visibility="collapsed")
-    perc_ivs = st.number_input("P_IVS", 0.0, key="perc_ivs", label_visibility="collapsed")
-    ivs_bas = st.number_input("IB_IVS", 0, key="ivs_bas", label_visibility="collapsed")
-    ivs_haut = st.number_input("IH_IVS", 0, key="ivs_haut", label_visibility="collapsed")
+    ivs = st.number_input("Note IVS", 0, 160, key="ivs", label_visibility="collapsed")
+    perc_ivs = st.number_input("P_IVS", 0, 100, key="perc_ivs", label_visibility="collapsed")
+    ivs_bas = st.number_input("IC Bas IVS", 0, 160, key="ivs_bas")
+    ivs_haut = st.number_input("IC Haut IVS", 0, 160, key="ivs_haut")
     if tivs: st.caption(tivs)
 with c3:
     st.markdown("**IRF**")
-    irf = st.number_input("S_IRF", 0, key="irf", label_visibility="collapsed")
-    perc_irf = st.number_input("P_IRF", 0.0, key="perc_irf", label_visibility="collapsed")
-    irf_bas = st.number_input("IB_IRF", 0, key="irf_bas", label_visibility="collapsed")
-    irf_haut = st.number_input("IH_IRF", 0, key="irf_haut", label_visibility="collapsed")
+    irf = st.number_input("Note IRF", 0, 160, key="irf", label_visibility="collapsed")
+    perc_irf = st.number_input("P_IRF", 0, 100, key="perc_irf", label_visibility="collapsed")
+    irf_bas = st.number_input("IC Bas IRF", 0, 160, key="irf_bas")
+    irf_haut = st.number_input("IC Haut IRF", 0, 160, key="irf_haut")
     if tirf: st.caption(tirf)
 with c4:
     st.markdown("**IMT**")
-    imt = st.number_input("S_IMT", 0, key="imt", label_visibility="collapsed")
-    perc_imt = st.number_input("P_IMT", 0.0, key="perc_imt", label_visibility="collapsed")
-    imt_bas = st.number_input("IB_IMT", 0, key="imt_bas", label_visibility="collapsed")
-    imt_haut = st.number_input("IH_IMT", 0, key="imt_haut", label_visibility="collapsed")
+    imt = st.number_input("Note IMT", 0, 160, key="imt", label_visibility="collapsed")
+    perc_imt = st.number_input("P_IMT", 0, 100, key="perc_imt", label_visibility="collapsed")
+    imt_bas = st.number_input("IC Bas IMT", 0, 160, key="imt_bas")
+    imt_haut = st.number_input("IC Haut IMT", 0, 160, key="imt_haut")
     if timt: st.caption(timt)
 with c5:
     st.markdown("**IVT**")
-    ivt = st.number_input("S_IVT", 0, key="ivt", label_visibility="collapsed")
-    perc_ivt = st.number_input("P_IVT", 0.0, key="perc_ivt", label_visibility="collapsed")
-    ivt_bas = st.number_input("IB_IVT", 0, key="ivt_bas", label_visibility="collapsed")
-    ivt_haut = st.number_input("IH_IVT", 0, key="ivt_haut", label_visibility="collapsed")
+    ivt = st.number_input("Note IVT", 0, 160, key="ivt", label_visibility="collapsed")
+    perc_ivt = st.number_input("P_IVT", 0, 100, key="perc_ivt", label_visibility="collapsed")
+    ivt_bas = st.number_input("IC Bas IVT", 0, 160, key="ivt_bas")
+    ivt_haut = st.number_input("IC Haut IVT", 0, 160, key="ivt_haut")
     if tivt: st.caption(tivt)
 
-with col_qit5:
-    chk = [icv, ivs, irf, imt, ivt]
-    if all(i > 0 for i in chk):
-        disp = max(chk) - min(chk)
-        if disp >= 23:
-            st.error(f"⚠️ **Invalide** (Disp. {disp})")
-            h_txt = f"NON INTERPRÉTABLE (Disp. {disp})"
-        elif nb_inv >= 2:
-            st.warning("🟠 **Fragile**")
-            h_txt = f"FRAGILE ({nb_inv} ind. hétérogènes)"
-        else:
-            st.success("✅ **Homogène**")
-            h_txt = "Valide et Homogène"
+# --- Validité globale ---
+st.markdown("---")
+chk = [icv, ivs, irf, imt, ivt]
+if all(i > 0 for i in chk):
+    disp = max(chk) - min(chk)
+    if disp >= 23:
+        st.error(f"⚠️ **QIT NON INTERPRÉTABLE** — Dispersion entre indices : {disp} points")
+        h_txt = f"NON INTERPRÉTABLE (Disp. {disp})"
+    elif nb_inv >= 2:
+        st.warning(f"🟠 **QIT FRAGILE** — {nb_inv} indice(s) hétérogène(s)")
+        h_txt = f"FRAGILE ({nb_inv} ind. hétérogènes)"
     else:
-        st.info("En attente...")
-        h_txt = "N/A"
+        st.success("✅ **Profil homogène** — QIT interprétable")
+        h_txt = "Valide et Homogène"
+else:
+    st.info("ℹ️ Renseignez les 5 indices pour évaluer la validité du QIT")
+    h_txt = "N/A"
+
+# --- QIT en dernier ---
+st.markdown("**QIT (Quotient Intellectuel Total)**")
+col_qit1, col_qit2, col_qit3, col_qit4 = st.columns(4)
+with col_qit1: qit = st.number_input("Note QIT", 0, 160, key="qit")
+with col_qit2: perc_qit = st.number_input("Percentile", 0, 100, key="perc_qit")
+with col_qit3: qit_bas = st.number_input("IC Bas QIT", 0, 160, key="qit_bas")
+with col_qit4: qit_haut = st.number_input("IC Haut QIT", 0, 160, key="qit_haut")
 
 st.markdown("---")
 st.subheader("C. Indices Complémentaires")
@@ -883,8 +939,14 @@ with c2:
 # 11. GÉNÉRATION IA
 # ==========================================
 st.divider()
-if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="primary"):
+
+# Point 2 : Avertissement si bibliothèque vide
+if not knowledge_base:
+    st.error("⛔ **Bibliothèque vide !** Aucun PDF de référence n'est chargé dans la sidebar. L'analyse sera moins précise sur le plan méthodologique.")
+
+if st.button("✨ GÉNÉRER L'ANALYSE EXPERT", type="primary"):
     infos = f"{prenom}, {sexe}, {ans} ans. Date Bilan: {st.session_state.jb}/{st.session_state.mb}/{st.session_state.ab}. Latéralité: {lateralite}. Créole: {creole}."
+    motif_txt = ", ".join(motifs) if motifs else "Non précisé"
     obs_txt = ", ".join(obs) + ". " + obs_libre
 
     if qit > 0:
@@ -928,6 +990,7 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
 
             DONNÉES ENTRÉE:
             - Enfant: {infos}
+            - Motif de consultation: {motif_txt}
             - Obs: {obs_txt}
             - Anamnèse: {ana}
             - Scores: {data}
@@ -946,6 +1009,7 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
             - Utilise des connecteurs logiques : "ce qui suggère que...", "probablement en raison de...", "ce résultat contraste avec...".
             - Formule des HYPOTHÈSES sur les mécanismes cognitifs sous-jacents.
             - Analyse les ÉCARTS : Si l'ICV est > IVS, qu'est-ce que ça implique concrètement ?
+            - Tiens compte du motif de consultation pour orienter la conclusion et les recommandations.
 
             STRUCTURE DU COMPTE RENDU :
 
@@ -965,14 +1029,20 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
                - Forces et faiblesses spécifiques + lien avec les symptômes observés.
 
             4. SYNTHÈSE DIAGNOSTIQUE & RECOMMANDATIONS
-               - Croiser avec l'anamnèse.
+               - Croiser avec l'anamnèse et le motif de consultation.
                - Hypothèses (TDAH, TSA, etc.).
-               - Conseils pratiques.
+               - Conseils pratiques adaptés au motif.
 
             Rédige avec un ton professionnel, argumenté et clinique.
             """
 
             res = model.generate_content(prompt)
+            analyse_texte = res.text
+
+            # Stocker le résultat pour le résumé
+            st.session_state['derniere_analyse'] = analyse_texte
+            st.session_state['prenom_analyse'] = prenom
+            st.session_state['age_analyse'] = f"{ans}a{mois}m"
 
             st.markdown("""
             <div style="
@@ -985,16 +1055,68 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT (MÉTHODE TERRIOT/OZENNE)", type="p
                 margin-top: 1rem;
             ">
             """, unsafe_allow_html=True)
-            st.markdown(res.text)
+            st.markdown(analyse_texte)
             st.markdown("</div>", unsafe_allow_html=True)
 
-            f = create_docx(res.text, prenom, f"{ans}a{mois}m")
+            # Export Word
+            f_word = create_docx(analyse_texte, prenom, f"{ans}a{mois}m")
             st.download_button(
                 "📄 Télécharger le compte rendu (.docx)",
-                f,
+                f_word,
                 f"Bilan_WISC5_{prenom}.docx",
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
 
         except Exception as e:
             st.error(f"Erreur lors de la génération : {e}")
+
+# ==========================================
+# 12. RÉSUMÉ 10 LIGNES (Point 8)
+# ==========================================
+if 'derniere_analyse' in st.session_state:
+    st.divider()
+    st.markdown("### 📋 Résumé synthétique")
+    st.caption("Utile pour courriers, transmissions MDPH, comptes rendus rapides.")
+    if st.button("✍️ Générer un résumé en 10 lignes maximum", type="secondary"):
+        with st.spinner("Rédaction du résumé..."):
+            try:
+                model = genai.GenerativeModel('gemini-2.5-flash')
+                prompt_resume = f"""
+                À partir de cette analyse WISC-V complète, rédige un résumé synthétique 
+                destiné à un courrier professionnel (médecin, école, MDPH).
+                
+                Contraintes STRICTES :
+                - 10 lignes MAXIMUM
+                - Ton professionnel, phrases complètes
+                - Inclure : efficience globale, points forts, points faibles, 1-2 recommandations clés
+                - Ne pas utiliser de titres ni de bullet points, uniquement des paragraphes
+                - Commencer par "À l'issue du bilan psychométrique de {st.session_state.get('prenom_analyse','cet enfant')}..."
+                
+                ANALYSE SOURCE :
+                {st.session_state['derniere_analyse']}
+                """
+                res_resume = model.generate_content(prompt_resume)
+
+                st.markdown("""
+                <div style="
+                    background: #F5F2EE;
+                    border-radius: 10px;
+                    padding: 1.2rem 1.5rem;
+                    border: 1px solid #E8E4DF;
+                    border-left: 4px solid #C9A84C;
+                    margin-top: 0.5rem;
+                ">
+                """, unsafe_allow_html=True)
+                st.markdown(res_resume.text)
+                st.markdown("</div>", unsafe_allow_html=True)
+
+                # Bouton copier (via text_area sélectionnable)
+                st.text_area(
+                    "📋 Sélectionner tout pour copier :",
+                    res_resume.text,
+                    height=200,
+                    key="resume_copie"
+                )
+
+            except Exception as e:
+                st.error(f"Erreur résumé : {e}")
