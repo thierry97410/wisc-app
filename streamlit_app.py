@@ -700,14 +700,24 @@ def create_pdf(text_content, prenom, sexe, age_str, date_bilan_str):
     story.append(HRFlowable(width="100%", thickness=0.5, color=GRIS_DOUX))
     story.append(Spacer(1, 6))
     story.append(Paragraph(
-        "⚠ Document de travail confidentiel — L'analyse clinique et les conclusions restent "
-        "sous la responsabilité exclusive du psychologue.",
+        "AVERTISSEMENT : Document de travail confidentiel — L'analyse clinique et les conclusions restent "
+        "sous la responsabilite exclusive du psychologue.",
         s_avert))
     story.append(HRFlowable(width="100%", thickness=0.5, color=GRIS_DOUX))
     story.append(Spacer(1, 14))
 
     # --- Contenu de l'analyse ---
-    # Découper le texte en sections selon les titres markdown
+    def markdown_to_rl(texte):
+        """Convertit le markdown en texte sécurisé pour ReportLab (sans XML mal formé)."""
+        import re
+        # Remplacer les caractères XML spéciaux en premier
+        texte = texte.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+        # Gérer le gras : toutes les paires ** → <b>...</b>
+        texte = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', texte)
+        # Supprimer les * restants isolés
+        texte = texte.replace('*', '')
+        return texte
+
     lignes = text_content.split('\n')
     for ligne in lignes:
         ligne = ligne.strip()
@@ -715,19 +725,18 @@ def create_pdf(text_content, prenom, sexe, age_str, date_bilan_str):
             story.append(Spacer(1, 4))
         elif ligne.startswith('## ') or ligne.startswith('# '):
             titre_propre = ligne.lstrip('#').strip()
+            # Nettoyer les balises éventuelles dans les titres
+            titre_propre = re.sub(r'\*+', '', titre_propre)
+            titre_propre = titre_propre.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
             story.append(HRFlowable(width="100%", thickness=0.5, color=GRIS_DOUX, spaceBefore=8))
             story.append(Paragraph(titre_propre.upper(), s_section))
         elif ligne.startswith('### '):
             titre_propre = ligne.lstrip('#').strip()
-            story.append(Paragraph(f"<b>{titre_propre}</b>", s_corps))
-        elif ligne.startswith('**') and ligne.endswith('**'):
-            story.append(Paragraph(f"<b>{ligne.strip('*')}</b>", s_corps))
+            story.append(Paragraph(f"<b>{markdown_to_rl(titre_propre)}</b>", s_corps))
         elif ligne.startswith('- ') or ligne.startswith('* '):
-            story.append(Paragraph(f"• {ligne[2:]}", s_corps))
+            story.append(Paragraph(f"• {markdown_to_rl(ligne[2:])}", s_corps))
         else:
-            # Nettoyer les astérisques markdown restants
-            ligne_clean = ligne.replace('**', '<b>', 1).replace('**', '</b>', 1)
-            story.append(Paragraph(ligne_clean, s_corps))
+            story.append(Paragraph(markdown_to_rl(ligne), s_corps))
 
     # --- Pied de page ---
     story.append(Spacer(1, 20))
@@ -865,7 +874,13 @@ with st.sidebar:
     if local_files:
         for f in local_files:
             if st.checkbox(f"📄 {f}", value=True, key=f):
-                c = read_file(f, f)
+                try:
+                    with open(f, 'rb') as fh:
+                        import io as _io
+                        file_obj = _io.BytesIO(fh.read())
+                    c = read_file(file_obj, f)
+                except Exception as e:
+                    c = f"[Erreur lecture {f} : {e}]"
                 knowledge_base += f"\n--- SOURCE PRIORITAIRE: {f} ---\n{c}\n"
         st.caption(f"Contexte : {len(knowledge_base)} chars")
         with st.expander("👀 Vérifier le contenu lu par l'IA"):
