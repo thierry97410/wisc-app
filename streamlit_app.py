@@ -54,7 +54,12 @@ st.set_page_config(
     page_title="Assistant WISC-V",
     page_icon="🧠",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': None,
+        'Report a bug': None,
+        'About': "### Assistant WISC-V\nOutil d'aide à l'analyse psychométrique.\n\nPour relancer l'application : **Menu ☰ → Rerun**"
+    }
 )
 
 # ==========================================
