@@ -1161,17 +1161,24 @@ st.divider()
 indices = {"ICV": icv, "IVS": ivs, "IRF": irf, "IMT": imt, "IVT": ivt}
 valid_ind = {k: v for k, v in indices.items() if v > 0}
 
+# Initialisation sécurisée de moy et intra_txt (utilisés plus bas dans le prompt)
+if valid_ind:
+    vals = list(valid_ind.values())
+    moy = float(np.mean(vals))
+    et  = float(np.std(vals))
+    intra_txt = f"Moyenne Perso: {moy:.1f}, ET: {et:.1f}."
+else:
+    moy = 0.0
+    et  = 0.0
+    intra_txt = ""
+
 c1, c2 = st.columns([1, 1.5])
 with c1:
     if len(valid_ind) >= 3:
         st.pyplot(plot_radar_chart(valid_ind))
 with c2:
     if valid_ind:
-        vals = list(valid_ind.values())
-        moy = np.mean(vals)
-        et = np.std(vals)
         st.info(f"Moyenne Perso : **{moy:.1f}** | Écart-Type : **{et:.1f}**")
-        intra_txt = f"Moyenne Perso: {moy:.1f}, ET: {et:.1f}."
         for k, v in valid_ind.items():
             d = v - moy
             if d >= 10:
@@ -1180,8 +1187,6 @@ with c2:
             elif d <= -10:
                 st.write(f"🔴 **{k}** : Faiblesse relative ({d:.1f})")
                 intra_txt += f"- {k}: Faiblesse relative.\n"
-    else:
-        intra_txt = ""
 
 # ==========================================
 # 11. GÉNÉRATION IA
