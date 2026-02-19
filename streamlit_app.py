@@ -938,9 +938,12 @@ st.markdown("""
 
 c1, c2, c3 = st.columns(3)
 with c1:
-    prenom     = st.text_input("Prénom", placeholder="Ex : Lucas")
-    sexe       = st.radio("Sexe", ["Garçon", "Fille"], horizontal=True)
-    lateralite = st.radio("Latéralité", ["Droitier", "Gaucher"], horizontal=True)
+    st.markdown("**Prénom**")
+    prenom = st.text_input("Prénom", placeholder="Ex : Lucas", label_visibility="collapsed")
+    st.markdown("**Sexe**")
+    sexe = st.radio("Sexe", ["Garçon", "Fille"], horizontal=True, label_visibility="collapsed")
+    st.markdown("**Latéralité**")
+    lateralite = st.radio("Latéralité", ["Droitier", "Gaucher"], horizontal=True, label_visibility="collapsed")
 with c2:
     st.markdown("**Date de naissance**")
     cj, cm, ca = st.columns([1, 1, 1.5])
@@ -958,7 +961,8 @@ with c3:
     try: dt = date(ab, mb, jb)
     except: dt = date.today()
     ans, mois = calculer_age(dn, dt)
-    st.markdown(f'<div style="margin-top:10px;background:#E8F5EE;border-left:3px solid #2E7D5A;border-radius:0 6px 6px 0;padding:8px 12px;font-weight:700;color:#2E7D5A;font-size:0.95rem;">🎂 {ans} ans {mois} mois</div>', unsafe_allow_html=True)
+    st.markdown("**Âge au bilan**")
+    st.success(f"{ans} ans {mois} mois")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
