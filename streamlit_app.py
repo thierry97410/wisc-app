@@ -988,6 +988,11 @@ with motifs_col2:
     if st.checkbox("Autre motif"): motifs.append("Autre (voir anamnèse)")
 st.markdown("---")
 obs_libre = st.text_area("Observations libres", height=70)
+ana = st.text_area(
+    "📋 Anamnèse (contexte développemental, scolarité, antécédents...)",
+    placeholder="Ex : Suivi orthophonique depuis 6 ans, redoublement en CE2, parents séparés, fratrie...",
+    height=100
+)
 
 st.markdown("</div>", unsafe_allow_html=True)
 
