@@ -1329,24 +1329,33 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT", type="primary"):
             # Export Word + PDF côte à côte
             col_word, col_pdf = st.columns(2)
             with col_word:
-                f_word = create_docx(analyse_texte, prenom, f"{ans}a{mois}m")
-                st.download_button(
-                    "📄 Télécharger (.docx)",
-                    f_word,
-                    f"Bilan_WISC5_{prenom}.docx",
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    use_container_width=True
-                )
+                try:
+                    f_word = create_docx(analyse_texte, prenom, f"{ans}a{mois}m")
+                    f_word.seek(0)
+                    st.download_button(
+                        "📄 Télécharger (.docx)",
+                        f_word.read(),
+                        f"Bilan_WISC5_{prenom}.docx",
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        use_container_width=True
+                    )
+                except Exception as e_word:
+                    st.error(f"Erreur export Word : {e_word}")
+
             with col_pdf:
-                date_bilan_str = f"{st.session_state.jb:02d}/{st.session_state.mb:02d}/{st.session_state.ab}"
-                f_pdf = create_pdf(analyse_texte, prenom, sexe, f"{ans} ans {mois} mois", date_bilan_str)
-                st.download_button(
-                    "📋 Télécharger (.pdf)",
-                    f_pdf,
-                    f"Bilan_WISC5_{prenom}.pdf",
-                    "application/pdf",
-                    use_container_width=True
-                )
+                try:
+                    date_bilan_str = f"{st.session_state.jb:02d}/{st.session_state.mb:02d}/{st.session_state.ab}"
+                    f_pdf = create_pdf(analyse_texte, prenom, sexe, f"{ans} ans {mois} mois", date_bilan_str)
+                    f_pdf.seek(0)
+                    st.download_button(
+                        "📋 Télécharger (.pdf)",
+                        f_pdf.read(),
+                        f"Bilan_WISC5_{prenom}.pdf",
+                        "application/pdf",
+                        use_container_width=True
+                    )
+                except Exception as e_pdf:
+                    st.error(f"Erreur export PDF : {e_pdf}")
 
         except Exception as e:
             st.error(f"Erreur lors de la génération : {e}")
