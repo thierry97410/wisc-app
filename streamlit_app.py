@@ -83,9 +83,19 @@ st.markdown("""
     --fond-app:     #F0EDE8;
 }
 
-html, body, [class*="css"] {
+html, body {
     font-family: 'DM Sans', sans-serif !important;
     color: var(--bleu-nuit) !important;
+}
+
+/* Menu hamburger et toolbar — ne pas toucher */
+[data-testid="stToolbar"],
+[data-testid="stToolbar"] *,
+header[data-testid="stHeader"],
+header[data-testid="stHeader"] * {
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: inherit !important;
 }
 
 .stApp {
@@ -928,14 +938,11 @@ st.markdown("""
 
 c1, c2, c3 = st.columns(3)
 with c1:
-    st.markdown('<p style="font-size:0.78rem;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">Prénom</p>', unsafe_allow_html=True)
-    prenom = st.text_input("Prénom", placeholder="Ex : Lucas", label_visibility="collapsed")
-    st.markdown('<p style="font-size:0.78rem;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;margin-top:8px;">Sexe</p>', unsafe_allow_html=True)
-    sexe = st.radio("Sexe", ["Garçon", "Fille"], horizontal=True, label_visibility="collapsed")
-    st.markdown('<p style="font-size:0.78rem;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;margin-top:8px;">Latéralité</p>', unsafe_allow_html=True)
-    lateralite = st.radio("Latéralité", ["Droitier", "Gaucher"], horizontal=True, label_visibility="collapsed")
+    prenom     = st.text_input("Prénom", placeholder="Ex : Lucas")
+    sexe       = st.radio("Sexe", ["Garçon", "Fille"], horizontal=True)
+    lateralite = st.radio("Latéralité", ["Droitier", "Gaucher"], horizontal=True)
 with c2:
-    st.markdown('<p style="font-size:0.78rem;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">Date de naissance</p>', unsafe_allow_html=True)
+    st.markdown("**Date de naissance**")
     cj, cm, ca = st.columns([1, 1, 1.5])
     with cj: jn = st.number_input("Jour", 1, 31, key="jn")
     with cm: mn = st.number_input("Mois", 1, 12, key="mn")
@@ -943,15 +950,15 @@ with c2:
     try: dn = date(an, mn, jn)
     except: dn = date.today()
 with c3:
-    st.markdown('<p style="font-size:0.78rem;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">Date du bilan</p>', unsafe_allow_html=True)
+    st.markdown("**Date du bilan**")
     cj, cm, ca = st.columns([1, 1, 1.5])
-    with cj: jb = st.number_input("Jour", 1, 31, key="jb")
-    with cm: mb = st.number_input("Mois", 1, 12, key="mb")
-    with ca: ab = st.number_input("Année", 2020, 2030, key="ab")
+    with cj: jb = st.number_input("Jour ", 1, 31, key="jb")
+    with cm: mb = st.number_input("Mois ", 1, 12, key="mb")
+    with ca: ab = st.number_input("Année ", 2020, 2030, key="ab")
     try: dt = date(ab, mb, jb)
     except: dt = date.today()
     ans, mois = calculer_age(dn, dt)
-    st.markdown(f'<div style="margin-top:10px; background:#E8F5EE; border-left:3px solid #2E7D5A; border-radius:0 6px 6px 0; padding:8px 12px; font-weight:700; color:#2E7D5A; font-size:0.95rem;">🎂 {ans} ans {mois} mois</div>', unsafe_allow_html=True)
+    st.markdown(f'<div style="margin-top:10px;background:#E8F5EE;border-left:3px solid #2E7D5A;border-radius:0 6px 6px 0;padding:8px 12px;font-weight:700;color:#2E7D5A;font-size:0.95rem;">🎂 {ans} ans {mois} mois</div>', unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
 
