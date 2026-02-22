@@ -901,7 +901,71 @@ with st.sidebar:
         with st.expander("👀 Vérifier le contenu lu par l'IA"):
             st.text(knowledge_base[:3000] + "...")
     else:
-        st.warning("Pas de PDF trouvés.")
+        st.warning("Aucun PDF importé. Importez vos ouvrages de référence ci-dessous.")
+
+    st.divider()
+    st.header("📖 Ressources recommandées")
+    st.caption("Achetez vos ouvrages légalement, importez-les ici pour enrichir les analyses.")
+
+    ressources = [
+        {
+            "titre": "L'examen clinique de l'intelligence de l'enfant",
+            "auteur": "Grégoire (2020)",
+            "editeur": "De Boeck Supérieur",
+            "url": "https://www.deboecksuperieur.com",
+            "emoji": "📘"
+        },
+        {
+            "titre": "WISC-V — Manuel d'interprétation",
+            "auteur": "Ozenne & al.",
+            "editeur": "Dunod",
+            "url": "https://www.dunod.com",
+            "emoji": "📗"
+        },
+        {
+            "titre": "Manuel et matériel WISC-V officiel",
+            "auteur": "Wechsler",
+            "editeur": "ECPA / Pearson",
+            "url": "https://www.ecpa.fr",
+            "emoji": "📙"
+        },
+        {
+            "titre": "Ressources APA PsycNET",
+            "auteur": "American Psychological Association",
+            "editeur": "APA",
+            "url": "https://psycnet.apa.org",
+            "emoji": "📕"
+        },
+        {
+            "titre": "Cairn.info — Revues de psychologie",
+            "auteur": "Divers auteurs",
+            "editeur": "Cairn",
+            "url": "https://www.cairn.info",
+            "emoji": "📓"
+        },
+    ]
+
+    for r in ressources:
+        st.markdown(f"""
+        <div style="
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            font-size: 0.78rem;
+        ">
+            <div style="font-weight:600; color:rgba(255,255,255,0.9);">{r['emoji']} {r['auteur']}</div>
+            <div style="color:rgba(255,255,255,0.6); font-size:0.72rem; margin: 2px 0;">{r['titre']}</div>
+            <a href="{r['url']}" target="_blank" style="
+                color: #C9A84C;
+                font-size: 0.72rem;
+                text-decoration: none;
+            ">🔗 {r['editeur']} →</a>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.caption("⚠️ Ces ouvrages sont vendus par leurs éditeurs. Vous êtes responsable de votre licence d'utilisation.")
 
     st.divider()
     if not st.session_state.reset_confirm:
