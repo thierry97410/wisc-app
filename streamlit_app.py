@@ -1291,53 +1291,40 @@ with c2:
 # ==========================================
 st.divider()
 
-# Point 2 : Avertissement si bibliothèque vide
 if not knowledge_base:
     st.error("⛔ **Bibliothèque vide !** Aucun PDF de référence n'est chargé dans la sidebar. L'analyse sera moins précise sur le plan méthodologique.")
 
-if st.button("✨ GÉNÉRER L'ANALYSE EXPERT", type="primary"):
-    infos = f"{prenom}, {sexe}, {ans} ans. Date Bilan: {st.session_state.jb}/{st.session_state.mb}/{st.session_state.ab}. Latéralité: {lateralite}. Créole: {creole}."
-    motif_txt = ", ".join(motifs) if motifs else "Non précisé"
-    obs_txt = ", ".join(obs) + ". " + obs_libre
+# --- Options de génération ---
+col_opt1, col_opt2 = st.columns([2, 1])
+with col_opt1:
+    niveau_detail = st.radio(
+        "📊 Niveau de détail du compte rendu",
+        ["Court (1 page)", "Standard (2-3 pages)", "Détaillé (3-5 pages)"],
+        index=1,
+        horizontal=True
+    )
+with col_opt2:
+    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+    generer = st.button("✨ GÉNÉRER L'ANALYSE EXPERT", type="primary", use_container_width=True)
+    regenerer = st.button("🔄 RÉGÉNÉRER", use_container_width=True,
+        disabled='derniere_analyse' not in st.session_state,
+        help="Génère une nouvelle version de l'analyse avec les mêmes données")
 
-    if qit > 0:
-        data = f"QIT: {qit} (Perc: {perc_qit}, IC: {qit_bas}-{qit_haut}). Validité: {h_txt}.\n"
-    else:
-        data = "QIT: Non calculé / Non administré.\n"
+# Correspondance niveau → consigne longueur
+niveau_consigne = {
+    "Court (1 page)":        "Sois CONCIS. Maximum 400 mots. 1 paragraphe par section. Pas de sous-parties.",
+    "Standard (2-3 pages)":  "Longueur standard. 600-900 mots. Structure complète avec sous-parties.",
+    "Détaillé (3-5 pages)":  "Sois EXHAUSTIF. 1200-1800 mots. Développe chaque point avec exemples cliniques et hypothèses détaillées.",
+}
 
-    data += "Indices Administrés: "
-    indices_data = []
-    if icv > 0: indices_data.append(f"ICV {icv} (Perc {perc_icv}, IC {icv_bas}-{icv_haut})")
-    if ivs > 0: indices_data.append(f"IVS {ivs} (Perc {perc_ivs}, IC {ivs_bas}-{ivs_haut})")
-    if irf > 0: indices_data.append(f"IRF {irf} (Perc {perc_irf}, IC {irf_bas}-{irf_haut})")
-    if imt > 0: indices_data.append(f"IMT {imt} (Perc {perc_imt}, IC {imt_bas}-{imt_haut})")
-    if ivt > 0: indices_data.append(f"IVT {ivt} (Perc {perc_ivt}, IC {ivt_bas}-{ivt_haut})")
-    data += ", ".join(indices_data) + ".\n"
-
-    data += "Indices Complémentaires: "
-    compl_data = []
-    if iag > 0: compl_data.append(f"IAG {iag} (IC {iag_bas}-{iag_haut})")
-    if icc > 0: compl_data.append(f"ICC {icc} (IC {icc_bas}-{icc_haut})")
-    if inv > 0: compl_data.append(f"INV {inv} (IC {inv_bas}-{inv_haut})")
-    data += ", ".join(compl_data) + ".\n"
-
-    data += "Subtests (Notes Standard): "
-    subs_map = {
-        "Sim": sim, "Voc": voc, "Info": info, "Comp": comp,
-        "Cub": cub, "Puz": puz, "Mat": mat, "Bal": bal,
-        "Arit": arit, "MemC": memc, "MemI": memi, "Seq": seq,
-        "Cod": cod, "Sym": sym, "Bar": bar
-    }
-    valid_subs = [f"{k} {v}" for k, v in subs_map.items() if v > 0]
-    data += ", ".join(valid_subs) + "."
-
-    with st.spinner("🧠 Analyse approfondie en cours..."):
-        try:
-            model = genai.GenerativeModel('gemini-2.5-flash')
-            prompt = f"""
+def construire_prompt(infos, motif_txt, obs_txt, ana, data, intra_txt, style_redac, niveau_detail, moy, valid_ind, knowledge_base):
+    consigne_longueur = niveau_consigne[niveau_detail]
+    return f"""
             Rôle: Expert Psychologue WISC-V.
 
             DESTINATAIRE: {style_redac}.
+
+            LONGUEUR : {consigne_longueur}
 
             DONNÉES ENTRÉE:
             - Enfant: {infos}
@@ -1387,13 +1374,55 @@ if st.button("✨ GÉNÉRER L'ANALYSE EXPERT", type="primary"):
             Rédige avec un ton professionnel, argumenté et clinique.
             """
 
+if generer or regenerer:
+    infos = f"{prenom}, {sexe}, {ans} ans. Date Bilan: {st.session_state.jb}/{st.session_state.mb}/{st.session_state.ab}. Latéralité: {lateralite}. Créole: {creole}."
+    motif_txt = ", ".join(motifs) if motifs else "Non précisé"
+    obs_txt = ", ".join(obs) + ". " + obs_libre
+
+    if qit > 0:
+        data = f"QIT: {qit} (Perc: {perc_qit}, IC: {qit_bas}-{qit_haut}). Validité: {h_txt}.\n"
+    else:
+        data = "QIT: Non calculé / Non administré.\n"
+
+    data += "Indices Administrés: "
+    indices_data = []
+    if icv > 0: indices_data.append(f"ICV {icv} (Perc {perc_icv}, IC {icv_bas}-{icv_haut})")
+    if ivs > 0: indices_data.append(f"IVS {ivs} (Perc {perc_ivs}, IC {ivs_bas}-{ivs_haut})")
+    if irf > 0: indices_data.append(f"IRF {irf} (Perc {perc_irf}, IC {irf_bas}-{irf_haut})")
+    if imt > 0: indices_data.append(f"IMT {imt} (Perc {perc_imt}, IC {imt_bas}-{imt_haut})")
+    if ivt > 0: indices_data.append(f"IVT {ivt} (Perc {perc_ivt}, IC {ivt_bas}-{ivt_haut})")
+    data += ", ".join(indices_data) + ".\n"
+
+    data += "Indices Complémentaires: "
+    compl_data = []
+    if iag > 0: compl_data.append(f"IAG {iag} (IC {iag_bas}-{iag_haut})")
+    if icc > 0: compl_data.append(f"ICC {icc} (IC {icc_bas}-{icc_haut})")
+    if inv > 0: compl_data.append(f"INV {inv} (IC {inv_bas}-{inv_haut})")
+    data += ", ".join(compl_data) + ".\n"
+
+    data += "Subtests (Notes Standard): "
+    subs_map = {
+        "Sim": sim, "Voc": voc, "Info": info, "Comp": comp,
+        "Cub": cub, "Puz": puz, "Mat": mat, "Bal": bal,
+        "Arit": arit, "MemC": memc, "MemI": memi, "Seq": seq,
+        "Cod": cod, "Sym": sym, "Bar": bar
+    }
+    valid_subs = [f"{k} {v}" for k, v in subs_map.items() if v > 0]
+    data += ", ".join(valid_subs) + "."
+
+    spinner_msg = "🔄 Nouvelle analyse en cours..." if regenerer else "🧠 Analyse approfondie en cours..."
+    with st.spinner(spinner_msg):
+        try:
+            model = genai.GenerativeModel('gemini-2.5-flash')
+            prompt = construire_prompt(infos, motif_txt, obs_txt, ana, data, intra_txt,
+                                       style_redac, niveau_detail, moy, valid_ind, knowledge_base)
             res = model.generate_content(prompt)
             analyse_texte = res.text
 
-            # Stocker le résultat pour le résumé
             st.session_state['derniere_analyse'] = analyse_texte
             st.session_state['prenom_analyse'] = prenom
             st.session_state['age_analyse'] = f"{ans}a{mois}m"
+            st.session_state['niveau_detail'] = niveau_detail
 
             st.markdown("""
             <div style="
